@@ -1,0 +1,130 @@
+const TheoDoiMuonSachService = require("../services/theodoimuonsach.service");
+const SachService = require("../services/sach.service");
+const MongoDB = require("../utils/mongodb.util");
+const ApiError = require("../api-error");
+
+exports.create = async (req, res, next) => {
+    const { maDocGia, maSach, ngayMuon, ngayTraDuKien } = req.body;
+
+    if (!maDocGia || !maSach) {
+        return next(new ApiError(400, "Mã độc giả và Mã sách là bắt buộc!"));
+    }
+
+    try {
+        const sachService = new SachService(MongoDB.client);
+        const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+
+        const sach = await sachService.findByMaSach(maSach);
+        if (!sach) {
+            return next(new ApiError(404, "Sách không tồn tại trong hệ thống!"));
+        }
+
+        const currentQuantity = sach.soQuyen !== undefined ? sach.soQuyen : sach.SoQuyen;
+        if (currentQuantity === undefined || currentQuantity <= 0) {
+            return next(new ApiError(400, "Sách hiện tại đã hết, không thể mượn!"));
+        }
+
+        const payload = {
+            maDocGia,
+            maSach,
+            ngayMuon: ngayMuon || new Date().toISOString().split('T')[0],
+            ngayTraDuKien: ngayTraDuKien || null,
+            trangThai: "CHO_DUYET"
+        };
+        const borrowRecord = await borrowService.create(payload);
+
+        await sachService.updateQuantity(maSach, -1);
+        return res.status(201).send({
+            message: "Mượn sách thành công!",
+            data: borrowRecord
+        });
+    } catch (error) {
+        return next(new ApiError(500, "Đã xảy ra lỗi khi xử lý mượn sách!"));
+    }
+};
+
+exports.findAll = async (req, res, next) => {
+    try {
+        const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+        const documents = await borrowService.findAll();
+        return res.send(documents);
+    } catch (error) {
+        return next(new ApiError(500, "Lỗi khi lấy danh sách mượn sách"));
+    }
+};
+
+exports.traSach = async (req, res, next) => {
+    const { id } = req.params;
+    const { ngayTraThucTe } = req.body;
+    try {
+        const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+        const sachService = new SachService(MongoDB.client);
+
+        const updatedRecord = await borrowService.updateReturnDate(id, ngayTraThucTe);
+        if (!updatedRecord) {
+            return next(new ApiError(404, "Không tìm thấy phiếu mượn sách!"));
+        }
+
+        if (updatedRecord.maSach) {
+            await sachService.updateQuantity(updatedRecord.maSach, 1);
+        }
+        return res.send({
+            message: "Trả sách thành công!",
+            data: updatedRecord
+        });
+    } catch (error) {
+        return next(new ApiError(500, "Đã xảy ra lỗi khi xử lý trả sách!"));
+    }
+};
+
+exports.getLichSuByDocGia = async (req, res, next) => {
+    const { maDocGia } = req.params;
+    try {
+        const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+        const documents = await borrowService.findByDocGia(maDocGia);
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, `Lỗi khi lấy lịch sử mượn sách của độc giả ${maDocGia}`)
+        );
+    }
+};
+
+exports.updateTrangThai = async (req, res, next) => {
+    const { id } = req.params;
+    const { trangThai } = req.body;
+
+    if (!trangThai) {
+        return next(new ApiError(400, "Trạng thái không được để trống!"));
+    }
+
+    try {
+        const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+        const sachService = new SachService(MongoDB.client);
+
+        // 1. Kiểm tra tồn tại bản ghi phiếu mượn
+        const record = await borrowService.findById(id);
+        if (!record) {
+            return next(new ApiError(404, "Không tìm thấy phiếu mượn!"));
+        }
+
+        // 2. Gọi hàm updateTrangThai từ Service
+        const updatedRecord = await borrowService.updateTrangThai(id, trangThai);
+
+        // 3. Nếu chuyển sang Từ chối (TU_CHOI), hoàn trả +1 số lượng sách vào kho
+        if (trangThai === "TU_CHOI" && record.trangThai !== "TU_CHOI") {
+            if (record.maSach) {
+                await sachService.updateQuantity(record.maSach, 1);
+            }
+        }
+
+        return res.send({
+            message: "Cập nhật trạng thái thành công!",
+            data: updatedRecord
+        });
+
+    } catch (error) {
+        console.error("[DEBUG CONTROLLER ERROR - updateTrangThai]:", error);
+        return next(new ApiError(500, `Lỗi server khi cập nhật trạng thái: ${error.message}`));
+    }
+};
