@@ -7,7 +7,7 @@
           <input 
             type="text" 
             v-model="searchQuery" 
-            class="form-control border-end-0 py-2.5" 
+            class="form-control border-end-0 py-2.5 px-3" 
             placeholder="Nhập tên sách, tác giả..." 
           />
           <button class="btn btn-primary px-4 fw-semibold" type="button">
@@ -17,39 +17,51 @@
       </div>
     </div>
 
-    <!-- Danh Sách Card Sách -->
+    <!-- Danh Sách Card Sách Có Bìa -->
     <div class="row g-4" v-if="filteredBooks.length > 0">
       <div 
         v-for="sach in filteredBooks" 
         :key="getBookId(sach)" 
-        class="col-12 col-md-6 col-lg-4"
+        class="col-12 col-sm-6 col-md-4 col-lg-3"
       >
         <div class="card h-100 shadow-sm border-0 bg-white rounded-4 overflow-hidden hover-card">
-          <div class="card-body p-4 d-flex flex-column justify-content-between">
+          
+          <!-- BÌA SÁCH TRÊN CÙNG CARD -->
+          <div class="book-cover-wrapper bg-light d-flex align-items-center justify-content-center p-3 position-relative">
+            <img 
+              :src="sach.hinhAnh || sach.HinhAnh || 'https://placehold.co/300x450?text=No+Cover'" 
+              :alt="sach.tenSach || sach.TenSach"
+              class="book-card-img rounded-2"
+              @error="handleImageError"
+            />
+            <!-- Badge trạng thái còn sách -->
+            <span 
+              :class="['position-absolute top-0 end-0 m-2 badge rounded-pill shadow-sm px-2.5 py-1.5', (sach.soQuyen ?? sach.SoQuyen ?? 0) > 0 ? 'bg-success' : 'bg-danger']"
+            >
+              {{ (sach.soQuyen ?? sach.SoQuyen ?? 0) > 0 ? `Còn ${sach.soQuyen ?? sach.SoQuyen}` : 'Hết sách' }}
+            </span>
+          </div>
+
+          <!-- NỘI DUNG THÔNG TIN SÁCH -->
+          <div class="card-body p-3 d-flex flex-column justify-content-between">
             <div>
-              <h5 class="card-title text-primary fw-bold mb-2 text-truncate" :title="sach.tenSach || sach.TenSach">
+              <h6 class="card-title text-dark fw-bold mb-1 text-truncate-2" :title="sach.tenSach || sach.TenSach">
                 {{ sach.tenSach || sach.TenSach }}
-              </h5>
-              <p class="card-text mb-2 text-muted small">
-                <strong>Tác giả:</strong> {{ sach.tacGia || sach.TacGia || 'Đang cập nhật' }}
+              </h6>
+              <p class="card-text mb-2 text-primary small fw-semibold text-truncate">
+                {{ sach.tacGia || sach.TacGia || 'Chưa cập nhật' }}
               </p>
-              <p class="card-text mb-2 text-danger fw-bold">
-                Giá: {{ formatCurrency(sach.donGia || sach.DonGia) }}
-              </p>
-              <p class="card-text mb-0 small">
-                Số quyển còn: 
-                <span class="badge bg-success bg-opacity-10 text-success fw-bold px-2 py-1 rounded-pill">
-                  {{ sach.soQuyen ?? sach.SoQuyen ?? 0 }}
-                </span>
-              </p>
+              <div class="text-danger fw-bold fs-6 mb-2">
+                {{ formatCurrency(sach.donGia || sach.DonGia) }}
+              </div>
             </div>
 
             <!-- Nút Hành Động -->
-            <div class="card-footer bg-transparent border-0 d-flex gap-2 pt-3 px-0 pb-0 mt-3">
+            <div class="d-flex gap-2 pt-2 border-top">
               <!-- Nút Xem Chi Tiết -->
               <button 
                 @click="goToDetail(sach)" 
-                class="btn btn-outline-info flex-fill rounded-3 fw-semibold py-2 d-flex align-items-center justify-content-center gap-1"
+                class="btn btn-outline-secondary btn-sm flex-fill rounded-pill fw-semibold py-1.5 d-flex align-items-center justify-content-center gap-1"
               >
                 <i class="fas fa-info-circle"></i>
                 <span>Chi tiết</span>
@@ -58,14 +70,15 @@
               <!-- Nút Mượn Sách -->
               <button 
                 @click="openBorrowModal(sach)" 
-                class="btn btn-primary flex-fill rounded-3 fw-semibold py-2 d-flex align-items-center justify-content-center gap-1"
+                class="btn btn-primary btn-sm flex-fill rounded-pill fw-bold py-1.5 d-flex align-items-center justify-content-center gap-1"
                 :disabled="(sach.soQuyen ?? sach.SoQuyen ?? 0) <= 0"
               >
                 <i class="fas fa-bookmark"></i>
-                <span>Mượn sách</span>
+                <span>Mượn</span>
               </button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -88,8 +101,8 @@
             <div class="d-flex align-items-center gap-3 mb-3">
               <img 
                 :src="selectedBook.hinhAnh || selectedBook.HinhAnh || 'https://placehold.co/300x450?text=No+Cover'" 
-                style="width: 70px; height: 100px; object-fit: cover;" 
-                class="rounded shadow-sm"
+                style="width: 70px; height: 100px; object-fit: contain;" 
+                class="rounded border bg-light shadow-sm"
               />
               <div>
                 <h6 class="fw-bold mb-1 text-primary">{{ selectedBook.tenSach || selectedBook.TenSach }}</h6>
@@ -127,7 +140,7 @@
       </div>
     </div>
 
-    <!-- 2. MODAL POP-UP THÔNG BÁO THÀNH CÔNG (XIN ĐẸP THAY CHO ALERT MẶC ĐỊNH) -->
+    <!-- 2. MODAL POP-UP THÔNG BÁO THÀNH CÔNG -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" ref="successModal">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content rounded-4 border-0 shadow text-center p-3">
@@ -215,6 +228,10 @@ export default {
       return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(val || 0);
     },
 
+    handleImageError(e) {
+      e.target.src = "https://placehold.co/300x450?text=No+Cover";
+    },
+
     goToDetail(sach) {
       const id = this.getBookId(sach);
       if (!id) return;
@@ -281,18 +298,15 @@ export default {
         console.log("[DEBUG FRONTEND] Response from Backend:", response.status, resData);
 
         if (response.ok) {
-          // Ẩn modal xác nhận mượn
           if (this.borrowModalInstance) {
             this.borrowModalInstance.hide();
           }
 
-          // Hiển thị modal thông báo thành công
           if (!this.successModalInstance) {
             this.successModalInstance = new Modal(this.$refs.successModal);
           }
           this.successModalInstance.show();
 
-          // Tải lại danh sách sách để cập nhật số lượng còn
           this.fetchBooks();
         } else {
           console.error("[DEBUG FRONTEND] Borrow failed:", resData.message);
@@ -304,7 +318,6 @@ export default {
       }
     },
 
-    // Hàm chuyển hướng sang trang lịch sử mượn từ Pop-up thành công
     redirectToHistory() {
       if (this.successModalInstance) {
         this.successModalInstance.hide();
@@ -321,6 +334,29 @@ export default {
 }
 .hover-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1) !important;
+}
+
+/* Khung chứa ảnh bìa ở Card ngoài trang chủ */
+.book-cover-wrapper {
+  height: 200px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.book-card-img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.12));
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.6em;
+  line-height: 1.3em;
 }
 </style>

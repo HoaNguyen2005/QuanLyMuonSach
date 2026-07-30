@@ -46,7 +46,7 @@
             </li>
           </ul>
 
-          <!-- MENU ĐỘC GIẢ (Đã bỏ icon) -->
+          <!-- MENU ĐỘC GIẢ -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1 ms-lg-3 border-start border-secondary border-opacity-50 ps-lg-3" v-else>
             <li class="nav-item">
               <router-link to="/" class="nav-link nav-pill" active-class="active" exact>
@@ -112,7 +112,6 @@
             >
               <li class="px-3 py-2 border-bottom mb-1 bg-light rounded-3">
                 <div class="fw-bold text-dark small">{{ userDisplayName }}</div>
-                <div class="text-muted text-truncate fs-xs">{{ currentUser.email || 'Chưa cập nhật email' }}</div>
               </li>
               
               <li v-if="!isAdmin">
@@ -251,7 +250,6 @@ export default {
     document.removeEventListener("click", this.closeDropdownOnClickOutside);
     window.removeEventListener("user-state-changed", this.updateUserState);
     
-    // Dọn dẹp DOM Modal nếu đã được append ra body
     const modalEl = this.$refs.logoutModalRef;
     if (modalEl && modalEl.parentNode === document.body) {
       document.body.removeChild(modalEl);
@@ -271,7 +269,6 @@ export default {
       }
     },
     
-    // Mở Popup Đăng Xuất
     openLogoutModal() {
       this.isDropdownOpen = false;
       const modalEl = this.$refs.logoutModalRef;
@@ -290,14 +287,12 @@ export default {
       }
     },
 
-    // Đóng Popup
     closeLogoutModal() {
       if (this.logoutModalInstance) {
         this.logoutModalInstance.hide();
       }
     },
 
-    // Xác nhận Đăng xuất
     confirmLogout() {
       this.closeLogoutModal();
 

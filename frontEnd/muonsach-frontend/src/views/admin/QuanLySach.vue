@@ -55,23 +55,23 @@
                 Không tìm thấy quyển sách nào.
               </td>
             </tr>
-            <tr v-for="sach in filteredBooks" :key="sach._id || sach.MaSach || sach.maSach">
+            <tr v-for="sach in filteredBooks" :key="sach._id || sach.maSach">
               <td class="ps-4">
                 <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1.5 rounded-pill">
-                  {{ sach.MaSach || sach.maSach }}
+                  {{ sach.maSach }}
                 </span>
               </td>
-              <td class="fw-bold text-dark">{{ sach.TenSach || sach.tenSach }}</td>
-              <td class="text-danger fw-semibold">{{ formatCurrency(sach.DonGia ?? sach.donGia) }}</td>
+              <td class="fw-bold text-dark">{{ sach.tenSach }}</td>
+              <td class="text-danger fw-semibold">{{ formatCurrency(sach.donGia) }}</td>
               <td>
                 <span class="badge bg-success bg-opacity-10 text-success fw-bold px-2.5 py-1.5 rounded-pill">
-                  {{ sach.SoQuyen ?? sach.soQuyen ?? sach.SoQuyet ?? 0 }}
+                  {{ sach.soQuyen ?? 0 }}
                 </span>
               </td>
-              <td class="text-secondary small">{{ sach.NamXuatBan || sach.namXuatBan }}</td>
+              <td class="text-secondary small">{{ sach.namXuatBan }}</td>
               <td>
                 <span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2 py-1 rounded-3">
-                  {{ sach.MaNXB || sach.maNXB || (sach.maNXB && sach.maNXB.tenNXB) || '---' }}
+                  {{ sach.maNXB || '---' }}
                 </span>
               </td>
               <td class="text-end pe-4">
@@ -113,8 +113,8 @@
                   <input
                     type="text"
                     class="form-control rounded-3"
-                    v-model="currentSach.MaSach"
-                    placeholder="VD: S0001"
+                    v-model="currentSach.maSach"
+                    placeholder="VD: S001"
                     :disabled="isEditing"
                     required
                   />
@@ -124,7 +124,7 @@
                   <input
                     type="text"
                     class="form-control rounded-3"
-                    v-model="currentSach.TenSach"
+                    v-model="currentSach.tenSach"
                     placeholder="Nhập tên sách"
                     required
                   />
@@ -134,7 +134,7 @@
                   <input
                     type="number"
                     class="form-control rounded-3"
-                    v-model.number="currentSach.DonGia"
+                    v-model.number="currentSach.donGia"
                     placeholder="VD: 55000"
                   />
                 </div>
@@ -143,7 +143,7 @@
                   <input
                     type="number"
                     class="form-control rounded-3"
-                    v-model.number="currentSach.SoQuyen"
+                    v-model.number="currentSach.soQuyen"
                     placeholder="VD: 10"
                   />
                 </div>
@@ -152,7 +152,7 @@
                   <input
                     type="number"
                     class="form-control rounded-3"
-                    v-model.number="currentSach.NamXuatBan"
+                    v-model.number="currentSach.namXuatBan"
                     placeholder="VD: 2026"
                   />
                 </div>
@@ -161,17 +161,17 @@
                   <input
                     type="text"
                     class="form-control rounded-3"
-                    v-model="currentSach.MaNXB"
+                    v-model="currentSach.maNXB"
                     placeholder="VD: NXB001"
                   />
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label small fw-bold text-secondary">Nguồn Gốc / Tác Giả</label>
+                  <label class="form-label small fw-bold text-secondary">Tác Giả</label>
                   <input
                     type="text"
                     class="form-control rounded-3"
-                    v-model="currentSach.NguonGoc"
-                    placeholder="VD: Nguyễn Văn A"
+                    v-model="currentSach.tacGia"
+                    placeholder="VD: Nguyễn Nhật Ánh"
                   />
                 </div>
               </div>
@@ -189,7 +189,7 @@
       </div>
     </div>
 
-    <!-- 2. MODAL THÔNG BÁO TỔNG HỢP (THÀNH CÔNG / LỖI) -->
+    <!-- 2. MODAL THÔNG BÁO TỔNG HỢP -->
     <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true" ref="statusModalRef">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content rounded-4 border-0 shadow text-center p-3">
@@ -255,13 +255,14 @@ export default {
       pendingDeleteSach: null,
       deletingSachName: "",
       currentSach: {
-        MaSach: "",
-        TenSach: "",
-        DonGia: 0,
-        SoQuyen: 1,
-        NamXuatBan: new Date().getFullYear(),
-        MaNXB: "",
-        NguonGoc: ""
+        _id: "",
+        maSach: "",
+        tenSach: "",
+        donGia: 0,
+        soQuyen: 1,
+        namXuatBan: new Date().getFullYear(),
+        maNXB: "",
+        tacGia: ""
       }
     };
   },
@@ -270,8 +271,8 @@ export default {
       if (!this.searchText) return this.sachList;
       const term = this.searchText.toLowerCase();
       return this.sachList.filter((s) => {
-        const ma = (s.MaSach || s.maSach || "").toLowerCase();
-        const ten = (s.TenSach || s.tenSach || "").toLowerCase();
+        const ma = (s.maSach || "").toLowerCase();
+        const ten = (s.tenSach || "").toLowerCase();
         return ma.includes(term) || ten.includes(term);
       });
     }
@@ -282,8 +283,6 @@ export default {
       this.statusModalMessage = message;
       this.statusModalType = type;
 
-      console.log(`[DEBUG FRONTEND - SACH] Showing Pop-up: [${type.toUpperCase()}] ${title} - ${message}`);
-
       if (!this.statusModalInstance) {
         this.statusModalInstance = new bootstrap.Modal(this.$refs.statusModalRef);
       }
@@ -291,26 +290,25 @@ export default {
     },
 
     async fetchBooks() {
-      console.log("================ [DEBUG FRONTEND - FETCH BOOKS] ================");
       try {
         const res = await SachService.getAll();
-        console.log("[DEBUG FRONTEND] Raw Fetch Books Response:", res);
         this.sachList = Array.isArray(res) ? res : (res.data || []);
       } catch (error) {
-        console.error("[DEBUG FRONTEND] Error loading books:", error);
+        // Im lặng khi load dữ liệu
       }
     },
 
     openModalToAdd() {
       this.isEditing = false;
       this.currentSach = {
-        MaSach: "",
-        TenSach: "",
-        DonGia: 0,
-        SoQuyen: 1,
-        NamXuatBan: new Date().getFullYear(),
-        MaNXB: "",
-        NguonGoc: ""
+        _id: "",
+        maSach: "S" + Math.floor(100 + Math.random() * 900),
+        tenSach: "",
+        donGia: 0,
+        soQuyen: 1,
+        namXuatBan: new Date().getFullYear(),
+        maNXB: "",
+        tacGia: ""
       };
       this.getModal().show();
     },
@@ -318,14 +316,14 @@ export default {
     openModalToEdit(sach) {
       this.isEditing = true;
       this.currentSach = {
-        _id: sach._id,
-        MaSach: sach.MaSach || sach.maSach || "",
-        TenSach: sach.TenSach || sach.tenSach || "",
-        DonGia: sach.DonGia ?? sach.donGia ?? 0,
-        SoQuyen: sach.SoQuyen ?? sach.soQuyen ?? sach.SoQuyet ?? 1,
-        NamXuatBan: sach.NamXuatBan || sach.namXuatBan || new Date().getFullYear(),
-        MaNXB: sach.MaNXB || sach.maNXB || "",
-        NguonGoc: sach.NguonGoc || sach.nguonGoc || sach.tacGia || ""
+        _id: sach._id || "",
+        maSach: sach.maSach || "",
+        tenSach: sach.tenSach || "",
+        donGia: sach.donGia ?? 0,
+        soQuyen: sach.soQuyen ?? 1,
+        namXuatBan: sach.namXuatBan || new Date().getFullYear(),
+        maNXB: sach.maNXB || "",
+        tacGia: sach.tacGia || ""
       };
       this.getModal().show();
     },
@@ -340,54 +338,48 @@ export default {
     },
 
     async saveSach() {
-      const maVal = (this.currentSach.MaSach || "").trim();
-      const tenVal = (this.currentSach.TenSach || "").trim();
+      const tenVal = (this.currentSach.tenSach || "").trim();
 
-      if (!maVal || !tenVal) {
-        this.showPopUp("Lỗi Nhập Liệu", "Mã sách và Tên sách không được để trống!", "error");
+      if (!tenVal) {
+        this.showPopUp("Lỗi Nhập Liệu", "Tên sách không được để trống!", "error");
         return;
       }
 
       this.loading = true;
 
-      // ĐỒNG BỘ PAYLOAD CẢ CHUẨN HOA VÀ THƯỜNG
-      const payload = {
-        _id: this.currentSach._id,
-        maSach: maVal,
-        MaSach: maVal,
-        tenSach: tenVal,
-        TenSach: tenVal,
-        donGia: Number(this.currentSach.DonGia || 0),
-        DonGia: Number(this.currentSach.DonGia || 0),
-        soQuyen: Number(this.currentSach.SoQuyen || 0),
-        SoQuyen: Number(this.currentSach.SoQuyen || 0),
-        namXuatBan: Number(this.currentSach.NamXuatBan || 2026),
-        NamXuatBan: Number(this.currentSach.NamXuatBan || 2026),
-        maNXB: this.currentSach.MaNXB || "",
-        MaNXB: this.currentSach.MaNXB || "",
-        tacGia: this.currentSach.NguonGoc || "",
-        TacGia: this.currentSach.NguonGoc || "",
-        nguonGoc: this.currentSach.NguonGoc || "",
-        NguonGoc: this.currentSach.NguonGoc || ""
-      };
-
-      console.log("================ [DEBUG FRONTEND - SAVE BOOK PAYLOAD] ================");
-      console.log("[DEBUG FRONTEND] Is Editing Mode:", this.isEditing);
-      console.log("[DEBUG FRONTEND] Payload sent to Backend:", JSON.stringify(payload, null, 2));
-
       try {
         if (this.isEditing) {
-          const targetId = payload.maSach || this.currentSach._id;
-          await SachService.update(targetId, payload);
+          // Bỏ maSach ra khỏi body payload cập nhật
+          const updatePayload = {
+            tenSach: tenVal,
+            donGia: Number(this.currentSach.donGia || 0),
+            soQuyen: Number(this.currentSach.soQuyen || 0),
+            namXuatBan: Number(this.currentSach.namXuatBan || 2026),
+            maNXB: this.currentSach.maNXB || "",
+            tacGia: this.currentSach.tacGia || ""
+          };
+
+          const targetId = this.currentSach.maSach || this.currentSach._id;
+          await SachService.update(targetId, updatePayload);
           this.showPopUp("Thành Công", "Cập nhật thông tin sách thành công!", "success");
         } else {
-          await SachService.create(payload);
+          // Khi thêm mới thì gửi đủ các trường
+          const createPayload = {
+            maSach: (this.currentSach.maSach || "").trim(),
+            tenSach: tenVal,
+            donGia: Number(this.currentSach.donGia || 0),
+            soQuyen: Number(this.currentSach.soQuyen || 0),
+            namXuatBan: Number(this.currentSach.namXuatBan || 2026),
+            maNXB: this.currentSach.maNXB || "",
+            tacGia: this.currentSach.tacGia || ""
+          };
+
+          await SachService.create(createPayload);
           this.showPopUp("Thành Công", "Thêm sách mới thành công!", "success");
         }
         this.closeModal();
         await this.fetchBooks();
       } catch (error) {
-        console.error("[DEBUG FRONTEND] Error saving book:", error);
         const errMsg = error.response?.data?.message || error.message || "Lỗi khi lưu thông tin sách!";
         this.showPopUp("Lỗi Hệ Thống", errMsg, "error");
       } finally {
@@ -396,11 +388,8 @@ export default {
     },
 
     confirmDeleteSach(sach) {
-      console.log("================ [DEBUG FRONTEND - CONFIRM DELETE] ================");
-      console.log("[DEBUG FRONTEND] Selected book for deletion:", sach);
-
       this.pendingDeleteSach = sach;
-      this.deletingSachName = sach.TenSach || sach.tenSach || "";
+      this.deletingSachName = sach.tenSach || "";
 
       if (!this.deleteModalInstance) {
         this.deleteModalInstance = new bootstrap.Modal(this.$refs.deleteModalRef);
@@ -415,29 +404,13 @@ export default {
 
       if (!this.pendingDeleteSach) return;
 
-      // ƯU TIÊN LẤY maSach/MaSach CHUẨN BACKEND ĐỂ TRÁNH LỖI 404 CỦA MONGODB OBJECTID
-      const targetId = this.pendingDeleteSach.maSach || 
-                       this.pendingDeleteSach.MaSach || 
-                       this.pendingDeleteSach._id;
-
-      console.log("================ [DEBUG FRONTEND - EXECUTE DELETE BOOK] ================");
-      console.log("[DEBUG FRONTEND] Full Target Book Object:", JSON.stringify(this.pendingDeleteSach, null, 2));
-      console.log("[DEBUG FRONTEND] Target Delete ID / MaSach Sent To Service:", targetId);
+      const targetId = this.pendingDeleteSach.maSach || this.pendingDeleteSach._id;
 
       try {
-        const res = await SachService.delete(targetId);
-        console.log("[DEBUG FRONTEND] Delete Success Response:", res);
-
+        await SachService.delete(targetId);
         this.showPopUp("Thành Công", "Đã xóa sách khỏi hệ thống!", "success");
         await this.fetchBooks();
       } catch (error) {
-        console.error("================ [DEBUG FRONTEND - DELETE ERROR] ================");
-        console.error("[DEBUG FRONTEND] Full Error Object:", error);
-        if (error.response) {
-          console.error("[DEBUG FRONTEND] Error Response Status:", error.response.status);
-          console.error("[DEBUG FRONTEND] Error Response Data:", error.response.data);
-        }
-
         const errMsg = error.response?.data?.message || "Lỗi khi xóa sách!";
         this.showPopUp("Lỗi Xóa", errMsg, "error");
       }

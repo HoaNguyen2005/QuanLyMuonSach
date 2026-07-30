@@ -33,8 +33,8 @@
                 />
               </div>
 
-              <!-- Địa chỉ Email -->
-              <div class="mb-3">
+              <!-- Địa chỉ Email (Chỉ hiển thị đối với Độc giả, Admin/Nhân viên sẽ không thấy) -->
+              <div class="mb-3" v-if="user.role !== 'admin' && !user.MSNV">
                 <label class="form-label fw-bold">Địa chỉ Email <span class="text-danger">*</span></label>
                 <input 
                   type="email" 
@@ -42,7 +42,7 @@
                   class="form-control" 
                   :class="{ 'is-invalid': emailError }"
                   placeholder="example@gmail.com"
-                  required 
+                  :required="user.role !== 'admin' && !user.MSNV"
                 />
                 <div class="invalid-feedback" v-if="emailError">
                   {{ emailError }}
@@ -124,7 +124,7 @@ export default {
         _id: "",
         hoTen: "",
         email: "",
-        ngaySinh: "", // Khai báo trường ngaySinh
+        ngaySinh: "",
         dienThoai: "",
         diaChi: "",
         phai: "Nam",
@@ -146,8 +146,7 @@ export default {
     },
 
     goBack() {
-      console.log("[DEBUG PROFILE] Navigating back based on role:", this.user.role);
-      if (this.user.role === "admin") {
+      if (this.user.role === "admin" || this.user.MSNV) {
         this.$router.push({ name: "admin.dashboard" });
       } else {
         this.$router.push({ name: "reader.home" });
@@ -156,50 +155,51 @@ export default {
 
     async fetchProfileData() {
       const currentUser = AuthService.getCurrentUser();
-      console.log("[DEBUG PROFILE] Current user from LocalStorage:", currentUser);
 
       if (!currentUser) {
         this.$router.push({ name: "login" });
         return;
       }
 
+      const isStaffOrAdmin = currentUser.role === "admin" || currentUser.role === "nhanvien" || !!currentUser.MSNV;
+
       this.user = {
         ...currentUser,
-        hoTen: currentUser.hoTen || currentUser.tenND || currentUser.tenDocGia || "",
+        hoTen: currentUser.hoTen || currentUser.hoTenNV || currentUser.tenND || currentUser.tenDocGia || "",
         email: currentUser.email || "",
-        ngaySinh: currentUser.ngaySinh ? currentUser.ngaySinh.split('T')[0] : "", // Chuẩn hóa chuỗi Date định dạng YYYY-MM-DD
-        dienThoai: currentUser.dienThoai || currentUser.soDienThoai || "",
-        diaChi: currentUser.diaChi || "",
-        phai: currentUser.phai || currentUser.gioiTinh || "Nam",
-        role: currentUser.role || "docgia"
+        ngaySinh: currentUser.ngaySinh ? currentUser.ngaySinh.split('T')[0] : "",
+        dienThoai: currentUser.dienThoai || currentUser.soDienThoai || currentUser.SoDienThoai || "",
+        diaChi: currentUser.diaChi || currentUser.DiaChi || "",
+        phai: currentUser.phai || currentUser.Phai || currentUser.gioiTinh || "Nam",
+        role: isStaffOrAdmin ? "admin" : "docgia",
+        MSNV: currentUser.MSNV || currentUser.msnv || ""
       };
 
-      const userId = currentUser._id || currentUser.maDocGia || currentUser.maNV;
+      const userId = currentUser._id || currentUser.maDocGia || currentUser.MSNV || currentUser.msnv;
       if (!userId) return;
 
       try {
-        const endpoint = currentUser.role === "admin"
+        const endpoint = isStaffOrAdmin
           ? `http://localhost:3000/api/nhanvien/${userId}`
           : `http://localhost:3000/api/docgia/${userId}`;
 
         const res = await fetch(endpoint);
         if (res.ok) {
           const fetchedData = await res.json();
-          console.log("[DEBUG PROFILE] Fetched fresh data from server:", fetchedData);
 
           this.user = {
             ...this.user,
             ...fetchedData,
-            hoTen: fetchedData.hoTen || fetchedData.tenND || this.user.hoTen,
+            hoTen: fetchedData.hoTen || fetchedData.hoTenNV || fetchedData.HoTenNV || fetchedData.tenND || this.user.hoTen,
             email: fetchedData.email || this.user.email,
-            ngaySinh: fetchedData.ngaySinh ? fetchedData.ngaySinh.split('T')[0] : this.user.ngaySinh,
-            dienThoai: fetchedData.dienThoai || fetchedData.soDienThoai || this.user.dienThoai,
-            diaChi: fetchedData.diaChi || this.user.diaChi,
-            phai: fetchedData.phai || fetchedData.gioiTinh || this.user.phai
+            ngaySinh: fetchedData.ngaySinh || fetchedData.NgaySinh ? (fetchedData.ngaySinh || fetchedData.NgaySinh).split('T')[0] : this.user.ngaySinh,
+            dienThoai: fetchedData.dienThoai || fetchedData.soDienThoai || fetchedData.SoDienThoai || this.user.dienThoai,
+            diaChi: fetchedData.diaChi || fetchedData.DiaChi || this.user.diaChi,
+            phai: fetchedData.phai || fetchedData.Phai || fetchedData.gioiTinh || this.user.phai
           };
         }
       } catch (err) {
-        console.warn("[DEBUG PROFILE WARN] Cannot fetch fresh profile from API:", err);
+        // Bỏ qua lỗi kết nối fetch phụ
       }
     },
 
@@ -208,19 +208,21 @@ export default {
       this.emailError = "";
       this.isError = false;
 
-      if (!this.user.email || !this.validateEmail(this.user.email)) {
-        this.emailError = "Địa chỉ email không đúng định dạng (VD: example@gmail.com)";
-        console.warn("[DEBUG FRONTEND WARN] Invalid email format:", this.user.email);
-        return;
+      const isStaffOrAdmin = this.user.role === "admin" || !!this.user.MSNV;
+
+      // Chỉ validate email khi người dùng KHÔNG PHẢI là Admin/Nhân viên
+      if (!isStaffOrAdmin) {
+        if (!this.user.email || !this.validateEmail(this.user.email)) {
+          this.emailError = "Địa chỉ email không đúng định dạng (VD: example@gmail.com)";
+          return;
+        }
       }
 
       this.loading = true;
-      const userId = this.user._id || this.user.maDocGia || this.user.maNV;
-
-      console.log(`[DEBUG PROFILE] Updating user [${userId}] payload:`, JSON.stringify(this.user, null, 2));
+      const userId = this.user._id || this.user.maDocGia || this.user.MSNV || this.user.msnv;
 
       try {
-        const endpoint = this.user.role === "admin" 
+        const endpoint = isStaffOrAdmin 
           ? `http://localhost:3000/api/nhanvien/${userId}`
           : `http://localhost:3000/api/docgia/${userId}`;
 
@@ -236,8 +238,6 @@ export default {
           throw new Error(resData.message || "Cập nhật thất bại từ Server!");
         }
 
-        console.log("[DEBUG PROFILE SUCCESS] Server response:", resData);
-
         const updatedUser = {
           ...AuthService.getCurrentUser(),
           ...this.user,
@@ -247,7 +247,6 @@ export default {
 
         this.message = "Cập nhật thông tin cá nhân thành công!";
       } catch (err) {
-        console.error("[DEBUG PROFILE ERROR]:", err);
         this.isError = true;
         this.message = err.message;
       } finally {

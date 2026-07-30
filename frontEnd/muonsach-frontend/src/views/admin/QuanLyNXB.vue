@@ -52,20 +52,20 @@
                 Chưa có dữ liệu nhà xuất bản nào!
               </td>
             </tr>
-            <tr v-for="nxb in filteredNXB" :key="nxb._id || nxb.MaNXB || nxb.maNXB">
+            <tr v-for="nxb in filteredNXB" :key="nxb._id || nxb.maNXB">
               <td class="ps-4">
                 <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1.5 rounded-pill">
-                  {{ nxb.MaNXB || nxb.maNXB }}
+                  {{ nxb.maNXB }}
                 </span>
               </td>
-              <td class="fw-bold text-dark">{{ nxb.TenNXB || nxb.tenNXB }}</td>
-              <td class="text-secondary small">{{ nxb.DiaChi || nxb.diaChi || 'N/A' }}</td>
+              <td class="fw-bold text-dark">{{ nxb.tenNXB }}</td>
+              <td class="text-secondary small">{{ nxb.diaChi || 'N/A' }}</td>
               <td class="text-end pe-4">
                 <div class="d-inline-flex gap-2">
                   <button class="btn btn-sm btn-outline-warning rounded-3 px-2.5 py-1" @click="openModalToEdit(nxb)">
                     <i class="fas fa-edit me-1"></i>Sửa
                   </button>
-                  <button class="btn btn-sm btn-outline-danger rounded-3 px-2.5 py-1" @click="deleteNXB(nxb)">
+                  <button class="btn btn-sm btn-outline-danger rounded-3 px-2.5 py-1" @click="confirmDeleteNXB(nxb)">
                     <i class="fas fa-trash-alt me-1"></i>Xóa
                   </button>
                 </div>
@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <!-- Modal Form Thêm / Sửa NXB -->
+    <!-- 1. MODAL FORM THÊM / SỬA NXB -->
     <div class="modal fade" id="nxbModal" tabindex="-1" ref="nxbModalRef" data-bs-backdrop="static">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
@@ -98,7 +98,7 @@
                 <input
                   type="text"
                   class="form-control rounded-3"
-                  v-model="currentNXB.MaNXB"
+                  v-model="currentNXB.maNXB"
                   placeholder="VD: NXB001"
                   :disabled="isEditing"
                   required
@@ -110,8 +110,8 @@
                 <input
                   type="text"
                   class="form-control rounded-3"
-                  v-model="currentNXB.TenNXB"
-                  placeholder="VD: NXB Trẻ"
+                  v-model="currentNXB.tenNXB"
+                  placeholder="VD: NXB Kim Đồng"
                   required
                 />
               </div>
@@ -121,7 +121,7 @@
                 <input
                   type="text"
                   class="form-control rounded-3"
-                  v-model="currentNXB.DiaChi"
+                  v-model="currentNXB.diaChi"
                   placeholder="Nhập địa chỉ NXB"
                 />
               </div>
@@ -138,6 +138,49 @@
         </div>
       </div>
     </div>
+
+    <!-- 2. MODAL THÔNG BÁO TỔNG HỢP (SUCCESS / ERROR) -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true" ref="statusModalRef">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3">
+          <div class="modal-body">
+            <div :class="statusModalType === 'success' ? 'text-success' : 'text-danger'" class="mb-3">
+              <i :class="statusModalType === 'success' ? 'fas fa-check-circle fa-4x' : 'fas fa-exclamation-circle fa-4x'"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">{{ statusModalTitle }}</h5>
+            <p class="text-muted small mb-4">{{ statusModalMessage }}</p>
+            <button 
+              type="button" 
+              :class="statusModalType === 'success' ? 'btn-success' : 'btn-danger'"
+              class="btn rounded-pill w-100 fw-bold py-2 shadow-sm text-white" 
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MODAL XÁC NHẬN XÓA NXB -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true" ref="deleteModalRef">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3">
+          <div class="modal-body">
+            <div class="text-warning mb-3">
+              <i class="fas fa-exclamation-triangle fa-4x"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Xác Nhận Xóa</h5>
+            <p class="text-muted small mb-4">Bạn có chắc chắn muốn xóa NXB <strong>{{ deletingNXBName }}</strong>?</p>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-light rounded-pill flex-fill fw-bold" data-bs-dismiss="modal">Hủy</button>
+              <button type="button" class="btn btn-danger rounded-pill flex-fill fw-bold text-white" @click="executeDeleteNXB">Xóa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -154,7 +197,19 @@ export default {
       isEditing: false,
       loading: false,
       modalInstance: null,
-      currentNXB: { MaNXB: "", TenNXB: "", DiaChi: "" }
+      statusModalInstance: null,
+      deleteModalInstance: null,
+      statusModalTitle: "",
+      statusModalMessage: "",
+      statusModalType: "success",
+      pendingDeleteNXB: null,
+      deletingNXBName: "",
+      currentNXB: {
+        _id: "",
+        maNXB: "",
+        tenNXB: "",
+        diaChi: ""
+      }
     };
   },
   computed: {
@@ -162,69 +217,154 @@ export default {
       if (!this.searchQuery.trim()) return this.nxbList;
       const q = this.searchQuery.toLowerCase();
       return this.nxbList.filter(n => 
-        (n.MaNXB || n.maNXB || "").toLowerCase().includes(q) ||
-        (n.TenNXB || n.tenNXB || "").toLowerCase().includes(q) ||
-        (n.DiaChi || n.diaChi || "").toLowerCase().includes(q)
+        (n.maNXB || "").toLowerCase().includes(q) ||
+        (n.tenNXB || "").toLowerCase().includes(q) ||
+        (n.diaChi || "").toLowerCase().includes(q)
       );
     }
   },
   methods: {
+    showPopUp(title, message, type = "success") {
+      this.statusModalTitle = title;
+      this.statusModalMessage = message;
+      this.statusModalType = type;
+
+      if (!this.statusModalInstance) {
+        this.statusModalInstance = new bootstrap.Modal(this.$refs.statusModalRef);
+      }
+      this.statusModalInstance.show();
+    },
+
     async fetchNXB() {
       try {
-        this.nxbList = await NXBService.getAll();
+        const res = await NXBService.getAll();
+        this.nxbList = Array.isArray(res) ? res : (res.data || []);
       } catch (error) {
-        console.error("Error loading NXB:", error);
+        // Im lặng khi tải dữ liệu
       }
     },
+
     openModalToAdd() {
       this.isEditing = false;
-      this.currentNXB = { MaNXB: "", TenNXB: "", DiaChi: "" };
-      this.getModal().show();
-    },
-    openModalToEdit(nxb) {
-      this.isEditing = true;
       this.currentNXB = {
-        _id: nxb._id,
-        MaNXB: nxb.MaNXB || nxb.maNXB || "",
-        TenNXB: nxb.TenNXB || nxb.tenNXB || "",
-        DiaChi: nxb.DiaChi || nxb.diaChi || ""
+        _id: "",
+        maNXB: "NXB" + Math.floor(100 + Math.random() * 900),
+        tenNXB: "",
+        diaChi: ""
       };
       this.getModal().show();
     },
+
+    openModalToEdit(nxb) {
+      this.isEditing = true;
+      this.currentNXB = {
+        _id: nxb._id || "",
+        maNXB: nxb.maNXB || "",
+        tenNXB: nxb.tenNXB || "",
+        diaChi: nxb.diaChi || ""
+      };
+      this.getModal().show();
+    },
+
     closeModal() { this.getModal().hide(); },
+
     getModal() {
       if (!this.modalInstance) {
         this.modalInstance = new bootstrap.Modal(this.$refs.nxbModalRef);
       }
       return this.modalInstance;
     },
+
     async saveNXB() {
+      const maVal = (this.currentNXB.maNXB || "").trim();
+      const tenVal = (this.currentNXB.tenNXB || "").trim();
+      const diaChiVal = (this.currentNXB.diaChi || "").trim();
+
+      if (!maVal || !tenVal) {
+        this.showPopUp("Lỗi Nhập Liệu", "Mã NXB và Tên NXB không được để trống!", "error");
+        return;
+      }
+
+      // XÉT XEM ĐÃ CÓ NHÀ XUẤT BẢN TRONG DATABASE CHƯA (KIỂM TRA TRÙNG LẬP)
+      if (this.isEditing) {
+        const isTenExist = this.nxbList.some(
+          item => item.tenNXB.toLowerCase() === tenVal.toLowerCase() && 
+                  item._id !== this.currentNXB._id && 
+                  item.maNXB !== this.currentNXB.maNXB
+        );
+        if (isTenExist) {
+          this.showPopUp("Cảnh Báo", `Tên NXB '${tenVal}' đã tồn tại trong hệ thống!`, "error");
+          return;
+        }
+      } else {
+        const isExist = this.nxbList.some(
+          item => item.maNXB.toLowerCase() === maVal.toLowerCase() || 
+                  item.tenNXB.toLowerCase() === tenVal.toLowerCase()
+        );
+        if (isExist) {
+          this.showPopUp("Cảnh Báo", "Mã hoặc Tên NXB đã tồn tại trong hệ thống!", "error");
+          return;
+        }
+      }
+
       this.loading = true;
+
       try {
         if (this.isEditing) {
-          const targetId = this.currentNXB.MaNXB || this.currentNXB._id;
-          await NXBService.update(targetId, this.currentNXB);
+          const updatePayload = {
+            tenNXB: tenVal,
+            diaChi: diaChiVal
+          };
+
+          const targetId = this.currentNXB.maNXB || this.currentNXB._id;
+          await NXBService.update(targetId, updatePayload);
+          this.showPopUp("Thành Công", "Cập nhật thông tin NXB thành công!", "success");
         } else {
-          await NXBService.create(this.currentNXB);
+          const createPayload = {
+            maNXB: maVal,
+            tenNXB: tenVal,
+            diaChi: diaChiVal
+          };
+
+          await NXBService.create(createPayload);
+          this.showPopUp("Thành Công", "Thêm nhà xuất bản mới thành công!", "success");
         }
         this.closeModal();
         await this.fetchNXB();
       } catch (error) {
-        alert(error.response?.data?.message || "Lỗi khi lưu NXB!");
+        const errMsg = error.response?.data?.message || error.message || "Lỗi khi lưu NXB!";
+        this.showPopUp("Lỗi Hệ Thống", errMsg, "error");
       } finally {
         this.loading = false;
       }
     },
-    async deleteNXB(nxb) {
-      const id = nxb.MaNXB || nxb.maNXB || nxb._id;
-      const ten = nxb.TenNXB || nxb.tenNXB || "";
-      if (confirm(`Bạn có chắc muốn xóa NXB '${ten}' (${id})?`)) {
-        try {
-          await NXBService.delete(id);
-          await this.fetchNXB();
-        } catch (error) {
-          alert("Lỗi khi xóa NXB!");
-        }
+
+    confirmDeleteNXB(nxb) {
+      this.pendingDeleteNXB = nxb;
+      this.deletingNXBName = nxb.tenNXB || "";
+
+      if (!this.deleteModalInstance) {
+        this.deleteModalInstance = new bootstrap.Modal(this.$refs.deleteModalRef);
+      }
+      this.deleteModalInstance.show();
+    },
+
+    async executeDeleteNXB() {
+      if (this.deleteModalInstance) {
+        this.deleteModalInstance.hide();
+      }
+
+      if (!this.pendingDeleteNXB) return;
+
+      const targetId = this.pendingDeleteNXB.maNXB || this.pendingDeleteNXB._id;
+
+      try {
+        await NXBService.delete(targetId);
+        this.showPopUp("Thành Công", "Đã xóa nhà xuất bản khỏi hệ thống!", "success");
+        await this.fetchNXB();
+      } catch (error) {
+        const errMsg = error.response?.data?.message || "Lỗi khi xóa nhà xuất bản!";
+        this.showPopUp("Lỗi Xóa", errMsg, "error");
       }
     }
   },

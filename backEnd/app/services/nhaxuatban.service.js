@@ -10,8 +10,7 @@ class NhaXuatBanService {
         const nxb = {
             maNXB: payload.maNXB || payload.MaNXB,
             tenNXB: payload.tenNXB || payload.TenNXB,
-            diaChi: payload.diaChi || payload.DiaChi || "",
-            dienThoai: payload.dienThoai || payload.SoDienThoai || payload.soDienThoai || ""
+            diaChi: payload.diaChi || payload.DiaChi || ""
         };
 
         Object.keys(nxb).forEach(

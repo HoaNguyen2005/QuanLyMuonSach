@@ -9,6 +9,7 @@ const nhanVienRouter = require("./app/routes/nhanvien.route");
 const nhaXuatBanRouter = require("./app/routes/nhaxuatban.route");
 const sachRouter = require("./app/routes/sach.route");
 const theoDoiMuonSachRouter = require("./app/routes/theodoimuonsach.route");
+const phieuPhatRouter = require("./app/routes/phieuphat.route");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/nhanvien", nhanVienRouter);
 app.use("/api/nhaxuatban", nhaXuatBanRouter);
 app.use("/api/sach", sachRouter);
 app.use("/api/muon-sach", theoDoiMuonSachRouter);
+app.use("/api/phieu-phat", phieuPhatRouter);
 
 // Handle 404 response
 app.use((req, res, next) => {

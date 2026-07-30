@@ -1,15 +1,41 @@
 <template>
-  <div class="container py-5 d-flex justify-content-center" v-if="sach._id || sach.maSach || sach.MaSach">
-    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 book-detail-wrapper bg-white">
+  <div class="container py-4 d-flex flex-column align-items-center" v-if="sach._id || sach.maSach || sach.MaSach">
+    
+    <!-- THANH ĐIỀU HƯỚNG TRÊN CÙNG (Nút Quay Lại & Chuyển Sách) -->
+    <div class="book-detail-wrapper mb-3 d-flex justify-content-between align-items-center w-100">
+      <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm d-flex align-items-center gap-1" @click="goBack">
+        <i class="fas fa-arrow-left"></i> Quay lại
+      </button>
+
+      <div class="d-flex gap-2">
+        <button 
+          class="btn btn-light btn-sm rounded-pill px-3 border shadow-sm d-flex align-items-center gap-1" 
+          @click="navigateBook('prev')"
+          :disabled="navigating"
+        >
+          <i class="fas fa-chevron-left"></i> Sách trước
+        </button>
+        <button 
+          class="btn btn-light btn-sm rounded-pill px-3 border shadow-sm d-flex align-items-center gap-1" 
+          @click="navigateBook('next')"
+          :disabled="navigating"
+        >
+          Sách tiếp <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN CARD THÔNG TIN SÁCH -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 book-detail-wrapper bg-white position-relative">
       <div class="row g-4 align-items-center">
         
         <!-- CỘT 1: BÌA SÁCH BÊN TRÁI -->
-        <div class="col-12 col-md-5 d-flex justify-content-center justify-content-md-start">
-          <div class="book-cover-container shadow-sm rounded-3 overflow-hidden">
+        <div class="col-12 col-md-5 d-flex justify-content-center">
+          <div class="book-cover-container shadow-sm rounded-3 overflow-hidden d-flex align-items-center justify-content-center">
             <img 
               :src="sach.hinhAnh || sach.HinhAnh || 'https://placehold.co/300x450?text=No+Cover'" 
               :alt="sach.tenSach || sach.TenSach"
-              class="img-fluid book-cover-img"
+              class="book-cover-img"
               @error="handleImageError"
             />
           </div>
@@ -48,7 +74,7 @@
 
           <hr class="my-4 text-muted opacity-25" />
 
-          <!-- Box Trạng Thái Kho (Màu xám bo tròn) -->
+          <!-- Box Trạng Thái Kho -->
           <div class="bg-light-gray rounded-4 p-3 mb-4 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-baseline gap-2">
               <span class="fs-3 fw-bold text-primary lh-1">{{ getAvailableQuantity(sach) }}</span>
@@ -64,8 +90,8 @@
             </div>
           </div>
 
-          <!-- Form Đặt Lịch Hẹn Trả & Nút Mượn -->
-          <form @submit.prevent="submitBorrow">
+          <!-- Form Chọn Ngày & Mượn -->
+          <form @submit.prevent="openBorrowModal">
             <div class="row align-items-center mb-3 g-2">
               <div class="col-auto">
                 <label class="fw-bold text-dark small mb-0">Hẹn trả ngày:</label>
@@ -81,15 +107,14 @@
               </div>
             </div>
 
-            <!-- Nút Yêu Cầu Mượn Ngay (Pill Shape Button) -->
+            <!-- Nút Yêu Cầu Mượn Ngay -->
             <button 
               type="submit" 
               class="btn btn-primary w-100 py-2.5 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2"
               :disabled="getAvailableQuantity(sach) <= 0 || loading"
             >
-              <span v-if="loading" class="spinner-border spinner-border-sm"></span>
-              <i v-else class="fas fa-shopping-basket"></i>
-              <span>{{ loading ? 'Đang gửi yêu cầu...' : 'Yêu Cầu Mượn Ngay' }}</span>
+              <i class="fas fa-shopping-basket"></i>
+              <span>Yêu Cầu Mượn Ngay</span>
             </button>
           </form>
 
@@ -97,6 +122,50 @@
 
       </div>
     </div>
+
+    <!-- POP-UP / MODAL XÁC NHẬN MƯỢN SÁCH -->
+    <div class="modal fade show d-block backdrop-blur" tabindex="-1" v-if="showModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title fw-bold text-primary">
+              <i class="fas fa-book-reader me-2"></i>Xác Nhận Mượn Sách
+            </h5>
+            <button type="button" class="btn-close" @click="showModal = false"></button>
+          </div>
+          <div class="modal-body py-3">
+            <div class="alert alert-light border rounded-3 p-3 mb-3">
+              <p class="mb-1 fw-bold text-dark">{{ sach.tenSach || sach.TenSach }}</p>
+              <p class="mb-0 text-muted small">Mã sách: <strong>{{ getBookCode(sach) }}</strong></p>
+            </div>
+            
+            <ul class="list-group list-group-flush small">
+              <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                <span class="text-muted">Ngày mượn:</span>
+                <span class="fw-bold">{{ formatDate(minDate) }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                <span class="text-muted">Hẹn trả ngày:</span>
+                <span class="fw-bold text-danger">{{ formatDate(ngayTraDuKien) }}</span>
+              </li>
+            </ul>
+            <p class="text-muted fs-xs mt-3 mb-0 text-center">
+              * Vui lòng trả sách đúng thời hạn để tránh các khoản phí phạt phát sinh.
+            </p>
+          </div>
+          <div class="modal-footer border-0 pt-0 gap-2">
+            <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold border" @click="showModal = false">
+              Hủy
+            </button>
+            <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" @click="confirmBorrow" :disabled="loading">
+              <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
+              {{ loading ? 'Đang gửi...' : 'Xác Nhận Mượn' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Loading State -->
@@ -118,18 +187,30 @@ export default {
 
     return {
       sach: {},
+      allBooks: [],
       loading: false,
+      navigating: false,
+      showModal: false,
       minDate: today.toISOString().split('T')[0],
       ngayTraDuKien: nextWeek.toISOString().split('T')[0]
     };
   },
+  watch: {
+    '$route.params.id': function (newId) {
+      if (newId) {
+        this.fetchDetail();
+      }
+    }
+  },
   mounted() {
     this.fetchDetail();
+    this.fetchAllBooks();
   },
   methods: {
     async fetchDetail() {
       const id = this.$route.params.id;
-      console.log("[DEBUG FRONTEND - SachDetailView] Loading book detail for ID:", id);
+      console.log("================ [DEBUG FRONTEND - SachDetailView] ================");
+      console.log("[DEBUG FRONTEND] Fetching book detail for ID:", id);
       if (!id) return;
 
       try {
@@ -137,19 +218,122 @@ export default {
         if (!response.ok) throw new Error("Không thể tải thông tin sách");
         const data = await response.json();
         this.sach = data.data || data;
-        console.log("[DEBUG FRONTEND - SachDetailView] Book Data Received:", JSON.stringify(this.sach, null, 2));
+        console.log("[DEBUG FRONTEND] Book Data Received:", JSON.stringify(this.sach, null, 2));
       } catch (error) {
-        console.error("[DEBUG FRONTEND - SachDetailView] Fetch Detail Error:", error);
+        console.error("[DEBUG FRONTEND ERROR] Fetch Detail Error:", error);
       }
     },
 
-    // Lấy mã sách chuẩn ưu tiên maSach -> MaSach -> _id
+    async fetchAllBooks() {
+      try {
+        const response = await fetch("http://localhost:3000/api/sach");
+        if (response.ok) {
+          const data = await response.json();
+          this.allBooks = data.data || data;
+          console.log(`[DEBUG FRONTEND] Loaded ${this.allBooks.length} books for navigation`);
+        }
+      } catch (error) {
+        console.error("[DEBUG FRONTEND ERROR] Fetch All Books Error:", error);
+      }
+    },
+
+    goBack() {
+      this.$router.push("/");
+    },
+
+    navigateBook(direction) {
+      if (!this.allBooks.length) return;
+      
+      const currentId = this.$route.params.id;
+      const currentIndex = this.allBooks.findIndex(
+        b => b._id === currentId || b.maSach === currentId || b.MaSach === currentId
+      );
+
+      if (currentIndex === -1) return;
+
+      let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+
+      if (targetIndex >= this.allBooks.length) targetIndex = 0;
+      if (targetIndex < 0) targetIndex = this.allBooks.length - 1;
+
+      const targetBook = this.allBooks[targetIndex];
+      const targetId = targetBook._id || targetBook.maSach || targetBook.MaSach;
+
+      if (targetId) {
+        console.log(`[DEBUG FRONTEND] Navigating to ${direction} book ID:`, targetId);
+        this.$router.push(`/sach/${targetId}`);
+      }
+    },
+
+    openBorrowModal() {
+      const currentQty = this.getAvailableQuantity(this.sach);
+      if (currentQty <= 0) {
+        alert("Sách này hiện tại đã hết!");
+        return;
+      }
+      this.showModal = true;
+    },
+
+    async confirmBorrow() {
+      this.loading = true;
+
+      const userStr = localStorage.getItem("user") || sessionStorage.getItem("user") || "{}";
+      const user = JSON.parse(userStr);
+
+      const targetMaDocGia = user.maDocGia || user.MaDocGia || user.MSNV || user._id;
+      const targetMaSach = this.getBookCode(this.sach);
+
+      console.log("================ [DEBUG FRONTEND - SUBMIT BORROW] ================");
+      console.log("[DEBUG FRONTEND] User:", user);
+      console.log("[DEBUG FRONTEND] maDocGia:", targetMaDocGia);
+      console.log("[DEBUG FRONTEND] maSach:", targetMaSach);
+      console.log("[DEBUG FRONTEND] ngayTraDuKien:", this.ngayTraDuKien);
+
+      if (!targetMaDocGia) {
+        alert("Không tìm thấy thông tin tài khoản! Vui lòng đăng nhập lại.");
+        this.loading = false;
+        this.showModal = false;
+        this.$router.push("/login");
+        return;
+      }
+
+      const payload = {
+        maDocGia: targetMaDocGia,
+        maSach: targetMaSach,
+        ngayMuon: new Date().toISOString().split("T")[0],
+        ngayTraDuKien: this.ngayTraDuKien
+      };
+
+      try {
+        const response = await fetch("http://localhost:3000/api/muon-sach", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const resData = await response.json();
+        console.log("[DEBUG FRONTEND] Borrow Response Status:", response.status, resData);
+
+        if (response.ok) {
+          this.showModal = false;
+          alert("Gửi yêu cầu mượn sách thành công! Vui lòng chờ thủ thư phê duyệt.");
+          this.$router.push("/lich-su-muon");
+        } else {
+          alert(resData.message || "Gửi yêu cầu mượn sách thất bại!");
+        }
+      } catch (error) {
+        console.error("[DEBUG FRONTEND ERROR] Submit borrow error:", error);
+        alert("Lỗi kết nối máy chủ khi mượn sách!");
+      } finally {
+        this.loading = false;
+      }
+    },
+
     getBookCode(sach) {
       if (!sach) return "";
       return sach.maSach || sach.MaSach || sach._id || "";
     },
 
-    // Lấy số lượng sách tồn kho chuẩn theo Controller
     getAvailableQuantity(sach) {
       if (!sach) return 0;
       const qty = sach.soQuyen !== undefined ? sach.soQuyen : sach.SoQuyen;
@@ -168,79 +352,14 @@ export default {
       return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(val || 0);
     },
 
-    handleImageError(e) {
-      e.target.src = "https://placehold.co/300x450?text=No+Cover";
+    formatDate(dateStr) {
+      if (!dateStr) return '';
+      const [year, month, day] = dateStr.split('-');
+      return `${day}/${month}/${year}`;
     },
 
-    async submitBorrow() {
-      const currentQty = this.getAvailableQuantity(this.sach);
-      if (currentQty <= 0) {
-        alert("Sách này hiện tại đã hết!");
-        return;
-      }
-
-      this.loading = true;
-
-      // Trích xuất thông tin User đăng nhập
-      const userStr = localStorage.getItem("user") || sessionStorage.getItem("user") || "{}";
-      const user = JSON.parse(userStr);
-
-      const targetMaDocGia = user.maDocGia || user.MaDocGia || user.MSNV || user._id;
-      const targetMaSach = this.getBookCode(this.sach);
-
-      console.log("================ [DEBUG FRONTEND - SUBMIT BORROW] ================");
-      console.log("[DEBUG FRONTEND] Current Logged User Object:", user);
-      console.log("[DEBUG FRONTEND] Extracted maDocGia:", targetMaDocGia);
-      console.log("[DEBUG FRONTEND] Current Book Object:", this.sach);
-      console.log("[DEBUG FRONTEND] Extracted maSach:", targetMaSach);
-      console.log("[DEBUG FRONTEND] ngayTraDuKien:", this.ngayTraDuKien);
-      console.log("==================================================================");
-
-      if (!targetMaDocGia) {
-        alert("Không tìm thấy thông tin tài khoản! Vui lòng đăng nhập lại.");
-        this.loading = false;
-        this.$router.push("/login");
-        return;
-      }
-
-      if (!targetMaSach) {
-        alert("Lỗi: Không tìm thấy Mã sách hợp lệ!");
-        this.loading = false;
-        return;
-      }
-
-      const payload = {
-        maDocGia: targetMaDocGia,
-        maSach: targetMaSach,
-        ngayMuon: new Date().toISOString().split("T")[0],
-        ngayTraDuKien: this.ngayTraDuKien
-      };
-
-      console.log("[DEBUG FRONTEND] Sending Payload To Backend:", JSON.stringify(payload, null, 2));
-
-      try {
-        // ĐIỀU CHỈNH CHÍNH XÁC ROUTE: /api/muon-sach
-        const response = await fetch("http://localhost:3000/api/muon-sach", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const resData = await response.json();
-        console.log("[DEBUG FRONTEND] Response from Backend Status:", response.status, resData);
-
-        if (response.ok) {
-          alert("Gửi yêu cầu mượn sách thành công! Vui lòng chờ thủ thư phê duyệt.");
-          this.$router.push("/lich-su-muon");
-        } else {
-          alert(resData.message || "Gửi yêu cầu mượn sách thất bại!");
-        }
-      } catch (error) {
-        console.error("[DEBUG FRONTEND] Error sending borrow request:", error);
-        alert("Lỗi kết nối máy chủ khi mượn sách!");
-      } finally {
-        this.loading = false;
-      }
+    handleImageError(e) {
+      e.target.src = "https://placehold.co/300x450?text=No+Cover";
     }
   }
 };
@@ -257,12 +376,26 @@ export default {
   max-width: 280px;
   aspect-ratio: 2 / 3;
   background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: transform 0.2s ease;
 }
 
 .book-cover-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain; 
+  image-rendering: -webkit-optimize-contrast; 
+  filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.15));
+}
+
+.book-cover-container:hover {
+  transform: scale(1.05);
 }
 
 .bg-light-gray {
@@ -287,5 +420,11 @@ export default {
 .btn-primary:hover {
   background-color: #0b5ed7;
   border-color: #0a58ca;
+}
+
+/* Modal Custom Styles */
+.backdrop-blur {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
 }
 </style>
