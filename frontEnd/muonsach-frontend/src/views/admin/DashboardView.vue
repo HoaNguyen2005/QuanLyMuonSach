@@ -1,204 +1,207 @@
 <template>
   <div class="container-fluid py-4 px-md-5">
-    <!-- Header Section -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-      <div>
-        <h3 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
-          <i class="fas fa-tasks text-primary"></i>
-          <span>Bảng Điều Khiển Quản Lý Mượn Trả</span>
-        </h3>
-        <p class="text-muted small mb-0">Duyệt yêu cầu mượn, xác nhận trả sách và đối soát tiền phạt nộp qua chuyển khoản.</p>
-      </div>
-    </div>
-
-    <!-- Main Card Container -->
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-      <!-- Nav Tabs Top -->
-      <div class="card-header bg-white pt-3 px-4 border-bottom">
-        <ul class="nav nav-pills gap-2">
-          <li class="nav-item">
-            <button 
-              class="nav-link rounded-pill px-4 fw-semibold" 
-              :class="tab === 'requests' ? 'btn-primary active text-white shadow-sm' : 'text-secondary bg-light'" 
-              @click="tab = 'requests'"
-            >
-              <i class="fas fa-clock me-1.5"></i> Yêu cầu chờ duyệt ({{ pendingRequests.length }})
-            </button>
-          </li>
-          <li class="nav-item">
-            <button 
-              class="nav-link rounded-pill px-4 fw-semibold" 
-              :class="tab === 'borrowed' ? 'btn-primary active text-white shadow-sm' : 'text-secondary bg-light'" 
-              @click="tab = 'borrowed'"
-            >
-              <i class="fas fa-book-reader me-1.5"></i> Sách đang mượn ({{ activeBorrows.length }})
-            </button>
-          </li>
-          <!-- TAB DUYỆT NỘP PHẠT LẤY DỮ LIỆU TỪ MONGODB -->
-          <li class="nav-item">
-            <button 
-              class="nav-link rounded-pill px-4 fw-semibold position-relative" 
-              :class="tab === 'fines' ? 'btn-danger active text-white shadow-sm' : 'text-secondary bg-light'" 
-              @click="tab = 'fines'"
-            >
-              <i class="fas fa-receipt me-1.5"></i> Duyệt Nộp Phạt
-              <span v-if="pendingFines.length > 0" class="badge bg-warning text-dark rounded-circle ms-1.5">
-                {{ pendingFines.length }}
-              </span>
-            </button>
-          </li>
-        </ul>
+    <!-- Khung Bọc Trong Suốt Tách Biệt Nền Global -->
+    <div class="page-wrapper p-4 p-md-5 rounded-4 shadow-lg border">
+      
+      <!-- Header Section -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+        <div>
+          <h3 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+            <i class="fas fa-tasks text-navy"></i>
+            <span>Bảng Điều Khiển Quản Lý Mượn Trả</span>
+          </h3>
+          <p class="text-muted small mb-0">Duyệt yêu cầu mượn, xác nhận trả sách và đối soát tiền phạt nộp qua chuyển khoản.</p>
+        </div>
       </div>
 
-      <!-- 1. Bảng Duyệt Yêu Cầu Mượn -->
-      <div class="table-responsive" v-if="tab === 'requests'">
-        <table class="table table-hover align-middle mb-0 custom-table">
-          <thead class="table-light text-secondary text-uppercase fs-xs">
-            <tr>
-              <th class="ps-4 py-3">STT</th>
-              <th class="py-3">Mã Độc Giả</th>
-              <th class="py-3">Mã Sách</th>
-              <th class="py-3">Ngày Yêu Cầu</th>
-              <th class="py-3">Trạng Thái</th>
-              <th class="text-end pe-4 py-3">Thao Tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="pendingRequests.length === 0">
-              <td colspan="6" class="text-center text-muted py-5">
-                <i class="fas fa-check-circle fa-3x mb-3 text-secondary opacity-50 d-block"></i>
-                Không có yêu cầu nào đang chờ duyệt.
-              </td>
-            </tr>
-            <tr v-for="(item, index) in pendingRequests" :key="item._id || index">
-              <td class="ps-4 text-muted fw-bold">{{ index + 1 }}</td>
-              <td><span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1.5 rounded-pill">{{ item.maDocGia || '---' }}</span></td>
-              <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2.5 py-1.5 rounded-3">{{ item.maSach || '---' }}</span></td>
-              <td class="text-secondary small">{{ formatDate(item.ngayMuon) }}</td>
-              <td><span class="badge bg-warning bg-opacity-10 text-warning fw-semibold px-2.5 py-1.5 rounded-pill"><i class="fas fa-hourglass-half fs-xs me-1"></i>Chờ Duyệt</span></td>
-              <td class="text-end pe-4">
-                <div class="d-inline-flex gap-2">
-                  <button class="btn btn-sm btn-outline-success rounded-3 px-2.5 py-1" @click="approveBorrow(item._id)">
-                    <i class="fas fa-check me-1"></i>Duyệt
+      <!-- Main Card Container -->
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+        <!-- Nav Tabs Top -->
+        <div class="card-header bg-white pt-3 px-4 border-bottom">
+          <ul class="nav nav-pills gap-2">
+            <li class="nav-item">
+              <button 
+                class="nav-link rounded-pill px-4 fw-semibold" 
+                :class="tab === 'requests' ? 'nav-tab-active shadow-sm' : 'text-secondary bg-light'" 
+                @click="tab = 'requests'"
+              >
+                <i class="fas fa-clock me-1.5"></i> Yêu cầu chờ duyệt ({{ pendingRequests.length }})
+              </button>
+            </li>
+            <li class="nav-item">
+              <button 
+                class="nav-link rounded-pill px-4 fw-semibold" 
+                :class="tab === 'borrowed' ? 'nav-tab-active shadow-sm' : 'text-secondary bg-light'" 
+                @click="tab = 'borrowed'"
+              >
+                <i class="fas fa-book-reader me-1.5"></i> Sách đang mượn ({{ activeBorrows.length }})
+              </button>
+            </li>
+            <li class="nav-item">
+              <button 
+                class="nav-link rounded-pill px-4 fw-semibold position-relative" 
+                :class="tab === 'fines' ? 'nav-tab-active shadow-sm' : 'text-secondary bg-light'" 
+                @click="tab = 'fines'"
+              >
+                <i class="fas fa-receipt me-1.5"></i> Duyệt Nộp Phạt
+                <span v-if="pendingFines.length > 0" class="badge bg-warning text-dark rounded-circle ms-1.5">
+                  {{ pendingFines.length }}
+                </span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 1. Bảng Duyệt Yêu Cầu Mượn -->
+        <div class="table-responsive" v-if="tab === 'requests'">
+          <table class="table table-hover align-middle mb-0 custom-table">
+            <thead class="bg-navy text-white text-uppercase fs-xs">
+              <tr>
+                <th class="ps-4 py-3">STT</th>
+                <th class="py-3">Mã Độc Giả</th>
+                <th class="py-3">Mã Sách</th>
+                <th class="py-3">Ngày Yêu Cầu</th>
+                <th class="py-3">Trạng Thái</th>
+                <th class="text-end pe-4 py-3">Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="pendingRequests.length === 0">
+                <td colspan="6" class="text-center text-muted py-5">
+                  <i class="fas fa-check-circle fa-3x mb-3 text-secondary opacity-50 d-block"></i>
+                  Không có yêu cầu nào đang chờ duyệt.
+                </td>
+              </tr>
+              <tr v-for="(item, index) in pendingRequests" :key="item._id || index">
+                <td class="ps-4 text-muted fw-bold">{{ index + 1 }}</td>
+                <td><span class="badge bg-navy-subtle text-navy fw-bold px-2.5 py-1.5 rounded-pill border border-navy-subtle">{{ item.maDocGia || '---' }}</span></td>
+                <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2.5 py-1.5 rounded-3">{{ item.maSach || '---' }}</span></td>
+                <td class="text-secondary small">{{ formatDate(item.ngayMuon) }}</td>
+                <td><span class="badge bg-warning bg-opacity-10 text-warning fw-semibold px-2.5 py-1.5 rounded-pill"><i class="fas fa-hourglass-half fs-xs me-1"></i>Chờ Duyệt</span></td>
+                <td class="text-end pe-4">
+                  <div class="d-inline-flex gap-2">
+                    <button class="btn btn-sm btn-outline-success rounded-3 px-2.5 py-1 fw-bold" @click="approveBorrow(item._id)">
+                      <i class="fas fa-check me-1"></i>Duyệt
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger rounded-3 px-2.5 py-1 fw-bold" @click="openRejectConfirmModal(item._id)">
+                      <i class="fas fa-times me-1"></i>Từ chối
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2. Bảng Xác Nhận Trả Sách -->
+        <div class="table-responsive" v-if="tab === 'borrowed'">
+          <table class="table table-hover align-middle mb-0 custom-table">
+            <thead class="bg-navy text-white text-uppercase fs-xs">
+              <tr>
+                <th class="ps-4 py-3">STT</th>
+                <th class="py-3">Mã Độc Giả</th>
+                <th class="py-3">Mã Sách</th>
+                <th class="py-3">Ngày Mượn</th>
+                <th class="py-3">Ngày Trả Dự Kiến</th>
+                <th class="py-3">Trạng Thái</th>
+                <th class="text-end pe-4 py-3">Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="activeBorrows.length === 0">
+                <td colspan="7" class="text-center text-muted py-5">
+                  <i class="fas fa-box-open fa-3x mb-3 text-secondary opacity-50 d-block"></i>
+                  Không có sách nào đang trong trạng thái mượn.
+                </td>
+              </tr>
+              <tr v-for="(item, index) in activeBorrows" :key="item._id || index">
+                <td class="ps-4 text-muted fw-bold">{{ index + 1 }}</td>
+                <td><span class="badge bg-navy-subtle text-navy fw-bold px-2.5 py-1.5 rounded-pill border border-navy-subtle">{{ item.maDocGia || '---' }}</span></td>
+                <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2.5 py-1.5 rounded-3">{{ item.maSach || '---' }}</span></td>
+                <td class="text-secondary small">{{ formatDate(item.ngayMuon) }}</td>
+                <td class="text-secondary small">{{ formatDate(item.ngayTraDuKien) }}</td>
+                
+                <td>
+                  <span v-if="isWaitingReturn(item)" class="badge bg-warning bg-opacity-10 text-warning fw-semibold px-2.5 py-1.5 rounded-pill">
+                    <i class="fas fa-exclamation-circle fs-xs me-1"></i>Yêu cầu trả sách
+                  </span>
+                  <span v-else class="badge bg-info bg-opacity-10 text-info fw-semibold px-2.5 py-1.5 rounded-pill">
+                    <i class="fas fa-book-open fs-xs me-1"></i>Đang Mượn
+                  </span>
+                </td>
+
+                <td class="text-end pe-4">
+                  <button 
+                    class="btn btn-sm rounded-3 px-2.5 py-1 fw-bold" 
+                    :class="canReturn(item) ? 'btn-outline-navy' : 'btn-outline-secondary disabled opacity-50'"
+                    :disabled="!canReturn(item)"
+                    @click="confirmReturn(item._id)"
+                  >
+                    <i class="fas fa-undo me-1"></i>
+                    <span>{{ canReturn(item) ? 'Xác nhận trả sách' : 'Chưa trả sách' }}</span>
                   </button>
-                  <button class="btn btn-sm btn-outline-danger rounded-3 px-2.5 py-1" @click="openRejectConfirmModal(item._id)">
-                    <i class="fas fa-times me-1"></i>Từ chối
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 3. BẢNG DUYỆT NỘP PHẠT -->
+        <div class="table-responsive" v-if="tab === 'fines'">
+          <table class="table table-hover align-middle mb-0 custom-table">
+            <thead class="bg-navy text-white text-uppercase fs-xs">
+              <tr>
+                <th class="ps-4 py-3">STT</th>
+                <th class="py-3">Mã Độc Giả</th>
+                <th class="py-3">Mã Phiếu Mượn</th>
+                <th class="py-3">Trễ Hạn</th>
+                <th class="py-3">Tiền Phạt</th>
+                <th class="py-3">Cú Pháp CK Cần Kiểm Tra</th>
+                <th class="text-end pe-4 py-3">Thao Tác Đối Soát</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="pendingFines.length === 0">
+                <td colspan="7" class="text-center text-muted py-5">
+                  <i class="fas fa-hand-holding-usd fa-3x mb-3 text-secondary opacity-50 d-block"></i>
+                  Không có khoản nộp phạt nào đang chờ thủ thư xác nhận.
+                </td>
+              </tr>
+              <tr v-for="(item, index) in pendingFines" :key="item._id || index">
+                <td class="ps-4 text-muted fw-bold">{{ index + 1 }}</td>
+                <td><span class="badge bg-navy-subtle text-navy fw-bold px-2.5 py-1.5 rounded-pill border border-navy-subtle">{{ item.maDocGia }}</span></td>
+                <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2.5 py-1.5 rounded-3">{{ (item.maPhieuMuon || '').slice(-6) }}</span></td>
+                <td>
+                  <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2.5 py-1.5 rounded-pill fw-semibold">
+                    <i class="fas fa-clock me-1"></i>{{ item.soNgayTre }} ngày
+                  </span>
+                </td>
+                <td class="fw-bold text-danger fs-6">{{ formatCurrency(item.soTienPhat) }}</td>
+                <td>
+                  <code class="text-navy fw-bold px-2 py-1 bg-light rounded border">
+                    {{ item.noiDungChuyenKhoan }}
+                  </code>
+                </td>
+                <td class="text-end pe-4">
+                  <button 
+                    class="btn btn-sm btn-success text-white rounded-pill px-3 py-1 fw-bold shadow-sm"
+                    @click="approveFinePayment(item._id)"
+                  >
+                    <i class="fas fa-check-circle me-1"></i> Xác Nhận Đã Nhận Tiền
                   </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
-
-      <!-- 2. Bảng Xác Nhận Trả Sách -->
-      <div class="table-responsive" v-if="tab === 'borrowed'">
-        <table class="table table-hover align-middle mb-0 custom-table">
-          <thead class="table-light text-secondary text-uppercase fs-xs">
-            <tr>
-              <th class="ps-4 py-3">STT</th>
-              <th class="py-3">Mã Độc Giả</th>
-              <th class="py-3">Mã Sách</th>
-              <th class="py-3">Ngày Mượn</th>
-              <th class="py-3">Ngày Trả Dự Kiến</th>
-              <th class="py-3">Trạng Thái</th>
-              <th class="text-end pe-4 py-3">Thao Tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="activeBorrows.length === 0">
-              <td colspan="7" class="text-center text-muted py-5">
-                <i class="fas fa-box-open fa-3x mb-3 text-secondary opacity-50 d-block"></i>
-                Không có sách nào đang trong trạng thái mượn.
-              </td>
-            </tr>
-            <tr v-for="(item, index) in activeBorrows" :key="item._id || index">
-              <td class="ps-4 text-muted fw-bold">{{ index + 1 }}</td>
-              <td><span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1.5 rounded-pill">{{ item.maDocGia || '---' }}</span></td>
-              <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2.5 py-1.5 rounded-3">{{ item.maSach || '---' }}</span></td>
-              <td class="text-secondary small">{{ formatDate(item.ngayMuon) }}</td>
-              <td class="text-secondary small">{{ formatDate(item.ngayTraDuKien) }}</td>
-              
-              <td>
-                <span v-if="isWaitingReturn(item)" class="badge bg-warning bg-opacity-10 text-warning fw-semibold px-2.5 py-1.5 rounded-pill">
-                  <i class="fas fa-exclamation-circle fs-xs me-1"></i>Yêu cầu trả sách
-                </span>
-                <span v-else class="badge bg-info bg-opacity-10 text-info fw-semibold px-2.5 py-1.5 rounded-pill">
-                  <i class="fas fa-book-open fs-xs me-1"></i>Đang Mượn
-                </span>
-              </td>
-
-              <td class="text-end pe-4">
-                <button 
-                  class="btn btn-sm rounded-3 px-2.5 py-1" 
-                  :class="canReturn(item) ? 'btn-outline-primary' : 'btn-outline-secondary disabled opacity-50'"
-                  :disabled="!canReturn(item)"
-                  @click="confirmReturn(item._id)"
-                >
-                  <i class="fas fa-undo me-1"></i>
-                  <span>{{ canReturn(item) ? 'Xác nhận trả sách' : 'Chưa trả sách' }}</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- 3. BẢNG DUYỆT NỘP PHẠT (Lấy Trực Tiếp Từ Collection phieuphats) -->
-      <div class="table-responsive" v-if="tab === 'fines'">
-        <table class="table table-hover align-middle mb-0 custom-table">
-          <thead class="table-light text-secondary text-uppercase fs-xs">
-            <tr>
-              <th class="ps-4 py-3">STT</th>
-              <th class="py-3">Mã Độc Giả</th>
-              <th class="py-3">Mã Phếu Mượn</th>
-              <th class="py-3">Trễ Hạn</th>
-              <th class="py-3">Tiền Phạt</th>
-              <th class="py-3">Cú Pháp CK Cần Kiểm Tra</th>
-              <th class="text-end pe-4 py-3">Thao Tác Đối Soát</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="pendingFines.length === 0">
-              <td colspan="7" class="text-center text-muted py-5">
-                <i class="fas fa-hand-holding-usd fa-3x mb-3 text-secondary opacity-50 d-block"></i>
-                Không có khoản nộp phạt nào đang chờ thủ thư xác nhận.
-              </td>
-            </tr>
-            <tr v-for="(item, index) in pendingFines" :key="item._id || index">
-              <td class="ps-4 text-muted fw-bold">{{ index + 1 }}</td>
-              <td><span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1.5 rounded-pill">{{ item.maDocGia }}</span></td>
-              <td><span class="badge bg-secondary bg-opacity-10 text-secondary fw-medium px-2.5 py-1.5 rounded-3">{{ (item.maPhieuMuon || '').slice(-6) }}</span></td>
-              <td>
-                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2.5 py-1.5 rounded-pill fw-semibold">
-                  <i class="fas fa-clock me-1"></i>{{ item.soNgayTre }} ngày
-                </span>
-              </td>
-              <td class="fw-bold text-danger fs-6">{{ formatCurrency(item.soTienPhat) }}</td>
-              <td>
-                <code class="text-primary fw-bold px-2 py-1 bg-light rounded border">
-                  {{ item.noiDungChuyenKhoan }}
-                </code>
-              </td>
-              <td class="text-end pe-4">
-                <button 
-                  class="btn btn-sm btn-success text-white rounded-pill px-3 py-1 fw-semibold shadow-sm"
-                  @click="approveFinePayment(item._id)"
-                >
-                  <i class="fas fa-check-circle me-1"></i> Xác Nhận Đã Nhận Tiền
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
     </div>
 
     <!-- MODAL THÔNG BÁO TỔNG HỢP -->
     <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true" ref="statusModal">
       <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content rounded-4 border-0 shadow text-center p-3">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3 bg-white">
           <div class="modal-body">
             <div :class="statusModalType === 'success' ? 'text-success' : 'text-danger'" class="mb-3">
               <i :class="statusModalType === 'success' ? 'fas fa-check-circle fa-4x' : 'fas fa-exclamation-circle fa-4x'"></i>
@@ -221,7 +224,7 @@
     <!-- MODAL XÁC NHẬN TỪ CHỐI -->
     <div class="modal fade" id="rejectConfirmModal" tabindex="-1" aria-hidden="true" ref="rejectConfirmModal">
       <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content rounded-4 border-0 shadow text-center p-3">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3 bg-white">
           <div class="modal-body">
             <div class="text-warning mb-3">
               <i class="fas fa-exclamation-triangle fa-4x"></i>
@@ -229,10 +232,10 @@
             <h5 class="fw-bold text-dark mb-2">Xác Nhận Từ Chối</h5>
             <p class="text-muted small mb-4">Bạn có chắc chắn muốn TỪ CHỐI yêu cầu mượn sách này?</p>
             <div class="d-flex gap-2">
-              <button type="button" class="btn btn-light rounded-pill flex-fill fw-bold" data-bs-dismiss="modal">
+              <button type="button" class="btn btn-light rounded-pill flex-fill fw-bold border" data-bs-dismiss="modal">
                 Hủy
               </button>
-              <button type="button" class="btn btn-danger rounded-pill flex-fill fw-bold text-white" @click="confirmRejectAction">
+              <button type="button" class="btn btn-danger rounded-pill flex-fill fw-bold text-white shadow-sm" @click="confirmRejectAction">
                 Từ Chối
               </button>
             </div>
@@ -255,7 +258,7 @@ export default {
     return {
       tab: "requests",
       borrows: [],
-      phieuPhatList: [], // Lấy danh sách phiếu phạt từ MongoDB
+      phieuPhatList: [],
       statusModalInstance: null,
       rejectConfirmModalInstance: null,
       statusModalTitle: "",
@@ -281,7 +284,6 @@ export default {
                status === "YEU_CAU_TRA" || status === "YÊU_CẦU_TRẢ" || status === "YÊU CẦU TRẢ";
       });
     },
-    // Danh sách phiếu phạt đang chờ Admin xác nhận nhận tiền (Lọc trực tiếp từ DB)
     pendingFines() {
       return this.phieuPhatList.filter(item => item.trangThai === "CHO_XAC_NHAN");
     }
@@ -303,12 +305,11 @@ export default {
       }
     },
 
-    // Admin bấm Duyệt đã nhận được tiền phạt
     async approveFinePayment(phieuPhatId) {
       try {
         await PhieuPhatService.approve(phieuPhatId);
         this.showPopUp("Thành Công", "Đã xác nhận tiền phạt thành công!", "success");
-        await this.loadPhieuPhat(); // Refresh lại danh sách từ MongoDB
+        await this.loadPhieuPhat();
       } catch (error) {
         this.showPopUp("Lỗi Duyệt Phạt", "Không thể xác nhận tiền phạt!", "error");
       }
@@ -419,6 +420,38 @@ export default {
 </script>
 
 <style scoped>
+/* Navy Color Classes */
+.text-navy { color: #1a2b4c !important; }
+.bg-navy { background-color: #1a2b4c !important; }
+.bg-navy-subtle { background-color: rgba(26, 43, 76, 0.1) !important; }
+.border-navy-subtle { border-color: rgba(26, 43, 76, 0.2) !important; }
+
+/* Custom Tab Active Override (Ghi đè tất cả trạng thái active của Bootstrap) */
+.nav-pills .nav-link.nav-tab-active,
+.nav-pills .show > .nav-link,
+.nav-tab-active {
+  background-color: #1a2b4c !important;
+  color: #ffffff !important;
+  border-color: #1a2b4c !important;
+}
+
+.btn-outline-navy {
+  color: #1a2b4c;
+  border-color: #1a2b4c;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+.btn-outline-navy:hover {
+  background-color: #1a2b4c;
+  color: #ffffff;
+}
+
+.page-wrapper {
+  background-color: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border-color: rgba(229, 231, 235, 0.8) !important;
+}
+
 .custom-table { font-size: 0.9rem; }
 .custom-table thead th { font-weight: 600; letter-spacing: 0.03em; border-bottom: 1px solid #f1f5f9; }
 .custom-table tbody tr:hover { background-color: #f8fafc; }

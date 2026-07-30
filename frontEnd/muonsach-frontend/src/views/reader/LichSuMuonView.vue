@@ -5,11 +5,11 @@
       
       <!-- Tiêu Đề Nổi Bật -->
       <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
-        <h3 class="fw-bold text-primary m-0 d-flex align-items-center gap-2">
-          <i class="fas fa-history text-primary"></i> 
+        <h3 class="fw-bold text-navy m-0 d-flex align-items-center gap-2">
+          <i class="fas fa-history text-navy"></i> 
           <span>Lịch Sử Đặt Mượn Sách</span>
         </h3>
-        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-bold">
+        <span class="badge bg-navy-subtle text-navy border border-navy-subtle px-3 py-2 rounded-pill fw-bold">
           Tổng số: {{ historyList.length }} lượt mượn
         </span>
       </div>
@@ -29,7 +29,7 @@
 
       <!-- State Loading -->
       <div v-if="loading" class="text-center py-5 bg-white rounded-4 shadow-sm">
-        <div class="spinner-border text-primary" role="status"></div>
+        <div class="spinner-border text-navy" role="status"></div>
         <p class="mt-2 text-muted fw-medium mb-0">Đang tải lịch sử mượn sách...</p>
       </div>
 
@@ -38,7 +38,7 @@
         <i class="fas fa-book-open fa-3x text-muted mb-3 opacity-50"></i>
         <h5 class="fw-bold text-dark mb-2">Bạn chưa đăng ký mượn cuốn sách nào!</h5>
         <p class="text-muted small mb-4">Hãy khám phá kho sách của thư viện và chọn cho mình cuốn sách yêu thích nhé.</p>
-        <router-link to="/" class="btn btn-primary fw-bold px-4 py-2 rounded-pill shadow-sm">
+        <router-link to="/" class="btn btn-navy fw-bold px-4 py-2 rounded-pill shadow-sm">
           <i class="fas fa-search me-1"></i> Khám Phá Sách Ngay
         </router-link>
       </div>
@@ -47,7 +47,7 @@
       <div v-else class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
-            <thead class="table-primary-custom text-nowrap">
+            <thead class="bg-navy text-white text-nowrap">
               <tr>
                 <th scope="col" class="ps-4 py-3">STT</th>
                 <th scope="col" class="py-3">Mã Sách</th>
@@ -131,7 +131,7 @@
                   <!-- 4. Đã duyệt & chưa trả -> Hiện nút Trả Sách -->
                   <button 
                     v-else-if="isCanTraSach(item.trangThai || item.TrangThai, item.ngayTraThucTe || item.NgayTraThucTe) && !isAccountLocked" 
-                    class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"
+                    class="btn btn-sm btn-outline-navy rounded-pill px-3 fw-bold"
                     @click="handleTraSach(item)"
                   >
                     <i class="fas fa-undo me-1"></i> Trả Sách
@@ -466,7 +466,7 @@ export default {
       if (!trangThai) return "badge bg-warning text-dark fw-bold px-3 py-1.5 rounded-pill shadow-sm";
       const status = String(trangThai).toUpperCase().trim();
       if (status === "CHO_DUYET" || status === "CHỜ DUYỆT" || status === "WAITING") return "badge bg-warning text-dark fw-bold px-3 py-1.5 rounded-pill shadow-sm";
-      if (status === "DA_DUYET" || status === "ĐÃ DUYỆT" || status === "APPROVED") return "badge bg-primary fw-bold px-3 py-1.5 rounded-pill shadow-sm";
+      if (status === "DA_DUYET" || status === "ĐÃ DUYỆT" || status === "APPROVED") return "badge bg-navy fw-bold px-3 py-1.5 rounded-pill shadow-sm";
       if (status === "DA_TRA" || status === "ĐÃ TRẢ" || status === "RETURNED") return "badge bg-success fw-bold px-3 py-1.5 rounded-pill shadow-sm";
       if (status === "TU_CHOI" || status === "TỪ CHỐI" || status === "REJECTED") return "badge bg-danger fw-bold px-3 py-1.5 rounded-pill shadow-sm";
       return "badge bg-secondary fw-bold px-3 py-1.5 rounded-pill shadow-sm";
@@ -488,16 +488,38 @@ export default {
 </script>
 
 <style scoped>
+.text-navy { color: #1a2b4c !important; }
+.bg-navy { background-color: #1a2b4c !important; }
+.bg-navy-subtle { background-color: rgba(26, 43, 76, 0.1) !important; }
+.border-navy-subtle { border-color: rgba(26, 43, 76, 0.2) !important; }
+
+.btn-navy {
+  background-color: #1a2b4c;
+  border-color: #1a2b4c;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+.btn-navy:hover {
+  background-color: #121e36;
+  border-color: #121e36;
+  color: #ffffff;
+}
+
+.btn-outline-navy {
+  color: #1a2b4c;
+  border-color: #1a2b4c;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+.btn-outline-navy:hover {
+  background-color: #1a2b4c;
+  color: #ffffff;
+}
 
 .page-wrapper {
   background-color: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(8px);
   border-color: rgba(229, 231, 235, 0.8) !important;
-}
-
-.table-primary-custom {
-  background-color: #0d6efd;
-  color: #ffffff;
 }
 
 .fs-xs {

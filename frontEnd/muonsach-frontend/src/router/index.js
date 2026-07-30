@@ -2,9 +2,22 @@ import { createRouter, createWebHistory } from "vue-router";
 import AuthService from "@/services/auth.service";
 
 const routes = [
+  {
+    path: '/landing',
+    name: 'landing',
+    component: () => import("@/views/LandingView.vue")
+  },
   // Auth
-  { path: "/login", name: "login", component: () => import("@/views/auth/Login.vue") },
-  { path: "/register", name: "register", component: () => import("@/views/auth/Register.vue") },
+  { 
+    path: "/login", 
+    name: "login", 
+    component: () => import("@/views/auth/Login.vue")
+  },
+  { 
+    path: "/register",
+    name: "register", 
+    component: () => import("@/views/auth/Register.vue") 
+  },
 
   // --- GIAO DIỆN ĐỘC GIẢ ---
   { 

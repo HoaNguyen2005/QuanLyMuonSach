@@ -1,60 +1,60 @@
 <template>
-  <header class="admin-header sticky-top shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-gradient py-2 px-3">
+  <header class="admin-header sticky-top shadow-md">
+    <nav class="navbar navbar-expand-lg bg-navy py-3 px-4 px-lg-5 border-bottom border-navy-light">
       <div class="container-fluid d-flex align-items-center justify-content-between">
         
-        <!-- 1. BRAND / LOGO -->
+        <!-- 1. BRAND / LOGO (Đã chỉnh icon trắng nền navy theo Landing) -->
         <router-link 
           :to="isAdmin ? '/admin' : '/'" 
           class="navbar-brand d-flex align-items-center gap-2 fw-bold me-3"
         >
-          <div class="brand-icon rounded-3 d-flex align-items-center justify-content-center">
-            <i class="fas fa-book-reader text-white fs-5"></i>
+          <div class="brand-icon bg-white text-navy rounded-3 d-flex align-items-center justify-content-center shadow-sm">
+            <i class="fas fa-book-reader fs-5"></i>
           </div>
-          <span class="brand-text text-white fs-5 d-none d-sm-inline">Quản Lý Thư Viện</span>
+          <span class="fw-bold fs-5 text-white text-uppercase tracking-wide">LibManage</span>
         </router-link>
 
-        <!-- 2. MENU LINKS -->
+        <!-- 2. MENU LINKS (Tông trắng/mờ chuẩn Landing) -->
         <div class="collapse navbar-collapse flex-grow-1" id="adminNavbar" v-if="currentUser">
           
           <!-- MENU ADMIN -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1 ms-lg-3 border-start border-secondary border-opacity-50 ps-lg-3" v-if="isAdmin">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1 ms-lg-3 border-start border-white border-opacity-25 ps-lg-3 text-uppercase fs-7 fw-bold" v-if="isAdmin">
             <li class="nav-item">
-              <router-link to="/admin" class="nav-link nav-pill" active-class="active" exact>
+              <router-link to="/admin" class="nav-link nav-link-custom" active-class="active" exact>
                 Duyệt Mượn
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/admin/sach" class="nav-link nav-pill" active-class="active">
+              <router-link to="/admin/sach" class="nav-link nav-link-custom" active-class="active">
                 Quản Lý Sách
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/admin/doc-gia" class="nav-link nav-pill" active-class="active">
+              <router-link to="/admin/doc-gia" class="nav-link nav-link-custom" active-class="active">
                 Quản Lý Độc Giả
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/admin/nhan-vien" class="nav-link nav-pill" active-class="active">
+              <router-link to="/admin/nhan-vien" class="nav-link nav-link-custom" active-class="active">
                 Quản Lý Nhân Viên
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/admin/nxb" class="nav-link nav-pill" active-class="active">
-                Quản Lý Nhà Xuất Bản
+              <router-link to="/admin/nxb" class="nav-link nav-link-custom" active-class="active">
+                Quản Lý NXB
               </router-link>
             </li>
           </ul>
 
           <!-- MENU ĐỘC GIẢ -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1 ms-lg-3 border-start border-secondary border-opacity-50 ps-lg-3" v-else>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1 ms-lg-3 border-start border-white border-opacity-25 ps-lg-3 text-uppercase fs-7 fw-bold" v-else>
             <li class="nav-item">
-              <router-link to="/" class="nav-link nav-pill" active-class="active" exact>
+              <router-link to="/" class="nav-link nav-link-custom" active-class="active" exact>
                 Danh Mục Sách
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/lich-su-muon" class="nav-link nav-pill" active-class="active">
+              <router-link to="/lich-su-muon" class="nav-link nav-link-custom" active-class="active">
                 Lịch Sử Mượn Sách
               </router-link>
             </li>
@@ -65,33 +65,31 @@
         <!-- 3. ACTION BUTTONS / USER PROFILE -->
         <div class="d-flex align-items-center gap-2 ms-auto">
           
-          <!-- TRƯỜNG HỢP A: CHƯA ĐĂNG NHẬP -->
+          <!-- TRƯỜNG HỢP A: CHƯA ĐĂNG NHẬP (Dùng style nút Landing) -->
           <template v-if="!currentUser">
             <router-link 
               to="/login" 
-              class="btn btn-sm rounded-pill px-3 py-1.5 fw-semibold transition-all"
-              :class="$route.path === '/login' ? 'btn-primary shadow-sm' : 'btn-outline-light border-opacity-25'"
+              class="btn btn-outline-light rounded-1 px-3 py-1.5 fw-bold fs-7"
             >
-              <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+              Đăng Nhập
             </router-link>
 
             <router-link 
               to="/register" 
-              class="btn btn-sm rounded-pill px-3 py-1.5 fw-semibold transition-all"
-              :class="$route.path === '/register' ? 'btn-success shadow-sm' : 'btn-outline-light border-opacity-25'"
+              class="btn btn-white-accent rounded-1 px-3 py-1.5 fw-bold fs-7 d-none d-sm-inline-block shadow-sm"
             >
-              <i class="fas fa-user-plus me-1"></i> Đăng ký
+              Đăng Ký
             </router-link>
           </template>
 
           <!-- TRƯỜNG HỢP B: ĐÃ ĐĂNG NHẬP -->
           <div class="position-relative" v-else>
             <button 
-              class="btn btn-user-profile d-flex align-items-center gap-2 py-1.5 px-3 rounded-pill border border-secondary border-opacity-25 shadow-sm" 
+              class="btn btn-user-profile d-flex align-items-center gap-2 py-1.5 px-3 rounded-2 border border-white border-opacity-25 shadow-sm" 
               type="button" 
               @click="toggleDropdown"
             >
-              <div class="avatar-sm rounded-circle text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" :class="isAdmin ? 'bg-primary' : 'bg-success'">
+              <div class="avatar-sm rounded-circle text-navy bg-white d-flex align-items-center justify-content-center fw-bold shadow-sm">
                 {{ userDisplayName.charAt(0).toUpperCase() }}
               </div>
               <div class="text-start pe-1 d-none d-md-block">
@@ -107,20 +105,20 @@
 
             <!-- Custom Dropdown Menu -->
             <ul 
-              class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 p-2 custom-dropdown-menu"
+              class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 custom-dropdown-menu"
               :class="{ 'show': isDropdownOpen }"
             >
-              <li class="px-3 py-2 border-bottom mb-1 bg-light rounded-3">
+              <li class="px-3 py-2 border-bottom mb-1 bg-light rounded-2">
                 <div class="fw-bold text-dark small">{{ userDisplayName }}</div>
               </li>
               
               <li v-if="!isAdmin">
                 <router-link 
                   to="/lich-su-muon" 
-                  class="dropdown-item py-2 px-3 rounded-3 fw-medium d-flex align-items-center gap-2"
+                  class="dropdown-item py-2 px-3 rounded-2 fw-medium d-flex align-items-center gap-2"
                   @click="isDropdownOpen = false"
                 >
-                  <i class="fas fa-history text-success fs-6"></i>
+                  <i class="fas fa-history text-navy fs-6"></i>
                   <span>Lịch sử mượn sách</span>
                 </router-link>
               </li>
@@ -128,10 +126,10 @@
               <li>
                 <router-link 
                   to="/profile" 
-                  class="dropdown-item py-2 px-3 rounded-3 fw-medium d-flex align-items-center gap-2"
+                  class="dropdown-item py-2 px-3 rounded-2 fw-medium d-flex align-items-center gap-2"
                   @click="isDropdownOpen = false"
                 >
-                  <i class="fas fa-user-circle text-primary fs-6"></i>
+                  <i class="fas fa-user-circle text-navy fs-6"></i>
                   <span>Thông tin cá nhân</span>
                 </router-link>
               </li>
@@ -139,7 +137,7 @@
               <li><hr class="dropdown-divider my-1"></li>
               <li>
                 <button 
-                  class="dropdown-item py-2 px-3 rounded-3 text-danger fw-medium d-flex align-items-center gap-2 w-100 border-0 bg-transparent" 
+                  class="dropdown-item py-2 px-3 rounded-2 text-danger fw-medium d-flex align-items-center gap-2 w-100 border-0 bg-transparent" 
                   @click="openLogoutModal"
                 >
                   <i class="fas fa-sign-out-alt fs-6"></i>
@@ -152,12 +150,12 @@
           <!-- Toggle Button Mobile -->
           <button 
             v-if="currentUser"
-            class="navbar-toggler border-0 shadow-none ms-1" 
+            class="navbar-toggler border-0 shadow-none ms-1 text-white" 
             type="button" 
             data-bs-toggle="collapse" 
             data-bs-target="#adminNavbar"
           >
-            <span class="navbar-toggler-icon"></span>
+            <i class="fas fa-bars text-white"></i>
           </button>
 
         </div>
@@ -195,7 +193,7 @@
             </button>
             <button 
               type="button" 
-              class="btn btn-danger rounded-pill px-4 fw-semibold flex-fill shadow-sm" 
+              class="btn btn-navy-accent rounded-pill px-4 fw-semibold flex-fill shadow-sm" 
               @click="confirmLogout"
             >
               Đăng xuất
@@ -313,63 +311,77 @@ export default {
 </script>
 
 <style scoped>
-.bg-dark-gradient {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
+/* Navy Theme Variables */
+.text-navy { color: #1a2b4c !important; }
+.bg-navy { background-color: #1a2b4c !important; }
+.border-navy-light { border-color: rgba(255, 255, 255, 0.15) !important; }
 
+/* Brand Icon Logo */
 .brand-icon {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
-.nav-pill {
-  color: #94a3b8 !important;
-  font-weight: 500;
-  padding: 8px 14px !important;
-  border-radius: 10px;
-  transition: all 0.2s ease-in-out;
-  font-size: 0.9rem;
+/* Nav Link chuẩn Landing Header */
+.nav-link-custom {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none;
+  padding: 6px 12px !important;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
-
-.nav-pill:hover {
+.nav-link-custom:hover,
+.nav-link-custom.active {
   color: #ffffff !important;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
-.nav-pill.active {
-  color: #ffffff !important;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-  font-weight: 600;
+/* Nút Đăng Ký trắng kiểu Accent */
+.btn-white-accent {
+  background-color: #ffffff;
+  color: #1a2b4c;
+  border: 1px solid #ffffff;
+  transition: all 0.3s ease;
+}
+.btn-white-accent:hover {
+  background-color: #e2e8f0;
+  color: #121e36;
 }
 
+.btn-navy-accent {
+  background-color: #1a2b4c;
+  color: #ffffff;
+  border: 1px solid #1a2b4c;
+}
+.btn-navy-accent:hover {
+  background-color: #121e36;
+  color: #ffffff;
+}
+
+/* Profile User Button */
 .btn-user-profile {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: rgba(255, 255, 255, 0.08);
   transition: all 0.2s ease;
   cursor: pointer;
 }
-
 .btn-user-profile:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: rgba(255, 255, 255, 0.18);
 }
 
 .avatar-sm {
-  width: 30px;
-  height: 30px;
-  font-size: 0.85rem;
+  width: 32px;
+  height: 32px;
+  font-size: 0.9rem;
 }
+
+.fs-7 { font-size: 0.85rem; }
+.fs-xs { font-size: 0.72rem; }
+.tracking-wide { letter-spacing: 0.05em; }
 
 .style-role {
   font-size: 0.65rem;
   padding: 2px 6px;
-}
-
-.fs-xs {
-  font-size: 0.72rem;
 }
 
 .transition-icon {
@@ -399,7 +411,7 @@ export default {
 .custom-dropdown-menu .dropdown-item {
   white-space: nowrap;
   font-size: 0.88rem;
-  color: #334155;
+  color: #1a2b4c;
   transition: all 0.15s ease;
 }
 

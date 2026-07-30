@@ -1,17 +1,22 @@
 <template>
-  <div class="container mt-4 mb-5">
+  <div class="container my-4">
     <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow border-0 rounded-3">
-          <div class="card-header bg-primary text-white py-3">
-            <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Thông Tin Cá Nhân</h4>
+      <div class="col-md-9 col-lg-8">
+        <!-- Khung Bao Trong Suốt Nổi Bật -->
+        <div class="card shadow-lg border border-light-subtle rounded-4 page-wrapper overflow-hidden">
+          
+          <div class="card-header bg-navy text-white py-3 px-4 border-0">
+            <h4 class="mb-0 fw-bold fs-5">
+              <i class="fas fa-user-edit me-2"></i>Thông Tin Cá Nhân
+            </h4>
           </div>
-          <div class="card-body p-4">
+
+          <div class="card-body p-4 p-md-5">
             
             <!-- Cảnh báo thành công / Lỗi -->
             <div 
               v-if="message" 
-              :class="['alert', isError ? 'alert-danger' : 'alert-success', 'alert-dismissible fade show']" 
+              :class="['alert', isError ? 'alert-danger' : 'alert-success', 'alert-dismissible fade show rounded-3 shadow-sm']" 
               role="alert"
             >
               <i :class="isError ? 'fas fa-exclamation-circle me-1' : 'fas fa-check-circle me-1'"></i>
@@ -23,23 +28,23 @@
               
               <!-- Họ và Tên -->
               <div class="mb-3">
-                <label class="form-label fw-bold">Họ và Tên <span class="text-danger">*</span></label>
+                <label class="form-label fw-bold text-dark">Họ và Tên <span class="text-danger">*</span></label>
                 <input 
                   type="text" 
                   v-model="user.hoTen" 
-                  class="form-control" 
+                  class="form-control rounded-3 py-2 px-3" 
                   placeholder="Nhập họ và tên"
                   required 
                 />
               </div>
 
-              <!-- Địa chỉ Email (Chỉ hiển thị đối với Độc giả, Admin/Nhân viên sẽ không thấy) -->
+              <!-- Địa chỉ Email -->
               <div class="mb-3" v-if="user.role !== 'admin' && !user.MSNV">
-                <label class="form-label fw-bold">Địa chỉ Email <span class="text-danger">*</span></label>
+                <label class="form-label fw-bold text-dark">Địa chỉ Email <span class="text-danger">*</span></label>
                 <input 
                   type="email" 
                   v-model="user.email" 
-                  class="form-control" 
+                  class="form-control rounded-3 py-2 px-3" 
                   :class="{ 'is-invalid': emailError }"
                   placeholder="example@gmail.com"
                   :required="user.role !== 'admin' && !user.MSNV"
@@ -49,55 +54,57 @@
                 </div>
               </div>
 
-              <!-- Ngày Sinh -->
-              <div class="mb-3">
-                <label class="form-label fw-bold">Ngày Sinh</label>
-                <input 
-                  type="date" 
-                  v-model="user.ngaySinh" 
-                  class="form-control" 
-                />
+              <div class="row g-3">
+                <!-- Ngày Sinh -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold text-dark">Ngày Sinh</label>
+                  <input 
+                    type="date" 
+                    v-model="user.ngaySinh" 
+                    class="form-control rounded-3 py-2 px-3" 
+                  />
+                </div>
+
+                <!-- Giới Tính -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold text-dark">Giới Tính</label>
+                  <select v-model="user.phai" class="form-select rounded-3 py-2 px-3">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                    <option value="Khác">Khác</option>
+                  </select>
+                </div>
               </div>
 
               <!-- Số Điện Thoại -->
               <div class="mb-3">
-                <label class="form-label fw-bold">Số Điện Thoại</label>
+                <label class="form-label fw-bold text-dark">Số Điện Thoại</label>
                 <input 
                   type="text" 
                   v-model="user.dienThoai" 
-                  class="form-control" 
+                  class="form-control rounded-3 py-2 px-3" 
                   placeholder="Nhập số điện thoại"
                 />
               </div>
 
               <!-- Địa Chỉ -->
-              <div class="mb-3">
-                <label class="form-label fw-bold">Địa Chỉ</label>
+              <div class="mb-4">
+                <label class="form-label fw-bold text-dark">Địa Chỉ</label>
                 <input 
                   type="text" 
                   v-model="user.diaChi" 
-                  class="form-control" 
+                  class="form-control rounded-3 py-2 px-3" 
                   placeholder="Nhập địa chỉ cư trú"
                 />
               </div>
 
-              <!-- Giới Tính -->
-              <div class="mb-3">
-                <label class="form-label fw-bold">Giới Tính</label>
-                <select v-model="user.phai" class="form-select">
-                  <option value="Nam">Nam</option>
-                  <option value="Nữ">Nữ</option>
-                  <option value="Khác">Khác</option>
-                </select>
-              </div>
-
               <!-- HÀNG NÚT BẤM -->
-              <div class="d-flex justify-content-between align-items-center mt-4">
-                <button type="button" @click="goBack" class="btn btn-outline-secondary px-4">
+              <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                <button type="button" @click="goBack" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
                   <i class="fas fa-arrow-left me-1"></i> Quay lại
                 </button>
 
-                <button type="submit" class="btn btn-primary px-4 fw-bold" :disabled="loading">
+                <button type="submit" class="btn btn-navy rounded-pill px-4 fw-bold shadow-sm text-white" :disabled="loading">
                   <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
                   <i v-else class="fas fa-save me-1"></i>
                   {{ loading ? 'Đang lưu...' : 'Cập nhật thông tin' }}
@@ -199,7 +206,7 @@ export default {
           };
         }
       } catch (err) {
-        // Bỏ qua lỗi kết nối fetch phụ
+        // Suppress fetch error
       }
     },
 
@@ -210,7 +217,6 @@ export default {
 
       const isStaffOrAdmin = this.user.role === "admin" || !!this.user.MSNV;
 
-      // Chỉ validate email khi người dùng KHÔNG PHẢI là Admin/Nhân viên
       if (!isStaffOrAdmin) {
         if (!this.user.email || !this.validateEmail(this.user.email)) {
           this.emailError = "Địa chỉ email không đúng định dạng (VD: example@gmail.com)";
@@ -256,3 +262,25 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.text-navy { color: #1a2b4c !important; }
+.bg-navy { background-color: #1a2b4c !important; }
+
+.btn-navy {
+  background-color: #1a2b4c;
+  border-color: #1a2b4c;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+.btn-navy:hover {
+  background-color: #121e36;
+  border-color: #121e36;
+  color: #ffffff;
+}
+
+.page-wrapper {
+  background-color: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+}
+</style>
