@@ -13,14 +13,14 @@
           <span class="fw-bold fs-5 text-white text-uppercase tracking-wide">LibManage</span>
         </router-link>
 
-        <!-- Menu Điều Hướng Ở Giữa -->
+        <!-- Menu Điều Hướng Ở Giữa
         <nav class="d-none d-lg-flex align-items-center gap-4 fw-bold text-uppercase fs-7">
           <router-link to="/" class="nav-link-custom active">Trang Chủ</router-link>
           <a href="#about" class="nav-link-custom">Giới Thiệu</a>
           <a href="#services" class="nav-link-custom">Dịch Vụ</a>
           <a href="#books" class="nav-link-custom">Kho Sách</a>
           <a href="#contact" class="nav-link-custom">Liên Hệ</a>
-        </nav>
+        </nav> -->
 
         <!-- Nút Hành Động Bên Phải -->
         <div class="d-flex align-items-center gap-2">

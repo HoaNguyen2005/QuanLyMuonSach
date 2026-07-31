@@ -65,10 +65,10 @@
                   />
                 </div>
 
-                <!-- Giới Tính -->
+                <!-- Giới Tính (Đã chuyển sang dùng v-model="user.gioiTinh") -->
                 <div class="col-md-6 mb-3">
                   <label class="form-label fw-bold text-dark">Giới Tính</label>
-                  <select v-model="user.phai" class="form-select rounded-3 py-2 px-3">
+                  <select v-model="user.gioiTinh" class="form-select rounded-3 py-2 px-3">
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
                     <option value="Khác">Khác</option>
@@ -136,7 +136,7 @@ export default {
         ngaySinh: "",
         dienThoai: "",
         diaChi: "",
-        phai: "Nam",
+        gioiTinh: "Nam",
         role: "docgia"
       },
       message: "",
@@ -146,6 +146,7 @@ export default {
     };
   },
   mounted() {
+    console.log("[DEBUG PROFILE] Mounting ProfileView component...");
     this.fetchProfileData();
   },
   methods: {
@@ -155,6 +156,7 @@ export default {
     },
 
     goBack() {
+      console.log("[DEBUG PROFILE] Navigating back based on role:", this.user.role);
       if (this.user.role === "admin" || this.user.MSNV) {
         this.$router.push({ name: "admin.dashboard" });
       } else {
@@ -164,8 +166,10 @@ export default {
 
     async fetchProfileData() {
       const currentUser = AuthService.getCurrentUser();
+      console.log("[DEBUG PROFILE] Fetching currentUser from AuthService:", currentUser);
 
       if (!currentUser) {
+        console.warn("[DEBUG PROFILE] No current user found. Redirecting to login...");
         this.$router.push({ name: "login" });
         return;
       }
@@ -179,18 +183,25 @@ export default {
         ngaySinh: currentUser.ngaySinh ? currentUser.ngaySinh.split('T')[0] : "",
         dienThoai: currentUser.dienThoai || currentUser.soDienThoai || currentUser.SoDienThoai || "",
         diaChi: currentUser.diaChi || currentUser.DiaChi || "",
-        phai: currentUser.phai || currentUser.Phai || currentUser.gioiTinh || "Nam",
+        gioiTinh: currentUser.gioiTinh || "Nam",
         role: isStaffOrAdmin ? "admin" : "docgia",
         MSNV: currentUser.MSNV || currentUser.msnv || ""
       };
 
       const userId = currentUser._id || currentUser.maDocGia || currentUser.MSNV || currentUser.msnv;
-      if (!userId) return;
+      if (!userId) {
+        console.warn("[DEBUG PROFILE] Missing user ID for fetching data.");
+        return;
+      }
+
+      console.log(`[DEBUG PROFILE] Fetching profile from DB for userId [${userId}] (isStaffOrAdmin: ${isStaffOrAdmin})...`);
 
       try {
         const fetchedData = isStaffOrAdmin
           ? await NhanVienService.get(userId)
           : await DocGiaService.get(userId);
+
+        console.log("[DEBUG PROFILE] Fetched profile data from server:", fetchedData);
 
         if (fetchedData) {
           const data = fetchedData.data || fetchedData;
@@ -199,14 +210,15 @@ export default {
             ...data,
             hoTen: data.hoTen || data.hoTenNV || data.HoTenNV || data.tenND || this.user.hoTen,
             email: data.email || this.user.email,
-            ngaySinh: data.ngaySinh || data.NgaySinh ? (data.ngaySinh || data.NgaySinh).split('T')[0] : this.user.ngaySinh,
+            ngaySinh: (data.ngaySinh || data.NgaySinh) ? (data.ngaySinh || data.NgaySinh).split('T')[0] : this.user.ngaySinh,
             dienThoai: data.dienThoai || data.soDienThoai || data.SoDienThoai || this.user.dienThoai,
             diaChi: data.diaChi || data.DiaChi || this.user.diaChi,
-            phai: data.phai || data.Phai || data.gioiTinh || this.user.phai
+            gioiTinh: data.gioiTinh || this.user.gioiTinh
           };
         }
+        console.log("[DEBUG PROFILE] Form mapped user data:", this.user);
       } catch (err) {
-        // Suppress fetch error
+        console.error("[DEBUG PROFILE ERROR] Error fetching profile data:", err);
       }
     },
 
@@ -220,27 +232,39 @@ export default {
       if (!isStaffOrAdmin) {
         if (!this.user.email || !this.validateEmail(this.user.email)) {
           this.emailError = "Địa chỉ email không đúng định dạng (VD: example@gmail.com)";
+          console.warn("[DEBUG PROFILE VALIDATION] Invalid email:", this.user.email);
           return;
         }
       }
 
       this.loading = true;
       const userId = this.user._id || this.user.maDocGia || this.user.MSNV || this.user.msnv;
+      const payload = {
+        ...this.user,
+        gioiTinh: this.user.gioiTinh,
+      };
+
+      console.log(`[DEBUG PROFILE] Executing updateProfile for userId [${userId}]. Payload:`, JSON.stringify(payload, null, 2));
 
       try {
         const resData = isStaffOrAdmin
-          ? await NhanVienService.update(userId, this.user)
-          : await DocGiaService.update(userId, this.user);
+          ? await NhanVienService.update(userId, payload)
+          : await DocGiaService.update(userId, payload);
+
+        console.log("[DEBUG PROFILE SUCCESS] Server response:", resData);
 
         const updatedUser = {
           ...AuthService.getCurrentUser(),
-          ...this.user,
+          ...payload,
           ...(resData.data || resData)
         };
+
         localStorage.setItem("user", JSON.stringify(updatedUser));
+        window.dispatchEvent(new Event("user-state-changed"));
 
         this.message = "Cập nhật thông tin cá nhân thành công!";
       } catch (err) {
+        console.error("[DEBUG PROFILE ERROR] Profile update failed:", err.response?.data || err);
         this.isError = true;
         this.message = err.response?.data?.message || err.message || "Cập nhật thất bại từ Server!";
       } finally {

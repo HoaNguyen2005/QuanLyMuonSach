@@ -20,7 +20,7 @@
             <div class="avatar-circle mx-auto d-flex align-items-center justify-content-center text-navy shadow-sm mb-3">
               <i class="fas fa-user fa-2x"></i>
             </div>
-            <h4 class="fw-bold text-navy mb-1">Đăng Nhập System</h4>
+            <h4 class="fw-bold text-navy mb-1">Đăng nhập</h4>
             <p class="text-muted small">Vui lòng điền thông tin tài khoản của bạn</p>
           </div>
 
@@ -33,7 +33,7 @@
                   type="text" 
                   class="form-control border-0 shadow-none bg-transparent py-2 text-navy fw-medium" 
                   v-model="credentials.tenTaiKhoan" 
-                  placeholder="TÊN TÀI KHOẢN / MSNV / MÃ ĐỘC GIẢ" 
+                  placeholder="Tên tài khoản / Mã độc giả" 
                   required 
                 />
               </div>
@@ -47,7 +47,7 @@
                   type="password" 
                   class="form-control border-0 shadow-none bg-transparent py-2 text-navy" 
                   v-model="credentials.matKhau" 
-                  placeholder="MẬT KHẨU" 
+                  placeholder="Mật khẩu" 
                   required 
                 />
               </div>
@@ -72,26 +72,20 @@
         </div>
       </div>
 
-      <!-- CỘT PHẢI: BANNER NGHỆ THUẬT -->
       <div class="auth-banner-side p-5 d-none d-md-flex flex-column justify-content-center position-relative overflow-hidden text-white">
         <div class="gradient-wave-overlay"></div>
 
         <!-- Center Welcome Text -->
         <div class="position-relative z-1 py-4">
-          <h1 class="display-4 fw-extrabold mb-3 tracking-tight">Xin Chào.</h1>
+          <h1 class="display-4 fw-extrabold mb-3 tracking-tight">Welcome.</h1>
           <p class="text-white-70 fs-6 max-w-sm font-light leading-relaxed mb-4">
             Khám phá kho tàng tri thức với hàng ngàn đầu sách hấp dẫn. Quản lý mượn trả dễ dàng, nhanh chóng và thuận tiện.
           </p>
-          <div>
-            <span class="small text-white-50">Bạn là độc giả mới? </span>
-            <router-link :to="{ name: 'register' }" class="small fw-bold text-white text-decoration-underline ms-1">Tạo tài khoản mới</router-link>
-          </div>
         </div>
       </div>
 
     </div>
 
-    <!-- BOOTSTRAP MODAL THÔNG BÁO -->
     <div class="modal fade" id="loginModal" tabindex="-1" ref="loginModalRef" data-bs-backdrop="static">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden bg-white text-center p-4">

@@ -82,7 +82,7 @@ class DocGiaService {
             ngaySinh: payload.ngaySinh,
             dienThoai: payload.dienThoai || payload.soDienThoai,
             diaChi: payload.diaChi,
-            phai: payload.phai
+            gioiTinh: payload.gioiTinh
         };
 
         const result = await this.DocGia.findOneAndUpdate(

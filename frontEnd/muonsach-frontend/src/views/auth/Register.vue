@@ -16,7 +16,7 @@
       <div class="auth-form-side bg-white p-4 p-md-5 d-flex flex-column justify-content-center">
         <div class="py-2">
           <div class="mb-3 mt-2">
-            <h4 class="fw-bold text-navy mb-1">Tạo Tài Khoản Mới</h4>
+            <h4 class="fw-bold text-navy mb-1">Tạo tài khoản mới</h4>
             <p class="text-muted small">Điền thông tin cá nhân để đăng ký tài khoản độc giả</p>
           </div>
 
@@ -117,14 +117,10 @@
 
         <!-- Center Welcome Text -->
         <div class="position-relative z-1 py-4">
-          <h1 class="display-4 fw-extrabold mb-3 tracking-tight">Tham Gia.</h1>
+          <h1 class="display-4 fw-extrabold mb-3 tracking-tight">Join Now.</h1>
           <p class="text-white-70 fs-6 max-w-sm font-light leading-relaxed mb-4">
             Trở thành thành viên để dễ dàng tra cứu kho sách phong phú, đặt mượn trực tuyến và trải nghiệm dịch vụ tiện lợi.
           </p>
-          <div>
-            <span class="small text-white-50">Đã sở hữu tài khoản? </span>
-            <router-link :to="{ name: 'login' }" class="small fw-bold text-white text-decoration-underline ms-1">Đăng nhập tại đây</router-link>
-          </div>
         </div>
       </div>
 
