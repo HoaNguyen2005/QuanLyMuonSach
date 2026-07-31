@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid py-4 px-md-5">
-    <!-- Khung Bọc Trong Suốt Tách Biệt Nền Global -->
     <div class="page-wrapper p-4 p-md-5 rounded-4 shadow-lg border">
       
       <!-- Header Section -->
@@ -205,7 +204,8 @@
 </template>
 
 <script>
-import NhanVienService from "@/services/nhanvien.service";
+// Đã sửa đường dẫn thành NhanVienService (chữ V viết hoa)
+import NhanVienService from "@/services/nhanVien.service";
 import * as bootstrap from "bootstrap";
 
 export default {
@@ -261,11 +261,13 @@ export default {
     },
 
     async fetchStaff() {
+      console.log("[DEBUG QUANLYNHANVIEN] Calling NhanVienService.getAll()...");
       try { 
         const res = await NhanVienService.getAll();
+        console.log("[DEBUG QUANLYNHANVIEN] Fetch staff success response:", res);
         this.staffList = Array.isArray(res) ? res : (res.data || []);
       } catch (error) {
-        // Suppress fetch error
+        console.error("[DEBUG QUANLYNHANVIEN ERROR] Fetch staff error:", error.response?.data || error);
       }
     },
 
@@ -286,7 +288,6 @@ export default {
 
     openModalToEdit(nv) {
       this.isEditing = true;
-      
       let formattedDate = "";
       const rawDate = nv.NgaySinh || nv.ngaySinh || nv.dateOfBirth || "";
       
@@ -340,7 +341,6 @@ export default {
 
     async saveNhanVien() {
       this.loading = true;
-
       const payload = {
         _id: this.currentNV._id,
         MSNV: this.currentNV.MSNV,
@@ -366,18 +366,25 @@ export default {
         payload.password = this.currentNV.Password.trim();
       }
 
+      console.log(`[DEBUG QUANLYNHANVIEN] Saving staff (isEditing: ${this.isEditing}). Payload:`, payload);
+
       try {
         if (this.isEditing) {
           const targetId = payload.MSNV || this.currentNV._id;
-          await NhanVienService.update(targetId, payload);
+          console.log(`[DEBUG QUANLYNHANVIEN] Updating staff ID: ${targetId}`);
+          const res = await NhanVienService.update(targetId, payload);
+          console.log("[DEBUG QUANLYNHANVIEN] Update staff success response:", res);
           this.showPopUp("Thành Công", "Cập nhật nhân viên thành công!", "success");
         } else {
-          await NhanVienService.create(payload);
+          console.log("[DEBUG QUANLYNHANVIEN] Creating new staff");
+          const res = await NhanVienService.create(payload);
+          console.log("[DEBUG QUANLYNHANVIEN] Create staff success response:", res);
           this.showPopUp("Thành Công", "Thêm nhân viên mới thành công!", "success");
         }
         this.closeModal();
         await this.fetchStaff();
       } catch (error) {
+        console.error("[DEBUG QUANLYNHANVIEN ERROR] Save staff error:", error.response?.data || error);
         const errMsg = error.response?.data?.message || error.message || "Lỗi khi lưu dữ liệu nhân viên!";
         this.showPopUp("Lỗi Hệ Thống", errMsg, "error");
       } finally { 
@@ -405,12 +412,15 @@ export default {
       const targetId = this.pendingDeleteNV.MSNV || 
                        this.pendingDeleteNV.msnv || 
                        this.pendingDeleteNV._id;
+      console.log("[DEBUG QUANLYNHANVIEN] Executing delete staff ID:", targetId);
 
       try {
-        await NhanVienService.delete(targetId);
+        const res = await NhanVienService.delete(targetId);
+        console.log("[DEBUG QUANLYNHANVIEN] Delete staff success response:", res);
         this.showPopUp("Thành Công", "Đã xóa nhân viên khỏi hệ thống!", "success");
         await this.fetchStaff();
       } catch (error) {
+        console.error("[DEBUG QUANLYNHANVIEN ERROR] Delete staff error:", error.response?.data || error);
         const errMsg = error.response?.data?.message || "Lỗi khi xóa nhân viên!";
         this.showPopUp("Lỗi Xóa", errMsg, "error");
       }

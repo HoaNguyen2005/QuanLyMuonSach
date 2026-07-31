@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import AuthService from "@/services/auth.service";
 
 const routes = [
+
   {
-    path: '/landing',
+    path: '/',
     name: 'landing',
     component: () => import("@/views/LandingView.vue")
   },
+
   // Auth
   { 
     path: "/login", 
@@ -21,7 +23,7 @@ const routes = [
 
   // --- GIAO DIỆN ĐỘC GIẢ ---
   { 
-    path: "/", 
+    path: "/home", // Chuyển từ "/" sang "/home"
     name: "reader.home", 
     component: () => import("@/views/reader/HomeView.vue") 
   },
@@ -84,28 +86,31 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const currentUser = AuthService.getCurrentUser();
   
-  console.log(`[DEBUG ROUTER] Navigating to: '${to.path}' | User:`, currentUser);
+  console.log(`[DEBUG ROUTER] Navigating to: '${to.path}' (Name: '${String(to.name)}') | User:`, currentUser);
+
+  // 1. Tự động chuyển hướng người dùng ĐÃ ĐĂNG NHẬP nếu họ cố vào trang /landing, /login, /register
+  if (currentUser && (to.name === "landing" || to.name === "login" || to.name === "register")) {
+    return next({ name: currentUser.role === "admin" ? "admin.dashboard" : "reader.home" });
+  }
+
+  // 2. Chặn Admin truy cập giao diện Độc giả
   if (currentUser && currentUser.role === "admin") {
     if (to.name === "reader.home" || to.name === "reader.sach.detail") {
-      console.warn("[DEBUG ROUTER - ADMIN DETECTED] Redirecting Admin from reader page to Admin Dashboard");
       return next({ name: "admin.dashboard" });
     }
   }
+
+  // 3. Kiểm tra Yêu cầu Xác thực (requiresAuth) & Quyền (role)
   if (to.meta.requiresAuth) {
     if (!currentUser) {
-      console.warn("[DEBUG ROUTER] Unauthorized access! Redirecting to /login");
       return next({ name: "login" });
     }
 
     if (to.meta.role && currentUser.role !== to.meta.role) {
-      console.warn(`[DEBUG ROUTER] Access denied. Required role: ${to.meta.role}, User role: ${currentUser.role}`);
       return next({ name: currentUser.role === "admin" ? "admin.dashboard" : "reader.home" });
     }
   }
-  if ((to.name === "login" || to.name === "register") && currentUser) {
-    console.log("[DEBUG ROUTER] Already logged in. Redirecting...");
-    return next({ name: currentUser.role === "admin" ? "admin.dashboard" : "reader.home" });
-  }
+
   next();
 });
 

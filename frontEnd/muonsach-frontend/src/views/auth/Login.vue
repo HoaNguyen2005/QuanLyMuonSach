@@ -5,7 +5,7 @@
       
       <!-- NÚT MŨI TÊN QUAY VỀ TRANG LANDING PAGE -->
       <router-link 
-        to="/landing" 
+        :to="{ name: 'landing' }" 
         class="btn-back-home d-flex align-items-center justify-content-center text-decoration-none shadow-sm"
         title="Quay về Trang Chủ"
       >
@@ -67,12 +67,12 @@
           <!-- Chuyển hướng Đăng Ký -->
           <div class="text-center pt-4">
             <span class="small text-muted">Chưa có tài khoản? </span>
-            <router-link to="/register" class="small fw-bold text-navy text-decoration-underline ms-1">Đăng ký ngay</router-link>
+            <router-link :to="{ name: 'register' }" class="small fw-bold text-navy text-decoration-underline ms-1">Đăng ký ngay</router-link>
           </div>
         </div>
       </div>
 
-      <!-- CỘT PHẢI: BANNER NGHỆ THUẬT (Ẩn khi kéo màn hình nhỏ dưới 768px) -->
+      <!-- CỘT PHẢI: BANNER NGHỆ THUẬT -->
       <div class="auth-banner-side p-5 d-none d-md-flex flex-column justify-content-center position-relative overflow-hidden text-white">
         <div class="gradient-wave-overlay"></div>
 
@@ -84,7 +84,7 @@
           </p>
           <div>
             <span class="small text-white-50">Bạn là độc giả mới? </span>
-            <router-link to="/register" class="small fw-bold text-white text-decoration-underline ms-1">Tạo tài khoản mới</router-link>
+            <router-link :to="{ name: 'register' }" class="small fw-bold text-white text-decoration-underline ms-1">Tạo tài khoản mới</router-link>
           </div>
         </div>
       </div>
@@ -131,7 +131,7 @@ export default {
       },
       loading: false,
       modalInstance: null,
-      redirectPath: "/",
+      redirectRoute: { name: "reader.home" },
       modalState: {
         isSuccess: true,
         title: "",
@@ -140,6 +140,7 @@ export default {
     };
   },
   mounted() {
+    console.log("[DEBUG LOGIN] Mounting LoginView component...");
     if (this.$refs.loginModalRef) {
       document.body.appendChild(this.$refs.loginModalRef);
       this.modalInstance = new bootstrap.Modal(this.$refs.loginModalRef, {
@@ -166,12 +167,14 @@ export default {
         this.modalInstance.hide();
       }
       if (this.modalState.isSuccess) {
-        this.$router.push(this.redirectPath);
+        console.log("[DEBUG LOGIN] Navigating to redirect route:", this.redirectRoute);
+        this.$router.push(this.redirectRoute);
       }
     },
 
     async handleLogin() {
       if (!this.credentials.tenTaiKhoan.trim() || !this.credentials.matKhau.trim()) {
+        console.warn("[DEBUG LOGIN VALIDATION] Missing username or password.");
         this.showModal("Thiếu thông tin!", "Vui lòng nhập Tên Tài Khoản và Mật Khẩu.", false);
         return;
       }
@@ -187,19 +190,24 @@ export default {
         MSNV: this.credentials.tenTaiKhoan
       };
 
+      console.log("[DEBUG LOGIN] Submitting login request via AuthService.login(). Payload:", payload);
+
       try {
         const response = await AuthService.login(payload);
+        console.log("[DEBUG LOGIN SUCCESS] AuthService response:", response);
 
         const resData = response.data || response;
         const userData = resData.user || resData.docGia || resData.nhanVien || resData;
 
+        console.log("[DEBUG LOGIN] Extracted userData:", userData);
         localStorage.setItem("user", JSON.stringify(userData));
         window.dispatchEvent(new Event("user-state-changed"));
 
         const displayName = userData.hoTen || userData.hoTenNV || userData.tenND || userData.tenTaiKhoan || this.credentials.tenTaiKhoan;
         const isAdminRole = userData.role === 'admin' || userData.chucVu === 'admin' || !!userData.MSNV || !!userData.chucVu;
 
-        this.redirectPath = isAdminRole ? "/admin" : "/";
+        this.redirectRoute = isAdminRole ? { name: "admin.dashboard" } : { name: "reader.home" };
+        console.log(`[DEBUG LOGIN] User identified as [${isAdminRole ? 'ADMIN' : 'READER'}]. Set redirectRoute to:`, this.redirectRoute);
 
         this.showModal(
           "Chào mừng trở lại!", 
@@ -208,6 +216,7 @@ export default {
         );
 
       } catch (error) {
+        console.error("[DEBUG LOGIN ERROR] Login failed:", error.response?.data || error);
         const errorMsg = error.response?.data?.message || "Tên tài khoản hoặc mật khẩu không chính xác!";
         this.showModal("Đăng nhập thất bại!", errorMsg, false);
       } finally {
@@ -233,7 +242,6 @@ export default {
   transform: translateY(-1px);
 }
 
-/* Nút Mũi Tên Quay Về Landing Page */
 .btn-back-home {
   position: absolute;
   top: 18px;

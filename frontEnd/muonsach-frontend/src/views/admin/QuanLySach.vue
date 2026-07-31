@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid py-4 px-md-5">
-    <!-- Khung Bọc Trong Suốt Tách Biệt Nền Global -->
     <div class="page-wrapper p-4 p-md-5 rounded-4 shadow-lg border">
       
       <!-- Header Section -->
@@ -295,11 +294,13 @@ export default {
     },
 
     async fetchBooks() {
+      console.log("[DEBUG QUANLYSACH] Fetching books via SachService.getAll()...");
       try {
         const res = await SachService.getAll();
+        console.log("[DEBUG QUANLYSACH] Fetch books success response:", res);
         this.sachList = Array.isArray(res) ? res : (res.data || []);
       } catch (error) {
-        // Suppress fetch error
+        console.error("[DEBUG QUANLYSACH ERROR] Fetch books error:", error.response?.data || error);
       }
     },
 
@@ -351,6 +352,7 @@ export default {
       }
 
       this.loading = true;
+      console.log(`[DEBUG QUANLYSACH] Saving book (isEditing: ${this.isEditing}). Form Data:`, this.currentSach);
 
       try {
         if (this.isEditing) {
@@ -362,9 +364,10 @@ export default {
             maNXB: this.currentSach.maNXB || "",
             tacGia: this.currentSach.tacGia || ""
           };
-
           const targetId = this.currentSach.maSach || this.currentSach._id;
-          await SachService.update(targetId, updatePayload);
+          console.log(`[DEBUG QUANLYSACH] Updating book ID: ${targetId} | Payload:`, updatePayload);
+          const res = await SachService.update(targetId, updatePayload);
+          console.log("[DEBUG QUANLYSACH] Update book success response:", res);
           this.showPopUp("Thành Công", "Cập nhật thông tin sách thành công!", "success");
         } else {
           const createPayload = {
@@ -376,13 +379,15 @@ export default {
             maNXB: this.currentSach.maNXB || "",
             tacGia: this.currentSach.tacGia || ""
           };
-
-          await SachService.create(createPayload);
+          console.log("[DEBUG QUANLYSACH] Creating book Payload:", createPayload);
+          const res = await SachService.create(createPayload);
+          console.log("[DEBUG QUANLYSACH] Create book success response:", res);
           this.showPopUp("Thành Công", "Thêm sách mới thành công!", "success");
         }
         this.closeModal();
         await this.fetchBooks();
       } catch (error) {
+        console.error("[DEBUG QUANLYSACH ERROR] Save book error:", error.response?.data || error);
         const errMsg = error.response?.data?.message || error.message || "Lỗi khi lưu thông tin sách!";
         this.showPopUp("Lỗi Hệ Thống", errMsg, "error");
       } finally {
@@ -408,12 +413,15 @@ export default {
       if (!this.pendingDeleteSach) return;
 
       const targetId = this.pendingDeleteSach.maSach || this.pendingDeleteSach._id;
+      console.log("[DEBUG QUANLYSACH] Executing delete book ID:", targetId);
 
       try {
-        await SachService.delete(targetId);
+        const res = await SachService.delete(targetId);
+        console.log("[DEBUG QUANLYSACH] Delete book success response:", res);
         this.showPopUp("Thành Công", "Đã xóa sách khỏi hệ thống!", "success");
         await this.fetchBooks();
       } catch (error) {
+        console.error("[DEBUG QUANLYSACH ERROR] Delete book error:", error.response?.data || error);
         const errMsg = error.response?.data?.message || "Lỗi khi xóa sách!";
         this.showPopUp("Lỗi Xóa", errMsg, "error");
       }

@@ -5,7 +5,7 @@
       
       <!-- NÚT MŨI TÊN QUAY VỀ TRANG LANDING PAGE -->
       <router-link 
-        to="/landing" 
+        :to="{ name: 'landing' }" 
         class="btn-back-home d-flex align-items-center justify-content-center text-decoration-none shadow-sm"
         title="Quay về Trang Chủ"
       >
@@ -106,12 +106,12 @@
           <!-- Chuyển hướng Đăng Nhập -->
           <div class="text-center pt-3">
             <span class="small text-muted">Đã có tài khoản? </span>
-            <router-link to="/login" class="small fw-bold text-navy text-decoration-none">Đăng nhập</router-link>
+            <router-link :to="{ name: 'login' }" class="small fw-bold text-navy text-decoration-none">Đăng nhập</router-link>
           </div>
         </div>
       </div>
 
-      <!-- CỘT PHẢI: BANNER NGHỆ THUẬT (Ẩn khi kéo màn hình nhỏ dưới 768px) -->
+      <!-- CỘT PHẢI: BANNER NGHỆ THUẬT -->
       <div class="auth-banner-side p-5 d-none d-md-flex flex-column justify-content-center position-relative overflow-hidden text-white">
         <div class="gradient-wave-overlay"></div>
 
@@ -123,7 +123,7 @@
           </p>
           <div>
             <span class="small text-white-50">Đã sở hữu tài khoản? </span>
-            <router-link to="/login" class="small fw-bold text-white text-decoration-underline ms-1">Đăng nhập tại đây</router-link>
+            <router-link :to="{ name: 'login' }" class="small fw-bold text-white text-decoration-underline ms-1">Đăng nhập tại đây</router-link>
           </div>
         </div>
       </div>
@@ -185,6 +185,7 @@ export default {
     };
   },
   mounted() {
+    console.log("[DEBUG REGISTER] Mounting RegisterView component...");
     if (this.$refs.registerModalRef) {
       document.body.appendChild(this.$refs.registerModalRef);
       this.modalInstance = new bootstrap.Modal(this.$refs.registerModalRef, {
@@ -211,23 +212,28 @@ export default {
         this.modalInstance.hide();
       }
       if (this.modalState.isSuccess) {
+        console.log("[DEBUG REGISTER] Registration success. Navigating to 'login' route...");
         this.$router.push({ name: "login" });
       }
     },
 
     validateForm() {
+      console.log("[DEBUG REGISTER] Validating registration form data:", this.formData);
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(this.formData.email)) {
+        console.warn("[DEBUG REGISTER VALIDATION] Invalid email format:", this.formData.email);
         this.showModal("Email không hợp lệ!", "Vui lòng nhập địa chỉ email chính xác.", false);
         return false;
       }
 
       if (this.formData.matKhau.length < 6) {
+        console.warn("[DEBUG REGISTER VALIDATION] Password too short. Length:", this.formData.matKhau.length);
         this.showModal("Mật khẩu quá ngắn!", "Mật khẩu phải chứa ít nhất 6 ký tự.", false);
         return false;
       }
 
       if (this.formData.matKhau !== this.formData.confirmPassword) {
+        console.warn("[DEBUG REGISTER VALIDATION] Password confirmation mismatch.");
         this.showModal("Mật khẩu không khớp!", "Mật khẩu xác nhận không trùng khớp.", false);
         return false;
       }
@@ -239,9 +245,11 @@ export default {
       if (!this.validateForm()) return;
 
       this.loading = true;
+      console.log("[DEBUG REGISTER] Submitting registration request via AuthService.register(). Payload:", JSON.stringify(this.formData, null, 2));
 
       try {
-        await AuthService.register(this.formData);
+        const response = await AuthService.register(this.formData);
+        console.log("[DEBUG REGISTER SUCCESS] Server response:", response);
 
         this.showModal(
           "Đăng Ký Thành Công!", 
@@ -250,6 +258,7 @@ export default {
         );
 
       } catch (error) {
+        console.error("[DEBUG REGISTER ERROR] Registration failed:", error.response?.data || error);
         const errorMsg = error.response?.data?.message || "Tên tài khoản hoặc Email đã tồn tại!";
         this.showModal("Đăng ký thất bại!", errorMsg, false);
       } finally {
@@ -275,7 +284,6 @@ export default {
   transform: translateY(-1px);
 }
 
-/* Nút Mũi Tên Quay Về Landing Page */
 .btn-back-home {
   position: absolute;
   top: 18px;

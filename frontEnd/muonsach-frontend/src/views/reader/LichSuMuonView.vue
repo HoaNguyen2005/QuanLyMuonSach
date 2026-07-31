@@ -38,7 +38,8 @@
         <i class="fas fa-book-open fa-3x text-muted mb-3 opacity-50"></i>
         <h5 class="fw-bold text-dark mb-2">Bạn chưa đăng ký mượn cuốn sách nào!</h5>
         <p class="text-muted small mb-4">Hãy khám phá kho sách của thư viện và chọn cho mình cuốn sách yêu thích nhé.</p>
-        <router-link to="/" class="btn btn-navy fw-bold px-4 py-2 rounded-pill shadow-sm">
+        <!-- Đã sửa router-link sang reader.home -->
+        <router-link :to="{ name: 'reader.home' }" class="btn btn-navy fw-bold px-4 py-2 rounded-pill shadow-sm">
           <i class="fas fa-search me-1"></i> Khám Phá Sách Ngay
         </router-link>
       </div>

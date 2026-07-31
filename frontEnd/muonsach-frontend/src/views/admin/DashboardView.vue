@@ -289,28 +289,36 @@ export default {
     }
   },
   async mounted() {
+    console.log("[DEBUG DASHBOARD] Initializing Admin Dashboard component...");
     await this.loadAllData();
   },
   methods: {
     async loadAllData() {
+      console.log("[DEBUG DASHBOARD] Executing loadAllData() at:", new Date().toISOString());
       await Promise.all([this.loadBorrows(), this.loadPhieuPhat()]);
     },
 
     async loadPhieuPhat() {
+      console.log("[DEBUG DASHBOARD] Fetching fine receipts via PhieuPhatService.getAll()...");
       try {
         const res = await PhieuPhatService.getAll();
+        console.log("[DEBUG DASHBOARD] PhieuPhatService.getAll() Response Data:", res);
         this.phieuPhatList = Array.isArray(res) ? res : (res.data || []);
       } catch (error) {
+        console.error("[DEBUG DASHBOARD ERROR] Error in loadPhieuPhat():", error.response?.data || error);
         this.phieuPhatList = [];
       }
     },
 
     async approveFinePayment(phieuPhatId) {
+      console.log("[DEBUG DASHBOARD] Approving fine payment ID:", phieuPhatId);
       try {
-        await PhieuPhatService.approve(phieuPhatId);
+        const res = await PhieuPhatService.approve(phieuPhatId);
+        console.log("[DEBUG DASHBOARD] PhieuPhatService.approve() Success Response:", res);
         this.showPopUp("Thành Công", "Đã xác nhận tiền phạt thành công!", "success");
         await this.loadPhieuPhat();
       } catch (error) {
+        console.error("[DEBUG DASHBOARD ERROR] Failed to approve fine payment:", error.response?.data || error);
         this.showPopUp("Lỗi Duyệt Phạt", "Không thể xác nhận tiền phạt!", "error");
       }
     },
@@ -337,30 +345,38 @@ export default {
     },
 
     async loadBorrows() {
+      console.log("[DEBUG DASHBOARD] Fetching all borrow requests via MuonSachService.getAll()...");
       try {
         const response = await MuonSachService.getAll();
+        console.log("[DEBUG DASHBOARD] MuonSachService.getAll() Response:", response);
         this.borrows = Array.isArray(response) ? response : (response.data || []);
       } catch (error) {
+        console.error("[DEBUG DASHBOARD ERROR] Error loading borrows:", error.response?.data || error);
         this.showPopUp("Lỗi Hệ Thống", "Không thể tải danh sách mượn sách!", "error");
       }
     },
 
     async approveBorrow(id) {
+      console.log("[DEBUG DASHBOARD] Approving borrow request ID:", id);
       if (!id) return;
       try {
+        let res;
         if (typeof MuonSachService.updateStatus === "function") {
-          await MuonSachService.updateStatus(id, "DA_DUYET");
+          res = await MuonSachService.updateStatus(id, "DA_DUYET");
         } else if (typeof MuonSachService.duyetMuon === "function") {
-          await MuonSachService.duyetMuon(id);
+          res = await MuonSachService.duyetMuon(id);
         }
+        console.log("[DEBUG DASHBOARD] Approve borrow success response:", res);
         this.showPopUp("Thành Công", "Đã duyệt yêu cầu mượn sách thành công!", "success");
         await this.loadBorrows();
       } catch (error) {
+        console.error("[DEBUG DASHBOARD ERROR] Approve borrow failed:", error.response?.data || error);
         this.showPopUp("Lỗi Cập Nhật", "Không thể duyệt yêu cầu mượn sách!", "error");
       }
     },
 
     openRejectConfirmModal(id) {
+      console.log("[DEBUG DASHBOARD] Opening reject confirmation modal for ID:", id);
       this.pendingRejectId = id;
       if (!this.rejectConfirmModalInstance) {
         this.rejectConfirmModalInstance = new Modal(this.$refs.rejectConfirmModal);
@@ -370,35 +386,43 @@ export default {
 
     async confirmRejectAction() {
       const id = this.pendingRejectId;
+      console.log("[DEBUG DASHBOARD] Confirming rejection for ID:", id);
       if (this.rejectConfirmModalInstance) {
         this.rejectConfirmModalInstance.hide();
       }
       if (!id) return;
 
       try {
+        let res;
         if (typeof MuonSachService.updateStatus === "function") {
-          await MuonSachService.updateStatus(id, "TU_CHOI");
+          res = await MuonSachService.updateStatus(id, "TU_CHOI");
         } else if (typeof MuonSachService.tuChoiMuon === "function") {
-          await MuonSachService.tuChoiMuon(id);
+          res = await MuonSachService.tuChoiMuon(id);
         }
+        console.log("[DEBUG DASHBOARD] Reject borrow success response:", res);
         this.showPopUp("Đã Từ Chối", "Đã từ chối yêu cầu mượn sách!", "success");
         await this.loadBorrows();
       } catch (error) {
+        console.error("[DEBUG DASHBOARD ERROR] Reject borrow failed:", error.response?.data || error);
         this.showPopUp("Lỗi Cập Nhật", "Không thể từ chối yêu cầu mượn sách!", "error");
       }
     },
 
     async confirmReturn(id) {
+      console.log("[DEBUG DASHBOARD] Confirming book return for ID:", id);
       if (!id) return;
       try {
         const payload = { 
           ngayTraThucTe: new Date().toISOString().split("T")[0],
           trangThai: "DA_TRA"
         };
-        await MuonSachService.traSach(id, payload);
+        console.log("[DEBUG DASHBOARD] TraSach Payload:", payload);
+        const res = await MuonSachService.traSach(id, payload);
+        console.log("[DEBUG DASHBOARD] TraSach success response:", res);
         this.showPopUp("Thành Công", "Đã xác nhận trả sách thành công!", "success");
         await this.loadBorrows();
       } catch (error) {
+        console.error("[DEBUG DASHBOARD ERROR] Confirm return failed:", error.response?.data || error);
         this.showPopUp("Lỗi Cập Nhật", "Không thể xác nhận trả sách!", "error");
       }
     },
@@ -420,13 +444,11 @@ export default {
 </script>
 
 <style scoped>
-/* Navy Color Classes */
 .text-navy { color: #1a2b4c !important; }
 .bg-navy { background-color: #1a2b4c !important; }
 .bg-navy-subtle { background-color: rgba(26, 43, 76, 0.1) !important; }
 .border-navy-subtle { border-color: rgba(26, 43, 76, 0.2) !important; }
 
-/* Custom Tab Active Override (Ghi đè tất cả trạng thái active của Bootstrap) */
 .nav-pills .nav-link.nav-tab-active,
 .nav-pills .show > .nav-link,
 .nav-tab-active {

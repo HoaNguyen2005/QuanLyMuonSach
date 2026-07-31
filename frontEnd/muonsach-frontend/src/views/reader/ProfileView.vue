@@ -122,6 +122,8 @@
 
 <script>
 import AuthService from "@/services/auth.service";
+import DocGiaService from "@/services/docGia.service";
+import NhanVienService from "@/services/nhanVien.service";
 
 export default {
   name: "ProfileView",
@@ -186,23 +188,21 @@ export default {
       if (!userId) return;
 
       try {
-        const endpoint = isStaffOrAdmin
-          ? `http://localhost:3000/api/nhanvien/${userId}`
-          : `http://localhost:3000/api/docgia/${userId}`;
+        const fetchedData = isStaffOrAdmin
+          ? await NhanVienService.get(userId)
+          : await DocGiaService.get(userId);
 
-        const res = await fetch(endpoint);
-        if (res.ok) {
-          const fetchedData = await res.json();
-
+        if (fetchedData) {
+          const data = fetchedData.data || fetchedData;
           this.user = {
             ...this.user,
-            ...fetchedData,
-            hoTen: fetchedData.hoTen || fetchedData.hoTenNV || fetchedData.HoTenNV || fetchedData.tenND || this.user.hoTen,
-            email: fetchedData.email || this.user.email,
-            ngaySinh: fetchedData.ngaySinh || fetchedData.NgaySinh ? (fetchedData.ngaySinh || fetchedData.NgaySinh).split('T')[0] : this.user.ngaySinh,
-            dienThoai: fetchedData.dienThoai || fetchedData.soDienThoai || fetchedData.SoDienThoai || this.user.dienThoai,
-            diaChi: fetchedData.diaChi || fetchedData.DiaChi || this.user.diaChi,
-            phai: fetchedData.phai || fetchedData.Phai || fetchedData.gioiTinh || this.user.phai
+            ...data,
+            hoTen: data.hoTen || data.hoTenNV || data.HoTenNV || data.tenND || this.user.hoTen,
+            email: data.email || this.user.email,
+            ngaySinh: data.ngaySinh || data.NgaySinh ? (data.ngaySinh || data.NgaySinh).split('T')[0] : this.user.ngaySinh,
+            dienThoai: data.dienThoai || data.soDienThoai || data.SoDienThoai || this.user.dienThoai,
+            diaChi: data.diaChi || data.DiaChi || this.user.diaChi,
+            phai: data.phai || data.Phai || data.gioiTinh || this.user.phai
           };
         }
       } catch (err) {
@@ -228,21 +228,9 @@ export default {
       const userId = this.user._id || this.user.maDocGia || this.user.MSNV || this.user.msnv;
 
       try {
-        const endpoint = isStaffOrAdmin 
-          ? `http://localhost:3000/api/nhanvien/${userId}`
-          : `http://localhost:3000/api/docgia/${userId}`;
-
-        const response = await fetch(endpoint, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(this.user)
-        });
-
-        const resData = await response.json();
-
-        if (!response.ok) {
-          throw new Error(resData.message || "Cập nhật thất bại từ Server!");
-        }
+        const resData = isStaffOrAdmin
+          ? await NhanVienService.update(userId, this.user)
+          : await DocGiaService.update(userId, this.user);
 
         const updatedUser = {
           ...AuthService.getCurrentUser(),
@@ -254,7 +242,7 @@ export default {
         this.message = "Cập nhật thông tin cá nhân thành công!";
       } catch (err) {
         this.isError = true;
-        this.message = err.message;
+        this.message = err.response?.data?.message || err.message || "Cập nhật thất bại từ Server!";
       } finally {
         this.loading = false;
       }

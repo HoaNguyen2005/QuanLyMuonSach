@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <!-- MAIN CARD THÔNG TIN SÁCH (KÍNH MỜ TRONG SUỐT) -->
+    <!-- MAIN CARD THÔNG TIN SÁCH -->
     <div class="card border border-light-subtle shadow-lg rounded-4 p-4 p-md-5 book-detail-wrapper page-wrapper position-relative">
       <div class="row g-4 align-items-center">
         
@@ -180,6 +180,10 @@
 </template>
 
 <script>
+import SachService from "@/services/sach.service";
+import MuonSachService from "@/services/muonSach.service";
+import AuthService from "@/services/auth.service";
+
 export default {
   name: "SachDetailView",
   data() {
@@ -214,9 +218,7 @@ export default {
       if (!id) return;
 
       try {
-        const response = await fetch(`http://localhost:3000/api/sach/${id}`);
-        if (!response.ok) throw new Error("Không thể tải thông tin sách");
-        const data = await response.json();
+        const data = await SachService.get(id);
         this.sach = data.data || data;
       } catch (error) {
         console.error("[DEBUG FRONTEND ERROR] Fetch Detail Error:", error);
@@ -225,18 +227,15 @@ export default {
 
     async fetchAllBooks() {
       try {
-        const response = await fetch("http://localhost:3000/api/sach");
-        if (response.ok) {
-          const data = await response.json();
-          this.allBooks = data.data || data;
-        }
+        const data = await SachService.getAll();
+        this.allBooks = data.data || data;
       } catch (error) {
         console.error("[DEBUG FRONTEND ERROR] Fetch All Books Error:", error);
       }
     },
 
     goBack() {
-      this.$router.push("/");
+      this.$router.push({ name: "reader.home" });
     },
 
     navigateBook(direction) {
@@ -258,7 +257,7 @@ export default {
       const targetId = targetBook._id || targetBook.maSach || targetBook.MaSach;
 
       if (targetId) {
-        this.$router.push(`/sach/${targetId}`);
+        this.$router.push({ name: "reader.sach.detail", params: { id: targetId } });
       }
     },
 
@@ -274,9 +273,7 @@ export default {
     async confirmBorrow() {
       this.loading = true;
 
-      const userStr = localStorage.getItem("user") || sessionStorage.getItem("user") || "{}";
-      const user = JSON.parse(userStr);
-
+      const user = AuthService.getCurrentUser() || {};
       const targetMaDocGia = user.maDocGia || user.MaDocGia || user.MSNV || user._id;
       const targetMaSach = this.getBookCode(this.sach);
 
@@ -284,7 +281,7 @@ export default {
         alert("Không tìm thấy thông tin tài khoản! Vui lòng đăng nhập lại.");
         this.loading = false;
         this.showModal = false;
-        this.$router.push("/login");
+        this.$router.push({ name: "login" });
         return;
       }
 
@@ -296,24 +293,14 @@ export default {
       };
 
       try {
-        const response = await fetch("http://localhost:3000/api/muon-sach", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const resData = await response.json();
-
-        if (response.ok) {
-          this.showModal = false;
-          alert("Gửi yêu cầu mượn sách thành công! Vui lòng chờ thủ thư phê duyệt.");
-          this.$router.push("/lich-su-muon");
-        } else {
-          alert(resData.message || "Gửi yêu cầu mượn sách thất bại!");
-        }
+        await MuonSachService.create(payload);
+        this.showModal = false;
+        alert("Gửi yêu cầu mượn sách thành công! Vui lòng chờ thủ thư phê duyệt.");
+        this.$router.push({ name: "reader.lichsu" });
       } catch (error) {
         console.error("[DEBUG FRONTEND ERROR] Submit borrow error:", error);
-        alert("Lỗi kết nối máy chủ khi mượn sách!");
+        const msg = error.response?.data?.message || "Gửi yêu cầu mượn sách thất bại!";
+        alert(msg);
       } finally {
         this.loading = false;
       }

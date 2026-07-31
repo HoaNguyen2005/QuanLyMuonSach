@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid py-4 px-md-5">
-    <!-- Khung Bọc Trong Suốt Tách Biệt Nền Global -->
     <div class="page-wrapper p-4 p-md-5 rounded-4 shadow-lg border">
       
       <!-- Header Section -->
@@ -241,11 +240,13 @@ export default {
     },
 
     async fetchNXB() {
+      console.log("[DEBUG QUANLYNXB] Calling NXBService.getAll()...");
       try {
         const res = await NXBService.getAll();
+        console.log("[DEBUG QUANLYNXB] Fetch NXB success response:", res);
         this.nxbList = Array.isArray(res) ? res : (res.data || []);
       } catch (error) {
-        // Suppress API fetch error
+        console.error("[DEBUG QUANLYNXB ERROR] Fetch NXB error:", error.response?.data || error);
       }
     },
 
@@ -290,52 +291,28 @@ export default {
         return;
       }
 
-      if (this.isEditing) {
-        const isTenExist = this.nxbList.some(
-          item => item.tenNXB.toLowerCase() === tenVal.toLowerCase() && 
-                  item._id !== this.currentNXB._id && 
-                  item.maNXB !== this.currentNXB.maNXB
-        );
-        if (isTenExist) {
-          this.showPopUp("Cảnh Báo", `Tên NXB '${tenVal}' đã tồn tại trong hệ thống!`, "error");
-          return;
-        }
-      } else {
-        const isExist = this.nxbList.some(
-          item => item.maNXB.toLowerCase() === maVal.toLowerCase() || 
-                  item.tenNXB.toLowerCase() === tenVal.toLowerCase()
-        );
-        if (isExist) {
-          this.showPopUp("Cảnh Báo", "Mã hoặc Tên NXB đã tồn tại trong hệ thống!", "error");
-          return;
-        }
-      }
-
       this.loading = true;
+      console.log(`[DEBUG QUANLYNXB] Saving NXB (isEditing: ${this.isEditing}). Data:`, this.currentNXB);
 
       try {
         if (this.isEditing) {
-          const updatePayload = {
-            tenNXB: tenVal,
-            diaChi: diaChiVal
-          };
-
+          const updatePayload = { tenNXB: tenVal, diaChi: diaChiVal };
           const targetId = this.currentNXB.maNXB || this.currentNXB._id;
-          await NXBService.update(targetId, updatePayload);
+          console.log(`[DEBUG QUANLYNXB] Updating NXB ID: ${targetId} | Payload:`, updatePayload);
+          const res = await NXBService.update(targetId, updatePayload);
+          console.log("[DEBUG QUANLYNXB] Update NXB success response:", res);
           this.showPopUp("Thành Công", "Cập nhật thông tin NXB thành công!", "success");
         } else {
-          const createPayload = {
-            maNXB: maVal,
-            tenNXB: tenVal,
-            diaChi: diaChiVal
-          };
-
-          await NXBService.create(createPayload);
+          const createPayload = { maNXB: maVal, tenNXB: tenVal, diaChi: diaChiVal };
+          console.log("[DEBUG QUANLYNXB] Creating NXB Payload:", createPayload);
+          const res = await NXBService.create(createPayload);
+          console.log("[DEBUG QUANLYNXB] Create NXB success response:", res);
           this.showPopUp("Thành Công", "Thêm nhà xuất bản mới thành công!", "success");
         }
         this.closeModal();
         await this.fetchNXB();
       } catch (error) {
+        console.error("[DEBUG QUANLYNXB ERROR] Save NXB Error:", error.response?.data || error);
         const errMsg = error.response?.data?.message || error.message || "Lỗi khi lưu NXB!";
         this.showPopUp("Lỗi Hệ Thống", errMsg, "error");
       } finally {
@@ -361,12 +338,15 @@ export default {
       if (!this.pendingDeleteNXB) return;
 
       const targetId = this.pendingDeleteNXB.maNXB || this.pendingDeleteNXB._id;
+      console.log("[DEBUG QUANLYNXB] Executing delete NXB for ID:", targetId);
 
       try {
-        await NXBService.delete(targetId);
+        const res = await NXBService.delete(targetId);
+        console.log("[DEBUG QUANLYNXB] Delete NXB success response:", res);
         this.showPopUp("Thành Công", "Đã xóa nhà xuất bản khỏi hệ thống!", "success");
         await this.fetchNXB();
       } catch (error) {
+        console.error("[DEBUG QUANLYNXB ERROR] Delete NXB error:", error.response?.data || error);
         const errMsg = error.response?.data?.message || "Lỗi khi xóa nhà xuất bản!";
         this.showPopUp("Lỗi Xóa", errMsg, "error");
       }

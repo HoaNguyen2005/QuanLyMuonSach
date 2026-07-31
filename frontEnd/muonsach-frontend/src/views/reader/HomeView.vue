@@ -174,6 +174,9 @@
 
 <script>
 import { Modal } from "bootstrap";
+import SachService from "@/services/sach.service";
+import MuonSachService from "@/services/muonSach.service";
+import AuthService from "@/services/auth.service";
 
 export default {
   name: "HomeView",
@@ -210,9 +213,7 @@ export default {
   methods: {
     async fetchBooks() {
       try {
-        const response = await fetch("http://localhost:3000/api/sach");
-        if (!response.ok) throw new Error("Lỗi tải dữ liệu");
-        const data = await response.json();
+        const data = await SachService.getAll();
         this.dsSach = Array.isArray(data) ? data : (data.data || []);
       } catch (error) {
         console.error("[DEBUG FRONTEND - HOMEVIEW] Fetch Books Error:", error);
@@ -240,12 +241,7 @@ export default {
     goToDetail(sach) {
       const id = this.getBookId(sach);
       if (!id) return;
-
-      if (this.$router.hasRoute("SachDetail")) {
-        this.$router.push({ name: "SachDetail", params: { id } });
-      } else {
-        this.$router.push(`/sach/${id}`);
-      }
+      this.$router.push({ name: "reader.sach.detail", params: { id } });
     },
 
     openBorrowModal(sach) {
@@ -257,21 +253,17 @@ export default {
     },
 
     async confirmBorrow() {
-      const userStr = localStorage.getItem("user") || sessionStorage.getItem("user") || "{}";
-      const user = JSON.parse(userStr);
-
+      const user = AuthService.getCurrentUser() || {};
       const targetMaDocGia = user.maDocGia || user.MaDocGia || user.MSNV || user._id;
       const targetMaSach = this.getBookCode(this.selectedBook);
 
       if (!targetMaDocGia) {
         if (this.borrowModalInstance) this.borrowModalInstance.hide();
-        this.$router.push("/login");
+        this.$router.push({ name: "login" });
         return;
       }
 
-      if (!targetMaSach) {
-        return;
-      }
+      if (!targetMaSach) return;
 
       this.loading = true;
       const payload = {
@@ -282,28 +274,18 @@ export default {
       };
 
       try {
-        const response = await fetch("http://localhost:3000/api/muon-sach", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        await MuonSachService.create(payload);
 
-        const resData = await response.json();
-
-        if (response.ok) {
-          if (this.borrowModalInstance) {
-            this.borrowModalInstance.hide();
-          }
-
-          if (!this.successModalInstance) {
-            this.successModalInstance = new Modal(this.$refs.successModal);
-          }
-          this.successModalInstance.show();
-
-          this.fetchBooks();
-        } else {
-          console.error("[DEBUG FRONTEND] Borrow failed:", resData.message);
+        if (this.borrowModalInstance) {
+          this.borrowModalInstance.hide();
         }
+
+        if (!this.successModalInstance) {
+          this.successModalInstance = new Modal(this.$refs.successModal);
+        }
+        this.successModalInstance.show();
+
+        this.fetchBooks();
       } catch (error) {
         console.error("[DEBUG FRONTEND] Borrow Request Error:", error);
       } finally {
@@ -315,7 +297,7 @@ export default {
       if (this.successModalInstance) {
         this.successModalInstance.hide();
       }
-      this.$router.push("/lich-su-muon");
+      this.$router.push({ name: "reader.lichsu" });
     }
   }
 };
