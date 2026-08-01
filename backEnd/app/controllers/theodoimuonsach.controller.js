@@ -4,7 +4,7 @@ const MongoDB = require("../utils/mongodb.util");
 const ApiError = require("../api-error");
 
 exports.create = async (req, res, next) => {
-    const { maDocGia, maSach, ngayMuon, ngayTraDuKien } = req.body;
+    const { maDocGia, maSach, ngayMuon, ngayTraDuKien, MSNV } = req.body;
 
     if (!maDocGia || !maSach) {
         return next(new ApiError(400, "Mã độc giả và Mã sách là bắt buộc!"));
@@ -27,6 +27,7 @@ exports.create = async (req, res, next) => {
         const payload = {
             maDocGia,
             maSach,
+            MSNV: MSNV|| null, 
             ngayMuon: ngayMuon || new Date().toISOString().split('T')[0],
             ngayTraDuKien: ngayTraDuKien || null,
             trangThai: "CHO_DUYET"
@@ -55,12 +56,13 @@ exports.findAll = async (req, res, next) => {
 
 exports.traSach = async (req, res, next) => {
     const { id } = req.params;
-    const { ngayTraThucTe } = req.body;
+    const { ngayTraThucTe, MSNV} = req.body;
     try {
         const borrowService = new TheoDoiMuonSachService(MongoDB.client);
         const sachService = new SachService(MongoDB.client);
 
-        const updatedRecord = await borrowService.updateReturnDate(id, ngayTraThucTe);
+        const staffId = MSNV || null;
+        const updatedRecord = await borrowService.updateReturnDate(id, ngayTraThucTe, staffId);
         if (!updatedRecord) {
             return next(new ApiError(404, "Không tìm thấy phiếu mượn sách!"));
         }
@@ -92,7 +94,7 @@ exports.getLichSuByDocGia = async (req, res, next) => {
 
 exports.updateTrangThai = async (req, res, next) => {
     const { id } = req.params;
-    const { trangThai } = req.body;
+    const { trangThai, MSNV } = req.body;
 
     if (!trangThai) {
         return next(new ApiError(400, "Trạng thái không được để trống!"));
@@ -108,8 +110,9 @@ exports.updateTrangThai = async (req, res, next) => {
             return next(new ApiError(404, "Không tìm thấy phiếu mượn!"));
         }
 
-        // 2. Gọi hàm updateTrangThai từ Service
-        const updatedRecord = await borrowService.updateTrangThai(id, trangThai);
+        // 2. Gọi hàm updateTrangThai truyền kèm MSNV của người duyệt
+        const staffId = MSNV || null;
+        const updatedRecord = await borrowService.updateTrangThai(id, trangThai, staffId);
 
         // 3. Nếu chuyển sang Từ chối (TU_CHOI), hoàn trả +1 số lượng sách vào kho
         if (trangThai === "TU_CHOI" && record.trangThai !== "TU_CHOI") {

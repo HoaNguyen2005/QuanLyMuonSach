@@ -123,23 +123,33 @@
       </div>
     </div>
 
-    <!-- POP-UP / MODAL XÁC NHẬN MƯỢN SÁCH -->
-    <div class="modal fade show d-block backdrop-blur" tabindex="-1" v-if="showModal">
+    <!-- 1. MODAL POP-UP XÁC NHẬN MƯỢN SÁCH (DÙNG BOOTSTRAP INSTANCE) -->
+    <div class="modal fade" id="borrowModal" tabindex="-1" aria-hidden="true" ref="borrowModal">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0 shadow-lg bg-white">
           <div class="modal-header border-0 pb-0">
             <h5 class="modal-title fw-bold text-navy">
-              <i class="fas fa-book-reader me-2"></i>Xác Nhận Mượn Sách
+              <i class="fas fa-book-reader me-2"></i>Xác nhận mượn sách
             </h5>
-            <button type="button" class="btn-close" @click="showModal = false"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body py-3">
-            <div class="alert alert-light border rounded-3 p-3 mb-3">
-              <p class="mb-1 fw-bold text-dark">{{ sach.tenSach || sach.TenSach }}</p>
-              <p class="mb-0 text-muted small">Mã sách: <strong>{{ getBookCode(sach) }}</strong></p>
+            <div class="d-flex align-items-center gap-3 mb-3 p-2 bg-light rounded-3 border">
+              <img 
+                :src="sach.hinhAnh || sach.HinhAnh || 'https://placehold.co/300x450?text=No+Cover'" 
+                style="width: 60px; height: 85px; object-fit: contain;" 
+                class="rounded border bg-white shadow-sm"
+              />
+              <div>
+                <h6 class="fw-bold mb-1 text-navy">{{ sach.tenSach || sach.TenSach }}</h6>
+                <p class="text-muted small mb-1">Mã sách: <strong>{{ getBookCode(sach) }}</strong></p>
+                <span class="badge bg-white text-dark border">
+                  Còn lại: {{ getAvailableQuantity(sach) }} quyển
+                </span>
+              </div>
             </div>
-            
-            <ul class="list-group list-group-flush small">
+
+            <ul class="list-group list-group-flush small border-top pt-2">
               <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
                 <span class="text-muted">Ngày mượn:</span>
                 <span class="fw-bold">{{ formatDate(minDate) }}</span>
@@ -154,12 +164,39 @@
             </p>
           </div>
           <div class="modal-footer border-0 pt-0 gap-2">
-            <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold border" @click="showModal = false">
-              Hủy
-            </button>
-            <button type="button" class="btn btn-navy rounded-pill px-4 fw-bold shadow-sm" @click="confirmBorrow" :disabled="loading">
+            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+            <button 
+              type="button" 
+              class="btn btn-navy rounded-pill px-4 fw-bold shadow-sm" 
+              @click="confirmBorrow" 
+              :disabled="loading"
+            >
               <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
-              {{ loading ? 'Đang gửi...' : 'Xác Nhận Mượn' }}
+              <span>{{ loading ? 'Đang gửi...' : 'Xác nhận mượn' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MODAL POP-UP THÔNG BÁO THÀNH CÔNG (DÙNG BOOTSTRAP INSTANCE) -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" ref="successModal">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3 bg-white">
+          <div class="modal-body">
+            <div class="text-success mb-3">
+              <i class="fas fa-check-circle fa-4x"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Gửi Yêu Cầu Thành Công!</h5>
+            <p class="text-muted small mb-4">
+              Yêu cầu mượn sách của bạn đã được ghi nhận. Vui lòng chờ thủ thư phê duyệt.
+            </p>
+            <button 
+              type="button" 
+              class="btn btn-success rounded-pill w-100 fw-bold py-2 shadow-sm text-white" 
+              @click="redirectToHistory"
+            >
+              Xem Lịch Sử Mượn
             </button>
           </div>
         </div>
@@ -180,6 +217,7 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 import SachService from "@/services/sach.service";
 import MuonSachService from "@/services/muonSach.service";
 import AuthService from "@/services/auth.service";
@@ -196,7 +234,8 @@ export default {
       allBooks: [],
       loading: false,
       navigating: false,
-      showModal: false,
+      borrowModalInstance: null,
+      successModalInstance: null,
       minDate: today.toISOString().split('T')[0],
       ngayTraDuKien: nextWeek.toISOString().split('T')[0]
     };
@@ -209,6 +248,7 @@ export default {
     }
   },
   mounted() {
+    console.log("[DEBUG SACH_DETAIL] Component mounted for ID:", this.$route.params.id);
     this.fetchDetail();
     this.fetchAllBooks();
   },
@@ -217,11 +257,13 @@ export default {
       const id = this.$route.params.id;
       if (!id) return;
 
+      console.log(`[DEBUG SACH_DETAIL] Fetching book detail for ID: ${id}...`);
       try {
         const data = await SachService.get(id);
         this.sach = data.data || data;
+        console.log("[DEBUG SACH_DETAIL] Book detail loaded:", this.sach);
       } catch (error) {
-        console.error("[DEBUG FRONTEND ERROR] Fetch Detail Error:", error);
+        console.error("[DEBUG SACH_DETAIL ERROR] Fetch Detail Error:", error);
       }
     },
 
@@ -230,7 +272,7 @@ export default {
         const data = await SachService.getAll();
         this.allBooks = data.data || data;
       } catch (error) {
-        console.error("[DEBUG FRONTEND ERROR] Fetch All Books Error:", error);
+        console.error("[DEBUG SACH_DETAIL ERROR] Fetch All Books Error:", error);
       }
     },
 
@@ -261,30 +303,34 @@ export default {
       }
     },
 
+    // Mở Modal mượn sách chuẩn Bootstrap Instance
     openBorrowModal() {
       const currentQty = this.getAvailableQuantity(this.sach);
-      if (currentQty <= 0) {
-        alert("Sách này hiện tại đã hết!");
-        return;
+      if (currentQty <= 0) return;
+
+      console.log("[DEBUG SACH_DETAIL] Opening borrow modal via Bootstrap Instance...");
+      if (!this.borrowModalInstance) {
+        this.borrowModalInstance = new Modal(this.$refs.borrowModal);
       }
-      this.showModal = true;
+      this.borrowModalInstance.show();
     },
 
     async confirmBorrow() {
-      this.loading = true;
-
       const user = AuthService.getCurrentUser() || {};
       const targetMaDocGia = user.maDocGia || user.MaDocGia || user.MSNV || user._id;
       const targetMaSach = this.getBookCode(this.sach);
 
+      console.log("[DEBUG SACH_DETAIL] Confirming borrow for user:", targetMaDocGia, "and book:", targetMaSach);
+
       if (!targetMaDocGia) {
-        alert("Không tìm thấy thông tin tài khoản! Vui lòng đăng nhập lại.");
-        this.loading = false;
-        this.showModal = false;
+        if (this.borrowModalInstance) this.borrowModalInstance.hide();
         this.$router.push({ name: "login" });
         return;
       }
 
+      if (!targetMaSach) return;
+
+      this.loading = true;
       const payload = {
         maDocGia: targetMaDocGia,
         maSach: targetMaSach,
@@ -292,18 +338,35 @@ export default {
         ngayTraDuKien: this.ngayTraDuKien
       };
 
+      console.log("[DEBUG SACH_DETAIL] Sending payload to backend:", payload);
+
       try {
         await MuonSachService.create(payload);
-        this.showModal = false;
-        alert("Gửi yêu cầu mượn sách thành công! Vui lòng chờ thủ thư phê duyệt.");
-        this.$router.push({ name: "reader.lichsu" });
+
+        // Hide borrow modal
+        if (this.borrowModalInstance) {
+          this.borrowModalInstance.hide();
+        }
+
+        // Show success modal via Bootstrap Instance
+        if (!this.successModalInstance) {
+          this.successModalInstance = new Modal(this.$refs.successModal);
+        }
+        this.successModalInstance.show();
+
+        this.fetchDetail();
       } catch (error) {
-        console.error("[DEBUG FRONTEND ERROR] Submit borrow error:", error);
-        const msg = error.response?.data?.message || "Gửi yêu cầu mượn sách thất bại!";
-        alert(msg);
+        console.error("[DEBUG SACH_DETAIL ERROR] Borrow Request Failed:", error);
       } finally {
         this.loading = false;
       }
+    },
+
+    redirectToHistory() {
+      if (this.successModalInstance) {
+        this.successModalInstance.hide();
+      }
+      this.$router.push({ name: "reader.lichsu" });
     },
 
     getBookCode(sach) {
@@ -402,10 +465,5 @@ export default {
 .description-text {
   color: #6c757d;
   font-size: 0.9rem;
-}
-
-.backdrop-blur {
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
 }
 </style>

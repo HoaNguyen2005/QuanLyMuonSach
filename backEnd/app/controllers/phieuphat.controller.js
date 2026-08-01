@@ -44,13 +44,14 @@ exports.findAll = async (req, res, next) => {
 exports.approve = async (req, res, next) => {
   try {
     const phieuPhatService = new PhieuPhatService(MongoDB.client);
-    const document = await phieuPhatService.approve(req.params.id);
+    const staffId = req.body?.MSNV || null;
+    const document = await phieuPhatService.approve(req.params.id, staffId);
 
     if (!document) {
       return next(new ApiError(404, "Không tìm thấy phiếu phạt!"));
     }
 
-    console.log("[DEBUG BACKEND] Approved successfully ID:", req.params.id);
+    console.log(`[DEBUG BACKEND] Approved successfully ID: ${req.params.id} by MSNV: ${staffId}`);
     return res.send({ message: "Đã xác nhận thanh toán tiền phạt thành công!", data: document });
   } catch (error) {
     console.error("[DEBUG BACKEND ERROR] Approve Error:", error);

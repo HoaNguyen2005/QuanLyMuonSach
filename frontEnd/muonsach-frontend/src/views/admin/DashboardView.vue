@@ -251,6 +251,7 @@
 import { Modal } from "bootstrap";
 import MuonSachService from "@/services/muonSach.service";
 import PhieuPhatService from "@/services/phieuPhat.service";
+import AuthService from "@/services/auth.service";
 
 export default {
   name: "AdminDashboard",
@@ -293,6 +294,19 @@ export default {
     await this.loadAllData();
   },
   methods: {
+    getStaffInfo() {
+      const user = AuthService.getCurrentUser() || JSON.parse(localStorage.getItem("user") || "{}");
+      console.log("[DEBUG DASHBOARD] Current user object in localStorage:", user);
+      const staffId = user.MSNV || user.msnv || user.maNV || user.maNhanVien || user._id || null;
+      console.log("[DEBUG DASHBOARD] Detected Staff MSNV:", staffId);
+
+      return {
+        MSNV: staffId ? String(staffId).trim() : null,
+        msnv: staffId ? String(staffId).trim() : null,
+        maNhanVien: staffId ? String(staffId).trim() : null
+      };
+    },
+
     async loadAllData() {
       console.log("[DEBUG DASHBOARD] Executing loadAllData() at:", new Date().toISOString());
       await Promise.all([this.loadBorrows(), this.loadPhieuPhat()]);
@@ -311,9 +325,10 @@ export default {
     },
 
     async approveFinePayment(phieuPhatId) {
-      console.log("[DEBUG DASHBOARD] Approving fine payment ID:", phieuPhatId);
+      const staff = this.getStaffInfo();
+      console.log(`[DEBUG DASHBOARD] Approving fine payment ID: ${phieuPhatId} with payload:`, staff);
       try {
-        const res = await PhieuPhatService.approve(phieuPhatId);
+        const res = await PhieuPhatService.approve(phieuPhatId, staff);
         console.log("[DEBUG DASHBOARD] PhieuPhatService.approve() Success Response:", res);
         this.showPopUp("Thành Công", "Đã xác nhận tiền phạt thành công!", "success");
         await this.loadPhieuPhat();
@@ -357,14 +372,15 @@ export default {
     },
 
     async approveBorrow(id) {
-      console.log("[DEBUG DASHBOARD] Approving borrow request ID:", id);
+      const staff = this.getStaffInfo();
+      console.log(`[DEBUG DASHBOARD] Approving borrow request ID: ${id} with staff payload:`, staff);
       if (!id) return;
       try {
         let res;
         if (typeof MuonSachService.updateStatus === "function") {
-          res = await MuonSachService.updateStatus(id, "DA_DUYET");
+          res = await MuonSachService.updateStatus(id, "DA_DUYET", staff);
         } else if (typeof MuonSachService.duyetMuon === "function") {
-          res = await MuonSachService.duyetMuon(id);
+          res = await MuonSachService.duyetMuon(id, staff);
         }
         console.log("[DEBUG DASHBOARD] Approve borrow success response:", res);
         this.showPopUp("Thành Công", "Đã duyệt yêu cầu mượn sách thành công!", "success");
@@ -386,7 +402,8 @@ export default {
 
     async confirmRejectAction() {
       const id = this.pendingRejectId;
-      console.log("[DEBUG DASHBOARD] Confirming rejection for ID:", id);
+      const staff = this.getStaffInfo();
+      console.log(`[DEBUG DASHBOARD] Confirming rejection for ID: ${id} with staff payload:`, staff);
       if (this.rejectConfirmModalInstance) {
         this.rejectConfirmModalInstance.hide();
       }
@@ -395,9 +412,9 @@ export default {
       try {
         let res;
         if (typeof MuonSachService.updateStatus === "function") {
-          res = await MuonSachService.updateStatus(id, "TU_CHOI");
+          res = await MuonSachService.updateStatus(id, "TU_CHOI", staff);
         } else if (typeof MuonSachService.tuChoiMuon === "function") {
-          res = await MuonSachService.tuChoiMuon(id);
+          res = await MuonSachService.tuChoiMuon(id, staff);
         }
         console.log("[DEBUG DASHBOARD] Reject borrow success response:", res);
         this.showPopUp("Đã Từ Chối", "Đã từ chối yêu cầu mượn sách!", "success");
@@ -409,12 +426,14 @@ export default {
     },
 
     async confirmReturn(id) {
-      console.log("[DEBUG DASHBOARD] Confirming book return for ID:", id);
+      const staff = this.getStaffInfo();
+      console.log(`[DEBUG DASHBOARD] Confirming book return for ID: ${id} with staff payload:`, staff);
       if (!id) return;
       try {
         const payload = { 
           ngayTraThucTe: new Date().toISOString().split("T")[0],
-          trangThai: "DA_TRA"
+          trangThai: "DA_TRA",
+          ...staff
         };
         console.log("[DEBUG DASHBOARD] TraSach Payload:", payload);
         const res = await MuonSachService.traSach(id, payload);

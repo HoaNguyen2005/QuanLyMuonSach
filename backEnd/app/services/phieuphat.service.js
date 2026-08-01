@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 
 class PhieuPhatService {
   constructor(client) {
+    // Đã chuẩn hóa về phieu_phat
     this.PhieuPhat = client.db().collection("phieuphat");
   }
 
@@ -10,6 +11,7 @@ class PhieuPhatService {
     const phieuPhat = {
       maPhieuMuon: payload.maPhieuMuon,
       maDocGia: payload.maDocGia,
+      MSNV: payload.MSNV || null,
       soNgayTre: Number(payload.soNgayTre),
       soTienPhat: Number(payload.soTienPhat),
       noiDungChuyenKhoan: payload.noiDungChuyenKhoan,
@@ -57,16 +59,21 @@ class PhieuPhatService {
   }
 
   // 4. Admin duyệt xác nhận đã nhận tiền
-  async approve(id) {
+  async approve(id, msnv = null) {
     const filter = {
       _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
     };
-    const update = {
-      $set: {
-        trangThai: "DA_THANH_TOAN",
-        ngayDuyet: new Date(),
-      },
+
+    const updateData = {
+      trangThai: "DA_THANH_TOAN",
+      ngayDuyet: new Date(),
     };
+
+    if (msnv) {
+      updateData.MSNV = String(msnv);
+    }
+
+    const update = { $set: updateData };
 
     const result = await this.PhieuPhat.findOneAndUpdate(filter, update, {
       returnDocument: "after",

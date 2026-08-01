@@ -2,15 +2,14 @@ const { ObjectId } = require("mongodb");
 
 class NhaXuatBanService {
     constructor(client) {
-        // Tên collection chính xác trong Compass: "nhaxuatban"
         this.Nxb = client.db().collection("nhaxuatban");
     }
 
     extractNxbData(payload) {
         const nxb = {
-            maNXB: payload.maNXB || payload.MaNXB,
-            tenNXB: payload.tenNXB || payload.TenNXB,
-            diaChi: payload.diaChi || payload.DiaChi || ""
+            maNXB: payload.maNXB ,
+            tenNXB: payload.tenNXB ,
+            diaChi: payload.diaChi || ""
         };
 
         Object.keys(nxb).forEach(

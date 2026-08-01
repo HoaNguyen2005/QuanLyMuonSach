@@ -2,17 +2,10 @@ const { ObjectId } = require("mongodb");
 
 class TheoDoiMuonSachService {
     constructor(client) {
-        // Đồng bộ tên biến collection thống nhất
         this.MuonSach = client.db().collection("theodoimuonsach");
-        console.log("\n==================================================");
-        console.log("[DEBUG SERVICE - TheoDoiMuonSachService] Initialized 'theodoimuonsach' collection handler.");
-        console.log("==================================================\n");
     }
 
     async create(payload) {
-        console.log("[DEBUG SERVICE - TheoDoiMuonSachService] Bắt đầu tạo bản ghi mượn sách...");
-        console.log("[DEBUG SERVICE - Payload nhận được]:", JSON.stringify(payload, null, 2));
-
         const ngayMuon = payload.ngayMuon ? new Date(payload.ngayMuon) : new Date();
         const ngayTraDuKien = payload.ngayTraDuKien ? new Date(payload.ngayTraDuKien) : null;
 
@@ -22,8 +15,9 @@ class TheoDoiMuonSachService {
         }
 
         const record = {
-            maDocGia: String(payload.maDocGia || payload.MaDocGia),
-            maSach: String(payload.maSach || payload.MaSach),
+            maDocGia: String(payload.maDocGia),
+            maSach: String(payload.maSach),
+            MSNV: payload.MSNV || null, 
             ngayMuon: ngayMuon,
             ngayTraDuKien: ngayTraDuKien,
             ngayTraThucTe: null,
@@ -40,14 +34,13 @@ class TheoDoiMuonSachService {
 
     async findAll() {
         console.log("[DEBUG SERVICE - TheoDoiMuonSachService] Fetching ALL borrow records...");
-        // ĐÃ SỬA: Dùng đúng this.MuonSach thay vì this.TheoDoiMuonSach
         const records = await this.MuonSach.find({}).sort({ _id: -1 }).toArray();
         console.log(`[DEBUG SERVICE SUCCESS] Total records fetched from DB: ${records.length}`);
         return records;
     }
 
-    async updateReturnDate(id, ngayTraThucTe) {
-        console.log(`[DEBUG SERVICE - TheoDoiMuonSachService] Searching and updating return date for ID: ${id}`);
+    async updateReturnDate(id, ngayTraThucTe, msnv = null) {
+        console.log(`[DEBUG SERVICE - TheoDoiMuonSachService] Searching and updating return date for ID: ${id} by MSNV: ${msnv}`);
         
         const filter = {
             $or: [
@@ -59,16 +52,18 @@ class TheoDoiMuonSachService {
         };
 
         const returnDate = ngayTraThucTe ? new Date(ngayTraThucTe) : new Date();
-        console.log(`[DEBUG SERVICE] Updating ngayTraThucTe to: ${returnDate.toISOString()}`);
+        const updateData = { 
+            ngayTraThucTe: returnDate,
+            trangThai: "DA_TRA"
+        };
+
+        if (msnv) {
+            updateData.MSNV = String(msnv);
+        }
 
         const result = await this.MuonSach.findOneAndUpdate(
             filter,
-            { 
-                $set: { 
-                    ngayTraThucTe: returnDate,
-                    trangThai: "DA_TRA"
-                } 
-            },
+            { $set: updateData },
             { returnDocument: "after" }
         );
 
@@ -80,7 +75,6 @@ class TheoDoiMuonSachService {
         console.log("\n==================================================");
         console.log(`[DEBUG SERVICE - findByDocGia] Fetching borrow history for: '${maDocGia}'`);
 
-        // Tạo danh sách các điều kiện tìm kiếm linh hoạt nhất có thể
         const matchConditions = [
             { maDocGia: String(maDocGia) },
             { MaDocGia: String(maDocGia) },
@@ -88,15 +82,12 @@ class TheoDoiMuonSachService {
             { MaDocGia: maDocGia }
         ];
 
-        console.log("[DEBUG SERVICE - findByDocGia] Match conditions:", JSON.stringify(matchConditions, null, 2));
-
         const pipeline = [
             {
                 $match: {
                     $or: matchConditions
                 }
             },
-            // Lookup thông tin sách từ collection 'sach'
             {
                 $lookup: {
                     from: "sach",
@@ -112,9 +103,6 @@ class TheoDoiMuonSachService {
         const history = await this.MuonSach.aggregate(pipeline).toArray();
 
         console.log(`[DEBUG SERVICE - findByDocGia SUCCESS] Found ${history.length} records!`);
-        if (history.length > 0) {
-            console.log("[DEBUG SERVICE - Sample Record]:", JSON.stringify(history[0], null, 2));
-        }
         console.log("==================================================\n");
 
         return history;
@@ -134,8 +122,8 @@ class TheoDoiMuonSachService {
         return record;
     }
 
-    async updateTrangThai(id, trangThai) {
-        console.log(`[DEBUG SERVICE - updateTrangThai] Updating status for ID: ${id} to '${trangThai}'`);
+    async updateTrangThai(id, trangThai, msnv = null) {
+        console.log(`[DEBUG SERVICE - updateTrangThai] Updating status for ID: ${id} to '${trangThai}' by MSNV: ${msnv}`);
         const filter = {
             $or: [
                 { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
@@ -144,9 +132,14 @@ class TheoDoiMuonSachService {
             ]
         };
 
+        const updateData = { trangThai: trangThai };
+        if (msnv) {
+            updateData.MSNV = String(msnv);
+        }
+
         const result = await this.MuonSach.findOneAndUpdate(
             filter,
-            { $set: { trangThai: trangThai } },
+            { $set: updateData },
             { returnDocument: "after" }
         );
 

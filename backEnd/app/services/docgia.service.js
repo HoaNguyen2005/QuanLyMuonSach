@@ -8,9 +8,9 @@ class DocGiaService {
     extractDocGiaData(payload) {
         const docGia = {
             maDocGia: payload.maDocGia,
-            hoTen: payload.hoTen || payload.ten,
-            tenTaiKhoan: payload.tenTaiKhoan || payload.maDocGia,
-            matKhau: payload.matKhau || payload.password,
+            hoTen: payload.hoTen,
+            tenTaiKhoan: payload.tenTaiKhoan,
+            matKhau: payload.matKhau,
             email: payload.email,
             ngaySinh: payload.ngaySinh,
             gioiTinh: payload.gioiTinh,

@@ -13,8 +13,8 @@ class PhieuPhatService {
     return (await this.api.post("/", data)).data;
   }
 
-  async approve(id) {
-    return (await this.api.put(`/${id}/approve`)).data;
+  async approve(id, data = {}) {
+    return (await this.api.put(`/${id}/approve`, data)).data;
   }
 }
 

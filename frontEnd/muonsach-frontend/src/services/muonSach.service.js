@@ -25,17 +25,18 @@ class MuonSachService {
         return res.data;
     }
 
-    async updateStatus(id, trangThai) {
-        const res = await this.api.put(`/${id}/trang-thai`, { trangThai });
+    async updateStatus(id, trangThai, extraData = {}) {
+        const payload = { trangThai, ...extraData };
+        const res = await this.api.put(`/${id}/trang-thai`, payload);
         return res.data;
     }
 
-    async duyetMuon(id) {
-        return await this.updateStatus(id, "DA_DUYET");
+    async duyetMuon(id, extraData = {}) {
+        return await this.updateStatus(id, "DA_DUYET", extraData);
     }
 
-    async tuChoiMuon(id) {
-        return await this.updateStatus(id, "TU_CHOI");
+    async tuChoiMuon(id, extraData = {}) {
+        return await this.updateStatus(id, "TU_CHOI", extraData);
     }
 }
 
