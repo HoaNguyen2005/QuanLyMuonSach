@@ -1,0 +1,84 @@
+[{
+  "_id": {
+    "$oid": "6a6e0a4603c883345ff4c06d"
+  },
+  "maPhieuMuon": "6a6e093697bacd24810dc0e9",
+  "maDocGia": "DG0002",
+  "MSNV": "NV001",
+  "soNgayTre": 1,
+  "soTienPhat": 5000,
+  "noiDungChuyenKhoan": "NOPPHAT DG0002 0DC0E9",
+  "trangThai": "DA_THANH_TOAN",
+  "ngayTao": {
+    "$date": "2026-08-01T15:01:26.413Z"
+  },
+  "ngayDuyet": {
+    "$date": "2026-08-01T15:01:36.661Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0c9e03c883345ff4c083"
+  },
+  "maPhieuMuon": "6a6e0bfa03c883345ff4c081",
+  "maDocGia": "DG0006",
+  "MSNV": "NV001",
+  "soNgayTre": 5,
+  "soTienPhat": 25000,
+  "noiDungChuyenKhoan": "NOPPHAT DG0006 F4C081",
+  "trangThai": "DA_THANH_TOAN",
+  "ngayTao": {
+    "$date": "2026-08-01T15:11:26.674Z"
+  },
+  "ngayDuyet": {
+    "$date": "2026-08-01T15:12:22.156Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0cc803c883345ff4c084"
+  },
+  "maPhieuMuon": "6a6e0b6103c883345ff4c07c",
+  "maDocGia": "DG0006",
+  "MSNV": null,
+  "soNgayTre": 12,
+  "soTienPhat": 60000,
+  "noiDungChuyenKhoan": "NOPPHAT DG0006 F4C07C",
+  "trangThai": "CHO_XAC_NHAN",
+  "ngayTao": {
+    "$date": "2026-08-01T15:12:08.021Z"
+  },
+  "ngayDuyet": null
+},
+{
+  "_id": {
+    "$oid": "6a6e0eb503c883345ff4c08d"
+  },
+  "maPhieuMuon": "6a6e0e5303c883345ff4c08a",
+  "maDocGia": "DG0002",
+  "MSNV": null,
+  "soNgayTre": 2,
+  "soTienPhat": 10000,
+  "noiDungChuyenKhoan": "NOPPHAT DG0002 F4C08A",
+  "trangThai": "CHO_XAC_NHAN",
+  "ngayTao": {
+    "$date": "2026-08-01T15:20:21.429Z"
+  },
+  "ngayDuyet": null
+},
+{
+  "_id": {
+    "$oid": "6a6e0edd03c883345ff4c08e"
+  },
+  "maPhieuMuon": "6a6e0e5b03c883345ff4c08b",
+  "maDocGia": "DG0002",
+  "MSNV": null,
+  "soNgayTre": 13,
+  "soTienPhat": 65000,
+  "noiDungChuyenKhoan": "NOPPHAT DG0002 F4C08B",
+  "trangThai": "CHO_XAC_NHAN",
+  "ngayTao": {
+    "$date": "2026-08-01T15:21:01.714Z"
+  },
+  "ngayDuyet": null
+}]

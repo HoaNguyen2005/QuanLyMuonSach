@@ -1,0 +1,1300 @@
+[{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5439"
+  },
+  "maSach": "S001",
+  "tenSach": "Mắt Biếc",
+  "donGia": 110000,
+  "soQuyen": 30,
+  "namXuatBan": 2019,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Nhật Ánh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSddy6Wa01ptzZp6mlOeegRMcipBxWWb-1QmTQFAABXZw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a543a"
+  },
+  "maSach": "S002",
+  "tenSach": "Cho Tôi Xin Một Vé Đi Tuổi Thơ",
+  "donGia": 85000,
+  "soQuyen": 35,
+  "namXuatBan": 2018,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Nhật Ánh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpSL1wAHh7u2sRE-AXnOeD48FZ2uq5BiaYNkOS2Npl3w&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a543b"
+  },
+  "maSach": "S003",
+  "tenSach": "Tôi Thấy Hoa Vàng Trên Cỏ Xanh",
+  "donGia": 125000,
+  "soQuyen": 21,
+  "namXuatBan": 2020,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Nhật Ánh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMcp9i00D4Y7v7XkoNHYVsdesqqbYtvUCjhOyl3RxqFQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a543c"
+  },
+  "maSach": "S004",
+  "tenSach": "Còn Chút Gì Để Nhớ",
+  "donGia": 78000,
+  "soQuyen": 43,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Nhật Ánh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWEliP7oO3-Tb600l_WY7XhHWgqgP-ZxjGEk9OpJr3kw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a543d"
+  },
+  "maSach": "S005",
+  "tenSach": "Cô Gái Đến Từ Hôm Qua",
+  "donGia": 90000,
+  "soQuyen": 9,
+  "namXuatBan": 2020,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Nhật Ánh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvTBCKfZMxYrnPoDDq4Bm_S_jAE2NiPd4NlzjZeam5pg&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a543e"
+  },
+  "maSach": "S006",
+  "tenSach": "Kính Vạn Hoa",
+  "donGia": 150000,
+  "soQuyen": 27,
+  "namXuatBan": 2022,
+  "maNXB": "NXB002",
+  "tacGia": "Nguyễn Nhật Ánh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcQuPe9mF3Cd396OI1PtC54ZgDU0RQy5B12PO5gSPTjA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a543f"
+  },
+  "maSach": "S007",
+  "tenSach": "Dế Mèn Phiêu Lưu Ký",
+  "donGia": 50000,
+  "soQuyen": 9,
+  "namXuatBan": 2021,
+  "maNXB": "NXB002",
+  "tacGia": "Tô Hoài",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLqO3c5DHRRhJYWi6bnyjXwdR4FS0w-frHTr0dnzWtGA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5440"
+  },
+  "maSach": "S008",
+  "tenSach": "Đất Rừng Phương Nam",
+  "donGia": 95000,
+  "soQuyen": 4,
+  "namXuatBan": 2022,
+  "maNXB": "NXB002",
+  "tacGia": "Đoàn Giỏi",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHhoDpqvzhnpPRlp8Tf4GUg4kB8qB4l_A21xS0tA5qrw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5441"
+  },
+  "maSach": "S009",
+  "tenSach": "Tuổi Thơ Dữ Dội",
+  "donGia": 135000,
+  "soQuyen": 28,
+  "namXuatBan": 2020,
+  "maNXB": "NXB002",
+  "tacGia": "Phùng Quán",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZg0Z1ClPVFqmk4wnTTtRk9bbZx4jdtTbs75nDyVm2XQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5442"
+  },
+  "maSach": "S010",
+  "tenSach": "Số Đỏ",
+  "donGia": 68000,
+  "soQuyen": 12,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Vũ Trọng Phụng",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDk3sHMz1HXPUFIUABqxTXmHMApfAmvj7ndZkFQHojLQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5443"
+  },
+  "maSach": "S011",
+  "tenSach": "Tắt Đèn",
+  "donGia": 45000,
+  "soQuyen": 8,
+  "namXuatBan": 2019,
+  "maNXB": "NXB003",
+  "tacGia": "Ngô Tất Tố",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRkeU5lL8rh45ztLCbS4xj1KKwE7UyJ3o9NrUA-lXeIA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5444"
+  },
+  "maSach": "S012",
+  "tenSach": "Truyện Kiều",
+  "donGia": 120000,
+  "soQuyen": 22,
+  "namXuatBan": 2022,
+  "maNXB": "NXB003",
+  "tacGia": "Nguyễn Du",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_KLlI2hIyocXefn5wKWbK5yWD7PmWo-MIF4pNPbzYWA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5445"
+  },
+  "maSach": "S013",
+  "tenSach": "Chí Phèo",
+  "donGia": 55000,
+  "soQuyen": 26,
+  "namXuatBan": 2020,
+  "maNXB": "NXB003",
+  "tacGia": "Nam Cao",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq2rboGYmUHuxTF9gpl1rnPVStn8GpkIJoaVf-FxWLVw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5446"
+  },
+  "maSach": "S014",
+  "tenSach": "Vang Bóng Một Thời",
+  "donGia": 75000,
+  "soQuyen": 15,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Nguyễn Tuân",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0B_nZbGhZllJKk7Nfm5LUZ4sQE6yN-xBAHjMm3DsIPw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5447"
+  },
+  "maSach": "S015",
+  "tenSach": "Tướng Về Hưu",
+  "donGia": 88000,
+  "soQuyen": 21,
+  "namXuatBan": 2022,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Huy Thiệp",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKVcLIdvLG9Ye9FrQdDm1gfSmXRARPg-UD359BEESrkA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5448"
+  },
+  "maSach": "S016",
+  "tenSach": "Nỗi Buồn Chiến Tranh",
+  "donGia": 115000,
+  "soQuyen": 11,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Bảo Ninh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_OO4WmLxp54cmp1g407__4e0lMoIh0Z8FIW1lA8MFOg&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5449"
+  },
+  "maSach": "S017",
+  "tenSach": "Búp Sen Xanh",
+  "donGia": 80000,
+  "soQuyen": 8,
+  "namXuatBan": 2020,
+  "maNXB": "NXB002",
+  "tacGia": "Sơn Tùng",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS74uOy0mZ2D_eOJQy16JVoXXgv6kmLnYI81knPsq88Rw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a544a"
+  },
+  "maSach": "S018",
+  "tenSach": "Gió Đầu Mùa",
+  "donGia": 52000,
+  "soQuyen": 27,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Thạch Lam",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrRCugSgIWUJFXb1KrTO6uRIbnIKuZpT3FWqKDG5liNA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a544b"
+  },
+  "maSach": "S019",
+  "tenSach": "Tuổi Trẻ Đáng Giá Bao Nhiêu",
+  "donGia": 72000,
+  "soQuyen": 43,
+  "namXuatBan": 2022,
+  "maNXB": "NXB006",
+  "tacGia": "Rosie Nguyễn",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1a1Y53Hk_ZbVDwOoGZtE8WVxRMEgtVCzzLt5vjXIT4g&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a544c"
+  },
+  "maSach": "S020",
+  "tenSach": "Đắc Nhân Tâm",
+  "donGia": 86000,
+  "soQuyen": 42,
+  "namXuatBan": 2023,
+  "maNXB": "NXB004",
+  "tacGia": "Dale Carnegie",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6LdO7h-XyLftfjDQZga2DEre7B5_H_YR2QGE_eZ6kw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a544d"
+  },
+  "maSach": "S021",
+  "tenSach": "Quăng Gánh Lo Đi Và Vui Sống",
+  "donGia": 92000,
+  "soQuyen": 9,
+  "namXuatBan": 2021,
+  "maNXB": "NXB004",
+  "tacGia": "Dale Carnegie",
+  "hinhAnh": "https://cdn.hstatic.net/products/200000900535/quang_ganh_lo_di_sach_bo_tui_-bia_1_9435975146764014976d57b02b27ecf0.png"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a544e"
+  },
+  "maSach": "S022",
+  "tenSach": "Khéo Ăn Khéo Nói Sẽ Có Được Thiên Hạ",
+  "donGia": 110000,
+  "soQuyen": 16,
+  "namXuatBan": 2022,
+  "maNXB": "NXB005",
+  "tacGia": "Trác Nhã",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyIAtFunir0T602pDD9cyEs9JCbOpTJX3EIvfMSHVTLw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a544f"
+  },
+  "maSach": "S023",
+  "tenSach": "Hạt Giống Tâm Hồn",
+  "donGia": 65000,
+  "soQuyen": 30,
+  "namXuatBan": 2020,
+  "maNXB": "NXB004",
+  "tacGia": "First News",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPSgnWWOysptS4r0TId4jvfCtj7dvdHRsgjfVdfHxJEA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5450"
+  },
+  "maSach": "S024",
+  "tenSach": "Đời Thay Đổi Khi Chúng Ta Thay Đổi",
+  "donGia": 70000,
+  "soQuyen": 6,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Andrew Matthews",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5GVAa2ZIqMr7sZWJql_qGnls2FW258VTKK78DDU8k3g&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5451"
+  },
+  "maSach": "S025",
+  "tenSach": "Nghệ Thuật Tư Duy Rành Mạch",
+  "donGia": 128000,
+  "soQuyen": 24,
+  "namXuatBan": 2022,
+  "maNXB": "NXB006",
+  "tacGia": "Rolf Dobelli",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfTPseBOxGV4qw_LgUmKpPnolYzXxVW-XSPFdxbva3A&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5452"
+  },
+  "maSach": "S026",
+  "tenSach": "Tư Duy Nhanh Và Chậm",
+  "donGia": 210000,
+  "soQuyen": 39,
+  "namXuatBan": 2021,
+  "maNXB": "NXB006",
+  "tacGia": "Daniel Kahneman",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe9lqguANtjGguZhzzfq2vsbfUye0XStBPmgX3hGh1ew&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5453"
+  },
+  "maSach": "S027",
+  "tenSach": "Sức Mạnh Của Hiện Tại",
+  "donGia": 130000,
+  "soQuyen": 23,
+  "namXuatBan": 2020,
+  "maNXB": "NXB004",
+  "tacGia": "Eckhart Tolle",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq8HK-M5NG5rny3nB75Azi1MMquKG8q5h6x4Z5s4SK4Q&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5454"
+  },
+  "maSach": "S028",
+  "tenSach": "Đi Tìm Lẽ Sống",
+  "donGia": 105000,
+  "soQuyen": 32,
+  "namXuatBan": 2022,
+  "maNXB": "NXB004",
+  "tacGia": "Viktor E. Frankl",
+  "hinhAnh": "https://cdn.hstatic.net/products/200001055148/di-tim-le-song-tb-2022_5fcc1ff2cb4849d9ac4d96acc7a7392b.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5455"
+  },
+  "maSach": "S029",
+  "tenSach": "Đọc Vị Bất Kỳ Ai",
+  "donGia": 89000,
+  "soQuyen": 25,
+  "namXuatBan": 2021,
+  "maNXB": "NXB007",
+  "tacGia": "David J. Lieberman",
+  "hinhAnh": "https://cdn.hstatic.net/products/200000900535/doc_vi_bat_ky_ai_de_khong_bi_loi_dung_-bia_1__tb_2025__899034494358448295b41a80dc16019e.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5456"
+  },
+  "maSach": "S030",
+  "tenSach": "Thói Quen Nguyên Tử",
+  "donGia": 189000,
+  "soQuyen": 13,
+  "namXuatBan": 2023,
+  "maNXB": "NXB006",
+  "tacGia": "James Clear",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0vV6xuU_r9YJ8N0WBu7sJBL_G2lee6E8FQ0CQbLHi8g&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5457"
+  },
+  "maSach": "S031",
+  "tenSach": "Tâm Lý Học Về Tiền",
+  "donGia": 150000,
+  "soQuyen": 19,
+  "namXuatBan": 2022,
+  "maNXB": "NXB006",
+  "tacGia": "Morgan Housel",
+  "hinhAnh": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1660682804i/57668000.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5458"
+  },
+  "maSach": "S032",
+  "tenSach": "Sức Mạnh Của Thói Quen",
+  "donGia": 140000,
+  "soQuyen": 4,
+  "namXuatBan": 2021,
+  "maNXB": "NXB007",
+  "tacGia": "Charles Duhigg",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVMRAlbAiCyVy92OjBQpijgyw0detIDYE6BV8-7BkkWQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5459"
+  },
+  "maSach": "S033",
+  "tenSach": "Chủ Nghĩa Khắc Kỷ",
+  "donGia": 135000,
+  "soQuyen": 9,
+  "namXuatBan": 2023,
+  "maNXB": "NXB013",
+  "tacGia": "William B. Irvine",
+  "hinhAnh": "https://product.hstatic.net/1000217031/product/chu_nghia_khac_ky_edit_25e9e099e2d74cd7bac8baed82be64c2_grande.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a545a"
+  },
+  "maSach": "S034",
+  "tenSach": "Nhà Giả Kim",
+  "donGia": 79000,
+  "soQuyen": 21,
+  "namXuatBan": 2023,
+  "maNXB": "NXB003",
+  "tacGia": "Paulo Coelho",
+  "hinhAnh": "https://upload.wikimedia.org/wikipedia/vi/9/9c/Nh%C3%A0_gi%E1%BA%A3_kim_%28s%C3%A1ch%29.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a545b"
+  },
+  "maSach": "S035",
+  "tenSach": "Rừng Na Uy",
+  "donGia": 145000,
+  "soQuyen": 5,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Haruki Murakami",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/1024x1024/100/363/455/products/rungnauy004-f9a8f341-50e7-47b2-bccf-6923e33c998d.jpg?v=1723778526173"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a545c"
+  },
+  "maSach": "S036",
+  "tenSach": "Tôi Là Một Con Mèo",
+  "donGia": 120000,
+  "soQuyen": 9,
+  "namXuatBan": 2020,
+  "maNXB": "NXB003",
+  "tacGia": "Natsume Soseki",
+  "hinhAnh": "https://dtv-ebook.com.vn/images/files_2/2020/toi-la-con-meo-natsume-soseki.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a545d"
+  },
+  "maSach": "S037",
+  "tenSach": "Phía Sau Nghi Can X",
+  "donGia": 109000,
+  "soQuyen": 4,
+  "namXuatBan": 2022,
+  "maNXB": "NXB003",
+  "tacGia": "Higashino Keigo",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/1024x1024/100/363/455/products/phiasaunghicanxnew01-80ba1d6b-9ecf-4695-9dc2-9f7c3d832433.jpg?v=1706084187177"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a545e"
+  },
+  "maSach": "S038",
+  "tenSach": "Điều Kỳ Diệu Ở Tiệm Bách Hóa Namiya",
+  "donGia": 115000,
+  "soQuyen": 18,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Higashino Keigo",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/1024x1024/100/363/455/products/4-d5a8a23e-1390-456c-a497-da9c488fff6a.png?v=1759391441147"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a545f"
+  },
+  "maSach": "S039",
+  "tenSach": "Bạch Dạ Hành",
+  "donGia": 160000,
+  "soQuyen": 7,
+  "namXuatBan": 2022,
+  "maNXB": "NXB003",
+  "tacGia": "Higashino Keigo",
+  "hinhAnh": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1699782695i/143449729.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5460"
+  },
+  "maSach": "S040",
+  "tenSach": "Sự Im Lặng Của Bầy Cừu",
+  "donGia": 130000,
+  "soQuyen": 36,
+  "namXuatBan": 2020,
+  "maNXB": "NXB003",
+  "tacGia": "Thomas Harris",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtu9WzA1Pb5K47JmgIttBra2jtNoM-c1QJF0FSVDiFzQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5461"
+  },
+  "maSach": "S041",
+  "tenSach": "Ông Già Và Biển Cả",
+  "donGia": 60000,
+  "soQuyen": 39,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Ernest Hemingway",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/i/m/image_177713.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5462"
+  },
+  "maSach": "S042",
+  "tenSach": "Hoàng Tử Bé",
+  "donGia": 50000,
+  "soQuyen": 8,
+  "namXuatBan": 2022,
+  "maNXB": "NXB002",
+  "tacGia": "Antoine de Saint-Exupéry",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEUfYQSCdKkdjZiYt7KLDObS5iFmo2eXvpS7VyCSLy4w&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5463"
+  },
+  "maSach": "S043",
+  "tenSach": "Hai Vạn Dặm Dưới Đáy Biển",
+  "donGia": 105000,
+  "soQuyen": 5,
+  "namXuatBan": 2021,
+  "maNXB": "NXB002",
+  "tacGia": "Jules Verne",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHkNsZukS2NiewAnVmCtYUUW6TiXuCADCAOT-LFvSK6w&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5464"
+  },
+  "maSach": "S044",
+  "tenSach": "Không Gia Đình",
+  "donGia": 165000,
+  "soQuyen": 30,
+  "namXuatBan": 2020,
+  "maNXB": "NXB002",
+  "tacGia": "Hector Malot",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKiZr8fvLImP3HBl6gguk1Rh-mvf1jYdWfVC8FxI_6Sw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5465"
+  },
+  "maSach": "S045",
+  "tenSach": "Tiếng Gọi Nơi Hoang Dã",
+  "donGia": 70000,
+  "soQuyen": 37,
+  "namXuatBan": 2021,
+  "maNXB": "NXB002",
+  "tacGia": "Jack London",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYOy8Llh9CaEOLo5-6FOIRokqiGAO-V7v2ZJRYGQkztA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5466"
+  },
+  "maSach": "S046",
+  "tenSach": "Chiến Tranh Và Hòa Bình",
+  "donGia": 320000,
+  "soQuyen": 37,
+  "namXuatBan": 2019,
+  "maNXB": "NXB003",
+  "tacGia": "Leo Tolstoy",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDuqzHPX-kWh5r6-8Y9WtoflUswtpZX0_uXPTCYfo7JA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5467"
+  },
+  "maSach": "S047",
+  "tenSach": "Tội Lỗi Và Hình Phạt",
+  "donGia": 240000,
+  "soQuyen": 30,
+  "namXuatBan": 2020,
+  "maNXB": "NXB003",
+  "tacGia": "Fyodor Dostoevsky",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpI1Dzm7q4HoXBbivD2jHmHvS565lx6O-rnCgHXzcQEw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5468"
+  },
+  "maSach": "S048",
+  "tenSach": "CuộC Săn Cừu Hoang",
+  "donGia": 135000,
+  "soQuyen": 5,
+  "namXuatBan": 2021,
+  "maNXB": "NXB003",
+  "tacGia": "Haruki Murakami",
+  "hinhAnh": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1587790427i/12007252.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5469"
+  },
+  "maSach": "S049",
+  "tenSach": "Kafka Bên Bờ Biển",
+  "donGia": 165000,
+  "soQuyen": 38,
+  "namXuatBan": 2022,
+  "maNXB": "NXB003",
+  "tacGia": "Haruki Murakami",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/1024x1024/100/363/455/products/kafkabenbobien001-6108c87f-c331-4b10-af5b-81e54f4b1bde.jpg?v=1727681752660"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a546a"
+  },
+  "maSach": "S050",
+  "tenSach": "1Q84",
+  "donGia": 280000,
+  "soQuyen": 30,
+  "namXuatBan": 2020,
+  "maNXB": "NXB003",
+  "tacGia": "Haruki Murakami",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/1024x1024/100/363/455/products/1q84-f5522e3f-8acd-45f6-a3bc-33a69e0d4d47-975482af-2655-4636-abd9-ab263756cafa.jpg?v=1768445350867"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a546b"
+  },
+  "maSach": "S051",
+  "tenSach": "Chuông Nguyện Hồn Ai",
+  "donGia": 175000,
+  "soQuyen": 14,
+  "namXuatBan": 2019,
+  "maNXB": "NXB003",
+  "tacGia": "Ernest Hemingway",
+  "hinhAnh": "https://product.hstatic.net/200000017360/product/chuongnguyen_honai_b7c88ca21f6c4a94b23b8c256fbe808a.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a546c"
+  },
+  "maSach": "S052",
+  "tenSach": "Sông Đông Êm Đềm",
+  "donGia": 290000,
+  "soQuyen": 9,
+  "namXuatBan": 2020,
+  "maNXB": "NXB003",
+  "tacGia": "Mikhail Sholokhov",
+  "hinhAnh": "https://product.hstatic.net/200000017360/product/song_dong_em_dem_tap_1_bia_tai_ban4-10-b1_bf529735f9164bbc98a4b33ffb07a007_master.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a546d"
+  },
+  "maSach": "S053",
+  "tenSach": "Cánh Đồng Bất Tận",
+  "donGia": 85000,
+  "soQuyen": 37,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Nguyễn Ngọc Tư",
+  "hinhAnh": "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_30122019_111202.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a546e"
+  },
+  "maSach": "S054",
+  "tenSach": "Dạy Con Làm Giàu",
+  "donGia": 115000,
+  "soQuyen": 20,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Robert Kiyosaki",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw2BPF6s_V-ykTBI5GdV0fUe8Ct3UA2QJkWvtqjejDiw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a546f"
+  },
+  "maSach": "S055",
+  "tenSach": "Nhà Đầu Tư Thông Thái",
+  "donGia": 250000,
+  "soQuyen": 25,
+  "namXuatBan": 2022,
+  "maNXB": "NXB004",
+  "tacGia": "Benjamin Graham",
+  "hinhAnh": "https://pos.nvncdn.com/fd5775-40602/ps/Nha-dau-tu-thong-minh-CAM-NANG-KINH-DIEN-VE-DAU-TU-GIA-TRI-CUA-BENJAMIN-GRAHAM.jpg?v=1773214380"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5470"
+  },
+  "maSach": "S056",
+  "tenSach": "Từ Tốt Đến Vĩ Đại",
+  "donGia": 180000,
+  "soQuyen": 10,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Jim Collins",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/n/x/nxbtre_full_09462021_024609_1.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5471"
+  },
+  "maSach": "S057",
+  "tenSach": "Khởi Nghiệp Tinh Gọn",
+  "donGia": 145000,
+  "soQuyen": 14,
+  "namXuatBan": 2020,
+  "maNXB": "NXB004",
+  "tacGia": "Eric Ries",
+  "hinhAnh": "https://data.tiasach.com/book/44/44-the-lean-startup-bg-06y.webp"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5472"
+  },
+  "maSach": "S058",
+  "tenSach": "Tỷ Phú Bán Giày",
+  "donGia": 135000,
+  "soQuyen": 29,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Tony Hsieh",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwkz-tWA2BeNkp1zxNPD7qiO3xrp2BgHG4g_K32WXzaA&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5473"
+  },
+  "maSach": "S059",
+  "tenSach": "Chiến Lược Đại Dương Xanh",
+  "donGia": 160000,
+  "soQuyen": 17,
+  "namXuatBan": 2022,
+  "maNXB": "NXB004",
+  "tacGia": "W. Chan Kim",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/grande/100/197/269/products/bia-chien-luoc-dai-duong-xanh-jpeg.jpg?v=1676113816667"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5474"
+  },
+  "maSach": "S060",
+  "tenSach": "Cạnh Tranh Bằng Phân Tích",
+  "donGia": 175000,
+  "soQuyen": 29,
+  "namXuatBan": 2023,
+  "maNXB": "NXB013",
+  "tacGia": "Thomas H. Davenport",
+  "hinhAnh": "https://tiemsach.org/wp-content/uploads/2023/07/Ebook-Canh-tranh-bang-phan-tich.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5475"
+  },
+  "maSach": "S061",
+  "tenSach": "Quản Trị Nhân Sự Thông Minh Bằng Dữ Liệu",
+  "donGia": 155000,
+  "soQuyen": 25,
+  "namXuatBan": 2022,
+  "maNXB": "NXB007",
+  "tacGia": "Bernard Marr",
+  "hinhAnh": "https://dtv-ebook.com.vn/images/files_2/2025/102025/quan-tri-nhan-su-thong-minh-bang-du-lieu-bernard-marr.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5476"
+  },
+  "maSach": "S062",
+  "tenSach": "Không Đến Một",
+  "donGia": 120000,
+  "soQuyen": 28,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Peter Thiel",
+  "hinhAnh": "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_23032016_040342.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5477"
+  },
+  "maSach": "S063",
+  "tenSach": "Bí Mật Tư Duy Triệu Phú",
+  "donGia": 98000,
+  "soQuyen": 6,
+  "namXuatBan": 2022,
+  "maNXB": "NXB001",
+  "tacGia": "T. Harv Eker",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqja2raa7nBHtJLfEfa_IhOB6WUYrORxAd3HfIRTfuX5ejsuAjH8XAzQw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5478"
+  },
+  "maSach": "S064",
+  "tenSach": "Harry Potter and the Philosopher's Stone",
+  "donGia": 250000,
+  "soQuyen": 17,
+  "namXuatBan": 2020,
+  "maNXB": "NXB012",
+  "tacGia": "J.K. Rowling",
+  "hinhAnh": "https://thebookland.vn/thumbnail_1200/HPAT5691.webp"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5479"
+  },
+  "maSach": "S065",
+  "tenSach": "Harry Potter and the Chamber of Secrets",
+  "donGia": 260000,
+  "soQuyen": 18,
+  "namXuatBan": 2020,
+  "maNXB": "NXB012",
+  "tacGia": "J.K. Rowling",
+  "hinhAnh": "https://thebookland.vn/thumbnail_1200/HPAT5694.webp"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a547a"
+  },
+  "maSach": "S066",
+  "tenSach": "Harry Potter and the Prisoner of Azkaban",
+  "donGia": 270000,
+  "soQuyen": 40,
+  "namXuatBan": 2021,
+  "maNXB": "NXB012",
+  "tacGia": "J.K. Rowling",
+  "hinhAnh": "https://thebookland.vn/thumbnail_1200/HPAT5697.webp"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a547b"
+  },
+  "maSach": "S067",
+  "tenSach": "Harry Potter and the Goblet of Fire",
+  "donGia": 310000,
+  "soQuyen": 34,
+  "namXuatBan": 2021,
+  "maNXB": "NXB012",
+  "tacGia": "J.K. Rowling",
+  "hinhAnh": "https://images-na.ssl-images-amazon.com/images/I/91-LL7OnDCL.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a547c"
+  },
+  "maSach": "S068",
+  "tenSach": "The Great Gatsby",
+  "donGia": 180000,
+  "soQuyen": 7,
+  "namXuatBan": 2020,
+  "maNXB": "NXB008",
+  "tacGia": "F. Scott Fitzgerald",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN-kspcbQ8hs4H4MKa_8S01tPtZZN0EVNC3z5a80i6PeqbBk_0Afxy-ac&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a547d"
+  },
+  "maSach": "S069",
+  "tenSach": "To Kill a Mockingbird",
+  "donGia": 195000,
+  "soQuyen": 42,
+  "namXuatBan": 2021,
+  "maNXB": "NXB009",
+  "tacGia": "Harper Lee",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5XYmMzM3ZNQq78NgZAo7yxsDW2kP_CZAeBCsArTvUGjycKpe2sujQNYux&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a547e"
+  },
+  "maSach": "S070",
+  "tenSach": "1984",
+  "donGia": 170000,
+  "soQuyen": 30,
+  "namXuatBan": 2022,
+  "maNXB": "NXB010",
+  "tacGia": "George Orwell",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJldupTky7274nS4mdaia0ZUg1GhBbp-WV-mc0vhxyWTyJ8FIvTEP326Mp&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a547f"
+  },
+  "maSach": "S071",
+  "tenSach": "Animal Farm",
+  "donGia": 150000,
+  "soQuyen": 7,
+  "namXuatBan": 2021,
+  "maNXB": "NXB010",
+  "tacGia": "George Orwell",
+  "hinhAnh": "https://lib.dangnho.com/wp-content/uploads/2023/03/5404425_9780241430897.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5480"
+  },
+  "maSach": "S072",
+  "tenSach": "Pride and Prejudice",
+  "donGia": 165000,
+  "soQuyen": 38,
+  "namXuatBan": 2020,
+  "maNXB": "NXB010",
+  "tacGia": "Jane Austen",
+  "hinhAnh": "https://product.hstatic.net/200000896417/product/91u4oagocfl._ac_uf1000_1000_ql80__943565ce428a49c5af808022efef64eb.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5481"
+  },
+  "maSach": "S073",
+  "tenSach": "Jane Eyre",
+  "donGia": 175000,
+  "soQuyen": 10,
+  "namXuatBan": 2021,
+  "maNXB": "NXB010",
+  "tacGia": "Charlotte Brontë",
+  "hinhAnh": "https://nxbhcm.com.vn/Image/Biasach/jane-eyre.webp"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5482"
+  },
+  "maSach": "S074",
+  "tenSach": "The Catcher in the Rye",
+  "donGia": 185000,
+  "soQuyen": 21,
+  "namXuatBan": 2020,
+  "maNXB": "NXB008",
+  "tacGia": "J.D. Salinger",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/9/7/9780316769174.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5483"
+  },
+  "maSach": "S075",
+  "tenSach": "Lord of the Flies",
+  "donGia": 160000,
+  "soQuyen": 15,
+  "namXuatBan": 2021,
+  "maNXB": "NXB010",
+  "tacGia": "William Golding",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBTsnyQIc-EuqsgbKn0q7A_W-oSOsst2SKhWBouvV01Q&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5484"
+  },
+  "maSach": "S076",
+  "tenSach": "Fahrenheit 451",
+  "donGia": 175000,
+  "soQuyen": 15,
+  "namXuatBan": 2022,
+  "maNXB": "NXB008",
+  "tacGia": "Ray Bradbury",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/1024x1024/100/363/455/products/451dof01.jpg?v=1705552115067"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5485"
+  },
+  "maSach": "S077",
+  "tenSach": "The Hobbit",
+  "donGia": 220000,
+  "soQuyen": 14,
+  "namXuatBan": 2021,
+  "maNXB": "NXB009",
+  "tacGia": "J.R.R. Tolkien",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU9HvbNWXPJU71xr1rwjFrMW8OI-ZQGurNJXxOTHiCKQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5486"
+  },
+  "maSach": "S078",
+  "tenSach": "The Fellowship of the Ring",
+  "donGia": 250000,
+  "soQuyen": 15,
+  "namXuatBan": 2021,
+  "maNXB": "NXB009",
+  "tacGia": "J.R.R. Tolkien",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP6b2ecCvZFZqCbOAW7_VXAcdpcPKHSdkVf2STncmO9CjALAvvGqI0Fkxz&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5487"
+  },
+  "maSach": "S079",
+  "tenSach": "The Two Towers",
+  "donGia": 250000,
+  "soQuyen": 23,
+  "namXuatBan": 2022,
+  "maNXB": "NXB009",
+  "tacGia": "J.R.R. Tolkien",
+  "hinhAnh": "https://cdn1.fahasa.com/media/flashmagazine/images/page_images/the_two_towers/2022_09_21_15_55_55_8-390x510.png"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5488"
+  },
+  "maSach": "S080",
+  "tenSach": "The Return of the King",
+  "donGia": 250000,
+  "soQuyen": 38,
+  "namXuatBan": 2022,
+  "maNXB": "NXB009",
+  "tacGia": "J.R.R. Tolkien",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/9/7/9780261102378.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5489"
+  },
+  "maSach": "S081",
+  "tenSach": "Angels & Demons",
+  "donGia": 210000,
+  "soQuyen": 33,
+  "namXuatBan": 2020,
+  "maNXB": "NXB008",
+  "tacGia": "Dan Brown",
+  "hinhAnh": "https://cdn.hstatic.net/products/200000896417/angels_and_demons_9f225ccd3e0d4759b170873139529e48.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a548a"
+  },
+  "maSach": "S082",
+  "tenSach": "The Da Vinci Code",
+  "donGia": 220000,
+  "soQuyen": 34,
+  "namXuatBan": 2021,
+  "maNXB": "NXB008",
+  "tacGia": "Dan Brown",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/c/c/ccc_2.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a548b"
+  },
+  "maSach": "S083",
+  "tenSach": "Clean Code",
+  "donGia": 450000,
+  "soQuyen": 40,
+  "namXuatBan": 2020,
+  "maNXB": "NXB011",
+  "tacGia": "Robert C. Martin",
+  "hinhAnh": "https://product.hstatic.net/200000273991/product/58_d061b86ab1274412a953933204357450_master.png"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a548c"
+  },
+  "maSach": "S084",
+  "tenSach": "The Pragmatic Programmer",
+  "donGia": 480000,
+  "soQuyen": 36,
+  "namXuatBan": 2021,
+  "maNXB": "NXB011",
+  "tacGia": "Andrew Hunt, David Thomas",
+  "hinhAnh": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1731525790i/60633459.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a548d"
+  },
+  "maSach": "S085",
+  "tenSach": "Design Patterns",
+  "donGia": 520000,
+  "soQuyen": 31,
+  "namXuatBan": 2019,
+  "maNXB": "NXB011",
+  "tacGia": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHPNsfX9Q9r20yDxg5Q6PAP75D8xypuL5w-E0noYOkfQ&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a548e"
+  },
+  "maSach": "S086",
+  "tenSach": "Refactoring",
+  "donGia": 490000,
+  "soQuyen": 24,
+  "namXuatBan": 2022,
+  "maNXB": "NXB011",
+  "tacGia": "Martin Fowler",
+  "hinhAnh": "https://bizweb.dktcdn.net/100/580/651/products/717daeb1183067d0ab70052d6cb6bd3436ae87687f4bc8cdc650d37893848054-1749729888262.jpg?v=1773282659197"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a548f"
+  },
+  "maSach": "S087",
+  "tenSach": "Introduction to Algorithms",
+  "donGia": 650000,
+  "soQuyen": 30,
+  "namXuatBan": 2020,
+  "maNXB": "NXB011",
+  "tacGia": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+  "hinhAnh": "https://images-na.ssl-images-amazon.com/images/I/61Pgdn8Ys-L.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5490"
+  },
+  "maSach": "S088",
+  "tenSach": "Steve Jobs",
+  "donGia": 290000,
+  "soQuyen": 40,
+  "namXuatBan": 2021,
+  "maNXB": "NXB008",
+  "tacGia": "Walter Isaacson",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSARsjwf9_4HjOPR3PqTThCrOfvv1MsQmMX1ZDrXgF8HPLPd21z_FFjknCD&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5491"
+  },
+  "maSach": "S089",
+  "tenSach": "Elon Musk",
+  "donGia": 320000,
+  "soQuyen": 21,
+  "namXuatBan": 2023,
+  "maNXB": "NXB008",
+  "tacGia": "Walter Isaacson",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/e/l/elonmusk_2.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5492"
+  },
+  "maSach": "S090",
+  "tenSach": "Sapiens: Lược Sử Loài Người",
+  "donGia": 230000,
+  "soQuyen": 18,
+  "namXuatBan": 2021,
+  "maNXB": "NXB006",
+  "tacGia": "Yuval Noah Harari",
+  "hinhAnh": "https://bizweb.dktcdn.net/100/197/269/products/sapiens-luoc-su-ve-loai-nguoi-outline-5-7-2017-02.jpg?v=1520935327270"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5493"
+  },
+  "maSach": "S091",
+  "tenSach": "Homo Deus: Lược Sử Tương Lai",
+  "donGia": 240000,
+  "soQuyen": 31,
+  "namXuatBan": 2022,
+  "maNXB": "NXB006",
+  "tacGia": "Yuval Noah Harari",
+  "hinhAnh": "https://nxbhcm.com.vn/Image/Biasach/luoc%20su%20tl%20(400%20x%20500).jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5494"
+  },
+  "maSach": "S092",
+  "tenSach": "21 Bài Học Cho Thế Kỷ 21",
+  "donGia": 220000,
+  "soQuyen": 5,
+  "namXuatBan": 2021,
+  "maNXB": "NXB006",
+  "tacGia": "Yuval Noah Harari",
+  "hinhAnh": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL4PLyjM-Zcq5T9qOlPRz7nZbtuqF53NbQXN0HVarCRw&s=10"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5495"
+  },
+  "maSach": "S093",
+  "tenSach": "Vũ Trụ Trong Vỏ Hạt Dẻ",
+  "donGia": 135000,
+  "soQuyen": 24,
+  "namXuatBan": 2020,
+  "maNXB": "NXB001",
+  "tacGia": "Stephen Hawking",
+  "hinhAnh": "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_26112017_041133.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5496"
+  },
+  "maSach": "S094",
+  "tenSach": "Lược Sử Thời Gian",
+  "donGia": 115000,
+  "soQuyen": 36,
+  "namXuatBan": 2021,
+  "maNXB": "NXB001",
+  "tacGia": "Stephen Hawking",
+  "hinhAnh": "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_20002022_040049.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5497"
+  },
+  "maSach": "S095",
+  "tenSach": "Gen: Lịch Sử Và Tương Lai Nhân Loại",
+  "donGia": 260000,
+  "soQuyen": 20,
+  "namXuatBan": 2022,
+  "maNXB": "NXB013",
+  "tacGia": "Siddhartha Mukherjee",
+  "hinhAnh": "https://www.netabooks.vn/Data/Sites/1/Product/29168/gen-lich-su-va-tuong-lai-cua-nhan-loai-01.jpg"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5498"
+  },
+  "maSach": "S096",
+  "tenSach": "Khi Hơi Thở Hóa Thinh Không",
+  "donGia": 119000,
+  "soQuyen": 44,
+  "namXuatBan": 2021,
+  "maNXB": "NXB006",
+  "tacGia": "Paul Kalanithi",
+  "hinhAnh": "https://salt.tikicdn.com/cache/w300/ts/product/1e/49/89/b5f8d27e8648948062cdf53d7b6fe0ea.png"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a5499"
+  },
+  "maSach": "S097",
+  "tenSach": "Những Kẻ Xuất Chúng",
+  "donGia": 145000,
+  "soQuyen": 24,
+  "namXuatBan": 2020,
+  "maNXB": "NXB006",
+  "tacGia": "Malcolm Gladwell",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/grande/100/197/269/products/nhung-ke-xuat-chung-outline-18-8-2022-01-2.jpg?v=1730357767780"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a549a"
+  },
+  "maSach": "S098",
+  "tenSach": "Điểm Bùng Phát",
+  "donGia": 130000,
+  "soQuyen": 36,
+  "namXuatBan": 2021,
+  "maNXB": "NXB006",
+  "tacGia": "Malcolm Gladwell",
+  "hinhAnh": "https://bizweb.dktcdn.net/thumb/large/100/197/269/products/07.png?v=1675996454153"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a549b"
+  },
+  "maSach": "S099",
+  "tenSach": "Tư Duy Như Một Kẻ Điên",
+  "donGia": 125000,
+  "soQuyen": 24,
+  "namXuatBan": 2022,
+  "maNXB": "NXB007",
+  "tacGia": "Steven D. Levitt",
+  "hinhAnh": "https://bizweb.dktcdn.net/100/197/269/products/tu-duy-nhu-mot-ke-lap-di.jpg?v=1526888876190"
+},
+{
+  "_id": {
+    "$oid": "6a6b88eadfa2ec48db2a549c"
+  },
+  "maSach": "S100",
+  "tenSach": "Kinh Tế Học Hài Hước",
+  "donGia": 110000,
+  "soQuyen": 43,
+  "namXuatBan": 2021,
+  "maNXB": "NXB007",
+  "tacGia": "Steven D. Levitt, Stephen J. Dubner",
+  "hinhAnh": "https://cdn1.fahasa.com/media/catalog/product/k/i/kinh-te-hoc-hai-huoc-outline-5-3-2016-01_1.jpg"
+}]

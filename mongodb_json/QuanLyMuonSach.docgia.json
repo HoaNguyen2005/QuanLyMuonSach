@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "6a68739cc9dd08f3e68ee4a3"
+  },
+  "maDocGia": "DG0001",
+  "hoTen": "Lê Văn Cường",
+  "tenTaiKhoan": "levancuong",
+  "matKhau": "123456",
+  "email": "levancuong123@gmail.com",
+  "ngaySinh": "2002-05-15",
+  "gioiTinh": "Nam",
+  "diaChi": "Hải Phòng, Việt Nam",
+  "dienThoai": "0124344546",
+  "trangThaiTaiKhoan": 1
+},
+{
+  "_id": {
+    "$oid": "6a68e3c3e5012ed2abcf5601"
+  },
+  "maDocGia": "DG0002",
+  "dienThoai": "0123445656",
+  "email": "test@gmail.com",
+  "hoTen": "Nguyễn Văn Test",
+  "matKhau": "123456",
+  "tenTaiKhoan": "testuser",
+  "trangThaiTaiKhoan": 1,
+  "diaChi": "Đà Nẵng, Việt Nam",
+  "gioiTinh": "Nam",
+  "ngaySinh": "2000-08-12"
+},
+{
+  "_id": {
+    "$oid": "6a6ad0ac10f4cd80aecdd411"
+  },
+  "maDocGia": "DG0005",
+  "hoTen": "Phan Văn Hoàng Phát",
+  "tenTaiKhoan": "phathoang",
+  "matKhau": "123456",
+  "email": "hoangphat@gmail.com",
+  "ngaySinh": "2005-07-01",
+  "gioiTinh": "Nam",
+  "diaChi": "21 Trần Hoàng Na, Cần Thơ",
+  "dienThoai": "09124124313",
+  "trangThaiTaiKhoan": 1
+},
+{
+  "_id": {
+    "$oid": "6a6b2f4b6e600839e775ae69"
+  },
+  "maDocGia": "DG0006",
+  "hoTen": "Phan Anh Khoa",
+  "tenTaiKhoan": "khoaphan",
+  "matKhau": "123456",
+  "email": "anhkhoa05@gmail.com",
+  "ngaySinh": "2005-07-15",
+  "gioiTinh": "Nam",
+  "diaChi": "",
+  "dienThoai": "0122322943",
+  "trangThaiTaiKhoan": 1
+}]

@@ -1,0 +1,44 @@
+[{
+  "_id": {
+    "$oid": "6a6873a5c9dd08f3e68ee4a6"
+  },
+  "MSNV": "NV001",
+  "HoTenNV": "Quản Trị Viên",
+  "Password": "adminpassword",
+  "ChucVu": "Quản lý thư viện",
+  "DiaChi": "Cần Thơ",
+  "SoDienThoai": "0909999888"
+},
+{
+  "_id": {
+    "$oid": "6a6ac7aa2b089c93129ec581"
+  },
+  "MSNV": "NV002",
+  "ChucVu": "Nhân viên",
+  "DiaChi": "Ninh Kiều, Cần Thơ",
+  "HoTenNV": "Nguyễn Hữu Thanh Hòa",
+  "Password": "123456",
+  "SoDienThoai": "0911012005"
+},
+{
+  "_id": {
+    "$oid": "6a6b536f35696e91d5d7df75"
+  },
+  "MSNV": "N003",
+  "ChucVu": "Nhân viên",
+  "DiaChi": "",
+  "HoTenNV": "Nhân viên 1",
+  "Password": "adminpassword",
+  "SoDienThoai": ""
+},
+{
+  "_id": {
+    "$oid": "6a6b54b735696e91d5d7df76"
+  },
+  "MSNV": "NV003",
+  "ChucVu": "Nhân viên",
+  "DiaChi": "",
+  "HoTenNV": "Nhân viên 2",
+  "Password": "adminpassword",
+  "SoDienThoai": "09123131321"
+}]

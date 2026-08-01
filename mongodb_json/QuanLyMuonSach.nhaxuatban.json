@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2fef"
+  },
+  "maNXB": "NXB001",
+  "tenNXB": "NXB Trẻ",
+  "diaChi": "161B Lý Chính Thắng, Phường 7, Quận 3, TP.HCM"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff0"
+  },
+  "maNXB": "NXB002",
+  "tenNXB": "NXB Kim Đồng",
+  "diaChi": "55 Quang Trung, Nguyễn Du, Hai Bà Trưng, Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff1"
+  },
+  "maNXB": "NXB003",
+  "tenNXB": "NXB Hội Nhà Văn",
+  "diaChi": "65 Nguyễn Du, Hai Bà Trưng, Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff2"
+  },
+  "maNXB": "NXB004",
+  "tenNXB": "NXB Tổng hợp TP.HCM",
+  "diaChi": "62 Nguyễn Thị Minh Khai, Phường Đa Kao, Quận 1, TP.HCM"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff3"
+  },
+  "maNXB": "NXB005",
+  "tenNXB": "NXB Phụ Nữ Việt Nam",
+  "diaChi": "39 Hàng Chuối, Phạm Đình Hổ, Hai Bà Trưng, Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff4"
+  },
+  "maNXB": "NXB006",
+  "tenNXB": "NXB Thế Giới",
+  "diaChi": "46 Trần Hưng Đạo, Hoàn Kiếm, Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff5"
+  },
+  "maNXB": "NXB007",
+  "tenNXB": "NXB Lao Động",
+  "diaChi": "175 Giảng Võ, Đống Đa, Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff6"
+  },
+  "maNXB": "NXB008",
+  "tenNXB": "Simon & Schuster",
+  "diaChi": "1230 Avenue of the Americas, New York, USA"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff7"
+  },
+  "maNXB": "NXB009",
+  "tenNXB": "HarperCollins",
+  "diaChi": "195 Broadway, New York, NY 10007, USA"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff8"
+  },
+  "maNXB": "NXB010",
+  "tenNXB": "Penguin Random House",
+  "diaChi": "1745 Broadway, New York, NY 10019, USA"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ff9"
+  },
+  "maNXB": "NXB011",
+  "tenNXB": "Oxford University Press",
+  "diaChi": "Great Clarendon Street, Oxford, UK"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ffa"
+  },
+  "maNXB": "NXB012",
+  "tenNXB": "Bloomsbury Publishing",
+  "diaChi": "50 Bedford Square, London, UK"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ffb"
+  },
+  "maNXB": "NXB013",
+  "tenNXB": "NXB Tri Thức",
+  "diaChi": "53 Nguyễn Du, Hai Bà Trưng, Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6a6a106e72ccf01f54cc2ffc"
+  },
+  "maNXB": "NXB014",
+  "tenNXB": "NXB Thanh Niên",
+  "diaChi": "64 Bà Triệu, Hoàn Kiếm, Hà Nội"
+}]

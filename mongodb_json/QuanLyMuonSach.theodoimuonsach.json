@@ -1,0 +1,592 @@
+[{
+  "_id": {
+    "$oid": "6a6e093697bacd24810dc0e9"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S003",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-09T15:01:00.977Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T14:56:54.948Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0af903c883345ff4c06e"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S001",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:04:25.745Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b0103c883345ff4c06f"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S011",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-12T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-01T15:13:03.381Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:04:33.859Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b0803c883345ff4c070"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S018",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-17T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-01T15:13:01.246Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:04:40.889Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b0c03c883345ff4c071"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S017",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-17T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:04:44.102Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b1403c883345ff4c072"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S031",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-17T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:04:52.878Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b1703c883345ff4c073"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S032",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-17T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:04:55.649Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b1a03c883345ff4c074"
+  },
+  "maDocGia": "DG0001",
+  "maSach": "S033",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-17T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:04:58.331Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b2c03c883345ff4c075"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S070",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:05:16.431Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b2e03c883345ff4c076"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S069",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:05:18.917Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b3203c883345ff4c077"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S076",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:05:22.186Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b3703c883345ff4c078"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S088",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:05:27.344Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b4103c883345ff4c079"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S057",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:05:37.460Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b4403c883345ff4c07a"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S069",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:05:40.959Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b4c03c883345ff4c07b"
+  },
+  "maDocGia": "DG0005",
+  "maSach": "S084",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:05:48.269Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b6103c883345ff4c07c"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S097",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-20T15:11:31.101Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:06:09.648Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b6403c883345ff4c07d"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S095",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:06:12.743Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b6703c883345ff4c07e"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S093",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:06:15.570Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b6b03c883345ff4c07f"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S087",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-01T15:10:08.673Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:06:19.921Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0b7903c883345ff4c080"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S086",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:06:33.134Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0bfa03c883345ff4c081"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S014",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-13T15:10:05.506Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:08:42.836Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0c0403c883345ff4c082"
+  },
+  "maDocGia": "DG0006",
+  "maSach": "S013",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-11T15:10:06.995Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:08:52.662Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0d1d03c883345ff4c085"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S016",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "TU_CHOI",
+  "created_at": {
+    "$date": "2026-08-01T15:13:33.635Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0d2703c883345ff4c086"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S009",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-01T15:18:12.781Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:13:43.289Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0e0e03c883345ff4c087"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S043",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:17:34.397Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0e1603c883345ff4c088"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S020",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:17:42.669Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0e2003c883345ff4c089"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S017",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-01T15:19:31.616Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:17:52.484Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0e5303c883345ff4c08a"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S036",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-10T15:19:21.246Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:18:43.487Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0e5b03c883345ff4c08b"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S007",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-21T15:19:22.749Z"
+  },
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-01T15:18:51.125Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a6e0e6103c883345ff4c08c"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S037",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-01T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-01T15:18:57.106Z"
+  }
+}]
