@@ -30,7 +30,7 @@ class DocGiaService {
     async create(payload) {
         console.log("[DEBUG BACKEND - DocGiaService] Creating/Updating docGia with raw payload:", JSON.stringify(payload, null, 2));
         const docGia = this.extractDocGiaData(payload);
-        
+
         const result = await this.DocGia.findOneAndUpdate(
             { maDocGia: docGia.maDocGia },
             { $set: docGia },

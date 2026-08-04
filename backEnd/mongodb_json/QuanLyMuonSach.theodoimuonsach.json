@@ -500,13 +500,14 @@
     "$date": "2026-08-01T00:00:00.000Z"
   },
   "ngayTraDuKien": {
-    "$date": "2026-08-08T00:00:00.000Z"
+    "$date": "2026-08-11T00:00:00.000Z"
   },
   "ngayTraThucTe": null,
   "trangThai": "DA_DUYET",
   "created_at": {
     "$date": "2026-08-01T15:17:42.669Z"
-  }
+  },
+  "soLanGiaHan": 1
 },
 {
   "_id": {
@@ -582,11 +583,194 @@
     "$date": "2026-08-01T00:00:00.000Z"
   },
   "ngayTraDuKien": {
-    "$date": "2026-08-08T00:00:00.000Z"
+    "$date": "2026-08-04T00:00:00.000Z"
   },
   "ngayTraThucTe": null,
   "trangThai": "DA_DUYET",
   "created_at": {
     "$date": "2026-08-01T15:18:57.106Z"
+  },
+  "soLanGiaHan": 1
+},
+{
+  "_id": {
+    "$oid": "6a71ac603962d36aa051bbf6"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S001",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:09:52.501Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71acc0bbd1d04a5b6a8490"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S017",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:11:28.517Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71af66ce397e9f2faa8bd6"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S002",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:22:46.489Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71aff8ce397e9f2faa8bd7"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S002",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:25:12.126Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71b01946e7e285badbd049"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S009",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:25:45.945Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71b02346e7e285badbd04a"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S013",
+  "MSNV": null,
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "CHO_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:25:55.560Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71b04046e7e285badbd04b"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S004",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-08T00:00:00.000Z"
+  },
+  "ngayTraThucTe": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "soLanGiaHan": 0,
+  "trangThai": "DA_TRA",
+  "created_at": {
+    "$date": "2026-08-04T09:26:24.081Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71b0aa46e7e285badbd04c"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S011",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-11T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:28:10.003Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71b0ca1702d578ddcc3a8f"
+  },
+  "maDocGia": "DG0002",
+  "maSach": "S050",
+  "MSNV": "NV001",
+  "ngayMuon": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraDuKien": {
+    "$date": "2026-08-04T00:00:00.000Z"
+  },
+  "ngayTraThucTe": null,
+  "soLanGiaHan": 0,
+  "trangThai": "DA_DUYET",
+  "created_at": {
+    "$date": "2026-08-04T09:28:42.704Z"
   }
 }]
