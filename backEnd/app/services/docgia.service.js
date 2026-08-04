@@ -93,11 +93,63 @@ class DocGiaService {
         return result;
     }
 
-    async delete(maDocGia) {
-        console.log(`[DEBUG BACKEND - DocGiaService] Deleting docGia with maDocGia: '${maDocGia}'`);
-        const result = await this.DocGia.findOneAndDelete({ maDocGia: maDocGia });
-        console.log("[DEBUG BACKEND - DocGiaService] Delete result:", JSON.stringify(result, null, 2));
+    async updateAccountStatus(maDocGia, status) {
+        console.log(`[DEBUG BACKEND - DocGiaService] Updating status of '${maDocGia}' to ${status}`);
+        const result = await this.DocGia.findOneAndUpdate(
+            { maDocGia: maDocGia },
+            { $set: { trangThaiTaiKhoan: status } },
+            { returnDocument: "after" }
+        );
         return result;
+    }
+
+    async delete(maDocGia) {
+        console.log(`[DEBUG BACKEND - DocGiaService] Deactivating docGia with maDocGia: '${maDocGia}'`);
+        const result = await this.DocGia.findOneAndUpdate(
+            { maDocGia: maDocGia },
+            { $set: { trangThaiTaiKhoan: 2 } },
+            { returnDocument: "after" }
+        );
+        console.log("[DEBUG BACKEND - DocGiaService] Deactivate result:", JSON.stringify(result, null, 2));
+        return result;
+    }
+    async checkAndLockUser(maDocGia, client) {
+        if (!client) return false;
+        try {
+            const MuonSach = client.db().collection("theodoimuonsach");
+            const PhieuPhat = client.db().collection("phieuphat");
+
+            const today = new Date();
+            const twentyDaysAgo = new Date(today.getTime() - 20 * 24 * 60 * 60 * 1000);
+
+            // Fetch borrows for this user that were expected to be returned > 20 days ago
+            const overdueBorrows = await MuonSach.find({
+                maDocGia: maDocGia,
+                ngayTraDuKien: { $lt: twentyDaysAgo }
+            }).toArray();
+
+            for (const borrow of overdueBorrows) {
+                if (borrow.trangThai !== "DA_TRA" && borrow.trangThai !== "ĐÃ TRẢ" && borrow.trangThai !== "ĐÃ_TRẢ") {
+                    // Not returned and > 20 days overdue => Lock
+                    await this.updateAccountStatus(maDocGia, 3);
+                    return true;
+                } else {
+                    // Returned, but was it late and unpaid?
+                    const phieuPhat = await PhieuPhat.findOne({
+                        maPhieuMuon: String(borrow._id)
+                    });
+                    if (phieuPhat && phieuPhat.trangThai !== "DA_THANH_TOAN") {
+                        // Unpaid fine for a book that was due > 20 days ago => Lock
+                        await this.updateAccountStatus(maDocGia, 3);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (e) {
+            console.error("[DEBUG] Error checking auto lock:", e);
+            return false;
+        }
     }
 }
 

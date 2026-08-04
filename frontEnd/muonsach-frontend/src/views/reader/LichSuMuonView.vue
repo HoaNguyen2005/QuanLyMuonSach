@@ -129,13 +129,13 @@
                     <i class="fas fa-qrcode me-1"></i> Nộp Phạt
                   </button>
 
-                  <!-- 4. Đã duyệt & chưa trả -> Hiện nút Trả Sách -->
+                  <!-- 4. Đến hạn và chưa trả -> Hiện nút Gia hạn -->
                   <button 
-                    v-else-if="isCanTraSach(item.trangThai || item.TrangThai, item.ngayTraThucTe || item.NgayTraThucTe) && !isAccountLocked" 
-                    class="btn btn-sm btn-outline-navy rounded-pill px-3 fw-bold"
-                    @click="handleTraSach(item)"
+                    v-else-if="isCanGiaHan(item) && !isAccountLocked" 
+                    class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"
+                    @click="handleGiaHan(item)"
                   >
-                    <i class="fas fa-undo me-1"></i> Trả Sách
+                    <i class="fas fa-calendar-plus me-1"></i> Gia Hạn
                   </button>
 
                   <!-- 5. Trường hợp khác -->
@@ -213,6 +213,31 @@
       </div>
     </div>
 
+    <!-- 3. MODAL XÁC NHẬN GIA HẠN -->
+    <div class="modal fade" id="confirmGiaHanModal" tabindex="-1" aria-hidden="true" ref="confirmGiaHanModalRef">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3 bg-white">
+          <div class="modal-body">
+            <div class="text-primary mb-3">
+              <i class="fas fa-question-circle fa-4x"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Xác nhận gia hạn?</h5>
+            <p class="text-muted small mb-4">Bạn có chắc chắn muốn gia hạn phiếu mượn này thêm 1 tuần không?</p>
+            <div class="d-flex gap-2 justify-content-center">
+              <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+              <button 
+                type="button" 
+                class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" 
+                @click="executeGiaHan"
+              >
+                Đồng ý
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -234,6 +259,7 @@ export default {
       currentMaDocGia: "",
       phatModalInstance: null,
       statusModalInstance: null,
+      confirmGiaHanModalInstance: null,
       statusModalTitle: "",
       statusModalMessage: "",
       statusModalType: "success",
@@ -382,27 +408,42 @@ export default {
       return diffDays > 0 ? diffDays : 0;
     },
 
-    isCanTraSach(trangThai, ngayTraThucTe) {
-      if (ngayTraThucTe) return false;
-      const st = String(trangThai || "").toUpperCase();
-      return st.includes("DA_DUYET") || st.includes("ĐÃ DUYỆT");
+    isCanGiaHan(item) {
+      if (item.ngayTraThucTe || item.NgayTraThucTe) return false;
+      const st = String(item.trangThai || item.TrangThai || "").toUpperCase();
+      if (!st.includes("DA_DUYET") && !st.includes("ĐÃ DUYỆT")) return false;
+
+      if (item.soLanGiaHan >= 1) return false;
+
+      const ngayDuKien = new Date(item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra);
+      const today = new Date();
+      
+      ngayDuKien.setHours(0,0,0,0);
+      today.setHours(0,0,0,0);
+      
+      return today >= ngayDuKien;
     },
 
-    handleTraSach(item) {
-      if (this.isAccountLocked) {
-        this.showPopUp("Tài Khoản Bị Khóa", "Bạn có khoản nộp phạt trễ quá 30 ngày chưa thanh toán!", "error");
-        return;
-      }
-
-      const ngayDuKien = item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra;
-      const treDays = this.checkTreHan(ngayDuKien, item.trangThai || item.TrangThai);
-
+    handleGiaHan(item) {
       this.selectedItem = item;
+      if (!this.confirmGiaHanModalInstance) {
+        this.confirmGiaHanModalInstance = new bootstrap.Modal(this.$refs.confirmGiaHanModalRef);
+      }
+      this.confirmGiaHanModalInstance.show();
+    },
 
-      if (treDays > 0) {
-        this.openModalNopPhat(item, treDays);
-      } else {
-        this.executeTraSach(item);
+    async executeGiaHan() {
+      if (this.confirmGiaHanModalInstance) {
+        this.confirmGiaHanModalInstance.hide();
+      }
+      const targetId = this.selectedItem._id || this.selectedItem.maPhieuMuon;
+      try {
+        await MuonSachService.giaHan(targetId);
+        this.showPopUp("Thành Công", "Đã gia hạn sách thành công!", "success");
+        await this.fetchData();
+      } catch (error) {
+        const errMsg = error.response?.data?.message || "Lỗi khi gia hạn sách!";
+        this.showPopUp("Lỗi Xử Lý", errMsg, "error");
       }
     },
 
@@ -438,19 +479,7 @@ export default {
       }
     },
 
-    async executeTraSach(item) {
-      const targetId = item._id || item.maPhieuMuon;
-      try {
-        await MuonSachService.traSach(targetId, {
-          ngayTraThucTe: new Date()
-        });
-        this.showPopUp("Thành Công", "Đã trả sách thành công!", "success");
-        await this.fetchData();
-      } catch (error) {
-        const errMsg = error.response?.data?.message || "Lỗi khi trả sách!";
-        this.showPopUp("Lỗi Xử Lý", errMsg, "error");
-      }
-    },
+
 
     formatDate(dateStr) {
       if (!dateStr) return "Chưa xác định";
@@ -478,7 +507,7 @@ export default {
       const status = String(trangThai).toUpperCase().trim();
       switch (status) {
         case "CHO_DUYET": case "CHỜ DUYỆT": return "Chờ duyệt";
-        case "DA_DUYET": case "ĐÃ DUYỆT": return "Đã duyệt";
+        case "DA_DUYET": case "ĐÃ DUYỆT": return "Đang mượn";
         case "DA_TRA": case "ĐÃ TRẢ": return "Đã trả";
         case "TU_CHOI": case "TỪ CHỐI": return "Từ chối";
         default: return trangThai;

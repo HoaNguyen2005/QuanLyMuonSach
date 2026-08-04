@@ -79,7 +79,13 @@
                   </span>
                 </td>
                 <td>
-                  <span class="badge bg-success bg-opacity-10 text-success fw-semibold px-2.5 py-1.5 rounded-pill">
+                  <span v-if="docgia.trangThaiTaiKhoan === 2" class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold px-2.5 py-1.5 rounded-pill">
+                    Ngừng hoạt động
+                  </span>
+                  <span v-else-if="docgia.trangThaiTaiKhoan === 3" class="badge bg-danger bg-opacity-10 text-danger fw-semibold px-2.5 py-1.5 rounded-pill">
+                    Bị khóa
+                  </span>
+                  <span v-else class="badge bg-success bg-opacity-10 text-success fw-semibold px-2.5 py-1.5 rounded-pill">
                     Hoạt động
                   </span>
                 </td>
@@ -88,8 +94,15 @@
                     <button class="btn btn-sm btn-outline-warning rounded-3 px-2.5 py-1 fw-bold" @click="openModalToEdit(docgia)">
                       <i class="fas fa-edit me-1"></i>Sửa
                     </button>
-                    <button class="btn btn-sm btn-outline-danger rounded-3 px-2.5 py-1 fw-bold" @click="confirmDeleteDocGia(docgia)">
-                      <i class="fas fa-trash-alt me-1"></i>Xóa
+                    <button class="btn btn-sm rounded-3 px-2.5 py-1 fw-bold" 
+                            :class="docgia.trangThaiTaiKhoan === 3 ? 'btn-outline-success' : 'btn-outline-dark'" 
+                            @click="toggleLock(docgia)"
+                            v-if="docgia.trangThaiTaiKhoan !== 2">
+                      <i :class="docgia.trangThaiTaiKhoan === 3 ? 'fas fa-unlock' : 'fas fa-lock'" class="me-1"></i>
+                      {{ docgia.trangThaiTaiKhoan === 3 ? 'Mở khóa' : 'Khóa' }}
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger rounded-3 px-2.5 py-1 fw-bold" @click="confirmDeleteDocGia(docgia)" v-if="docgia.trangThaiTaiKhoan !== 2">
+                      <i class="fas fa-ban me-1"></i>Ngừng
                     </button>
                   </div>
                 </td>
@@ -250,11 +263,11 @@
             <div class="text-warning mb-3">
               <i class="fas fa-exclamation-triangle fa-4x"></i>
             </div>
-            <h5 class="fw-bold text-dark mb-2">Xác Nhận Xóa</h5>
-            <p class="text-muted small mb-4">Bạn có chắc chắn muốn xóa độc giả <strong>{{ deletingDocGiaName }}</strong>?</p>
+            <h5 class="fw-bold text-dark mb-2">Xác Nhận Ngừng Hoạt Động</h5>
+            <p class="text-muted small mb-4">Bạn có chắc chắn muốn ngừng hoạt động tài khoản độc giả <strong>{{ deletingDocGiaName }}</strong>?</p>
             <div class="d-flex gap-2">
               <button type="button" class="btn btn-light rounded-pill flex-fill fw-bold border" data-bs-dismiss="modal">Hủy</button>
-              <button type="button" class="btn btn-danger rounded-pill flex-fill fw-bold text-white shadow-sm" @click="executeDeleteDocGia">Xóa</button>
+              <button type="button" class="btn btn-danger rounded-pill flex-fill fw-bold text-white shadow-sm" @click="executeDeleteDocGia">Ngừng hoạt động</button>
             </div>
           </div>
         </div>
@@ -449,11 +462,23 @@ export default {
 
       try {
         await DocGiaService.delete(targetId);
-        this.showPopUp("Thành Công", "Đã xóa độc giả khỏi hệ thống!", "success");
+        this.showPopUp("Thành Công", "Đã ngừng hoạt động độc giả!", "success");
         await this.fetchReaders();
       } catch (error) {
-        const errMsg = error.response?.data?.message || "Lỗi khi xóa độc giả!";
-        this.showPopUp("Lỗi Xóa", errMsg, "error");
+        const errMsg = error.response?.data?.message || "Lỗi khi ngừng hoạt động độc giả!";
+        this.showPopUp("Lỗi", errMsg, "error");
+      }
+    },
+
+    async toggleLock(docgia) {
+      const targetId = docgia.maDocGia || docgia.MaDocGia || docgia._id;
+      const newStatus = docgia.trangThaiTaiKhoan === 3 ? 1 : 3;
+      try {
+        await DocGiaService.toggleLock(targetId, newStatus);
+        this.showPopUp("Thành Công", `Đã ${newStatus === 1 ? 'mở khóa' : 'khóa'} tài khoản độc giả!`, "success");
+        await this.fetchReaders();
+      } catch (error) {
+        this.showPopUp("Lỗi Xử Lý", "Không thể cập nhật trạng thái tài khoản!", "error");
       }
     }
   },

@@ -16,4 +16,7 @@ router.route("/:id/tra-sach")
 router.route("/:id/trang-thai")
     .put(borrow.updateTrangThai);
 
+router.route("/:id/gia-han")
+    .put(borrow.giaHanSach);
+
 module.exports = router;

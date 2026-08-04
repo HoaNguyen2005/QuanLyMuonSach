@@ -29,16 +29,17 @@ class NhanVienService {
     }
 
     async find(filter) {
-        const cursor = await this.NhanVien.find(filter);
+        const query = { ...filter, deleted: { $ne: true } };
+        const cursor = await this.NhanVien.find(query);
         return await cursor.toArray();
     }
 
     async findByMSNV(msnv) {
-        return await this.NhanVien.findOne({ MSNV: msnv });
+        return await this.NhanVien.findOne({ MSNV: msnv, deleted: { $ne: true } });
     }
 
     async update(id, payload) {
-        
+
         const filter = {
             $or: [
                 { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
@@ -70,7 +71,11 @@ class NhanVienService {
     }
 
     async delete(msnv) {
-        const result = await this.NhanVien.findOneAndDelete({ MSNV: msnv });
+        const result = await this.NhanVien.findOneAndUpdate(
+            { MSNV: msnv },
+            { $set: { deleted: true } },
+            { returnDocument: "after" }
+        );
         return result;
     }
 }

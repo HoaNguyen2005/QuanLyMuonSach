@@ -33,6 +33,13 @@
         >
           Trả sách
         </button>
+        <button
+          v-if="!(item.ngayTra || item.NgayTra || item.ngayTraThucTe) && (item.soLanGiaHan === undefined || item.soLanGiaHan < 1)"
+          class="btn btn-sm btn-outline-primary ms-2"
+          @click.stop="$emit('extend:borrow', item._id)"
+        >
+          Gia hạn
+        </button>
       </div>
     </li>
   </ul>
@@ -45,7 +52,7 @@ export default {
     borrows: { type: Array, default: () => [] },
     activeIndex: { type: Number, default: -1 }
   },
-  emits: ["update:activeIndex", "return:borrow"],
+  emits: ["update:activeIndex", "return:borrow", "extend:borrow"],
   methods: {
     updateActiveIndex(index) {
       console.log("[DEBUG FRONTEND - MuonSachList] Selected index:", index);

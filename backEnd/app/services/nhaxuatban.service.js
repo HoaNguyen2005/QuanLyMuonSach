@@ -33,16 +33,17 @@ class NhaXuatBanService {
     }
 
     async find(filter) {
-        console.log("[DEBUG BACKEND - NxbService] Finding list with filter:", JSON.stringify(filter));
-        const cursor = await this.Nxb.find(filter);
+        const query = { ...filter, deleted: { $ne: true } };
+        console.log("[DEBUG BACKEND - NxbService] Finding list with filter:", JSON.stringify(query));
+        const cursor = await this.Nxb.find(query);
         return await cursor.toArray();
     }
 
     async findById(id) {
         console.log(`[DEBUG BACKEND - NxbService] Finding NXB by ID/maNXB: '${id}'`);
-        let result = await this.Nxb.findOne({ maNXB: id });
+        let result = await this.Nxb.findOne({ maNXB: id, deleted: { $ne: true } });
         if (!result && ObjectId.isValid(id)) {
-            result = await this.Nxb.findOne({ _id: new ObjectId(id) });
+            result = await this.Nxb.findOne({ _id: new ObjectId(id), deleted: { $ne: true } });
         }
         return result;
     }
@@ -60,9 +61,13 @@ class NhaXuatBanService {
     }
 
     async delete(id) {
-        console.log(`[DEBUG BACKEND - NxbService] Deleting NXB '${id}'`);
+        console.log(`[DEBUG BACKEND - NxbService] Deleting NXB '${id}' (Soft Delete)`);
         const filter = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { maNXB: id };
-        const result = await this.Nxb.findOneAndDelete(filter);
+        const result = await this.Nxb.findOneAndUpdate(
+            filter,
+            { $set: { deleted: true } },
+            { returnDocument: "after" }
+        );
         return result;
     }
 }

@@ -9,6 +9,8 @@ router.post("/login", docGia.login);
 router.route("/")
     .get(docGia.findAll);
 
+router.put("/:id/lock", docGia.toggleLock);
+
 router.route("/:id")
     .get(docGia.findOne)
     .put(docGia.update)

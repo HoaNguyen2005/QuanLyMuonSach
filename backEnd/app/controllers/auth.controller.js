@@ -47,6 +47,20 @@ exports.loginDocGia = async (req, res, next) => {
             return next(new ApiError(401, "Tên tài khoản hoặc mật khẩu không chính xác!"));
         }
 
+        const DocGiaService = require("../services/docgia.service");
+        const docGiaService = new DocGiaService(MongoDB.client);
+        
+        // Auto-lock check
+        const isLocked = await docGiaService.checkAndLockUser(docGia.maDocGia, MongoDB.client);
+        if (isLocked) {
+            docGia.trangThaiTaiKhoan = 3;
+        }
+
+        if (docGia.trangThaiTaiKhoan === 2) {
+            console.warn(`[DEBUG AUTH - LOGIN DOCGIA WARNING] Tài khoản '${usernameInput}' đã ngừng hoạt động!`);
+            return next(new ApiError(403, "Tài khoản của bạn đã ngừng hoạt động!"));
+        }
+
         console.log("[DEBUG AUTH - LOGIN DOCGIA SUCCESS] Đã tìm thấy Độc Giả trong DB:");
         console.log(JSON.stringify(docGia, null, 2));
 
@@ -56,7 +70,8 @@ exports.loginDocGia = async (req, res, next) => {
             maNhanVien: null,
             tenTaiKhoan: docGia.tenTaiKhoan,   
             hoTen: docGia.hoTen,               
-            role: "docgia"                      
+            role: "docgia",
+            trangThaiTaiKhoan: docGia.trangThaiTaiKhoan
         };
 
         console.log("[DEBUG AUTH - LOGIN DOCGIA SUCCESS] Payload trả về Client:");

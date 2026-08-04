@@ -7,12 +7,17 @@ class TheoDoiMuonSachService {
 
     async create(payload) {
         const ngayMuon = payload.ngayMuon ? new Date(payload.ngayMuon) : new Date();
-        const ngayTraDuKien = payload.ngayTraDuKien ? new Date(payload.ngayTraDuKien) : null;
-
-        if (ngayTraDuKien && ngayTraDuKien < ngayMuon) {
-            console.error("[DEBUG SERVICE - ERROR] Ngày trả dự kiến nhỏ hơn ngày mượn!");
-            throw new Error("Ngày trả dự kiến phải lớn hơn hoặc bằng ngày mượn!");
+        let ngayTraDuKien = payload.ngayTraDuKien ? new Date(payload.ngayTraDuKien) : new Date(ngayMuon);
+        
+        const maxReturnDate = new Date(ngayMuon);
+        maxReturnDate.setDate(maxReturnDate.getDate() + 7);
+        
+        if (ngayTraDuKien > maxReturnDate) {
+            ngayTraDuKien = maxReturnDate;
+        } else if (ngayTraDuKien < ngayMuon) {
+            ngayTraDuKien = new Date(ngayMuon);
         }
+
 
         const record = {
             maDocGia: String(payload.maDocGia),
@@ -21,6 +26,7 @@ class TheoDoiMuonSachService {
             ngayMuon: ngayMuon,
             ngayTraDuKien: ngayTraDuKien,
             ngayTraThucTe: null,
+            soLanGiaHan: 0,
             trangThai: payload.trangThai || "CHO_DUYET",
             created_at: new Date()
         };
@@ -144,6 +150,45 @@ class TheoDoiMuonSachService {
         );
 
         console.log("[DEBUG SERVICE SUCCESS - updateTrangThai]:", JSON.stringify(result, null, 2));
+        return result;
+    }
+
+    async giaHan(id) {
+        console.log(`[DEBUG SERVICE - giaHan] Gia hạn sách cho phiếu mượn ID: ${id}`);
+        const filter = {
+            $or: [
+                { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
+                { maPhieuMuon: id },
+                { maMuonSach: id }
+            ]
+        };
+
+        const record = await this.MuonSach.findOne(filter);
+        if (!record) {
+            throw new Error("Không tìm thấy phiếu mượn!");
+        }
+
+        if (record.trangThai === "DA_TRA" || record.trangThai === "TU_CHOI") {
+            throw new Error("Không thể gia hạn sách đã trả hoặc bị từ chối!");
+        }
+
+        if (record.soLanGiaHan >= 1) {
+            throw new Error("Mỗi cuốn sách chỉ được gia hạn 1 lần!");
+        }
+
+        const newNgayTraDuKien = new Date(record.ngayTraDuKien);
+        newNgayTraDuKien.setDate(newNgayTraDuKien.getDate() + 7);
+
+        const result = await this.MuonSach.findOneAndUpdate(
+            filter,
+            { 
+                $set: { ngayTraDuKien: newNgayTraDuKien },
+                $inc: { soLanGiaHan: 1 }
+            },
+            { returnDocument: "after" }
+        );
+
+        console.log("[DEBUG SERVICE SUCCESS - giaHan]:", JSON.stringify(result, null, 2));
         return result;
     }
 }

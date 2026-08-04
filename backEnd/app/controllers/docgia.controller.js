@@ -114,8 +114,28 @@ exports.delete = async (req, res, next) => {
         if (!document) {
             return next(new ApiError(404, "Không tìm thấy độc giả để xóa"));
         }
-        return res.send({ message: "Xóa độc giả thành công!" });
+        return res.send({ message: "Ngừng hoạt động độc giả thành công!" });
     } catch (error) {
-        return next(new ApiError(500, `Lỗi khi xóa độc giả id=${req.params.id}`));
+        return next(new ApiError(500, `Lỗi khi ngừng hoạt động độc giả id=${req.params.id}`));
+    }
+};
+
+exports.toggleLock = async (req, res, next) => {
+    try {
+        const docGiaService = new DocGiaService(MongoDB.client);
+        const { id } = req.params;
+        const { status } = req.body; 
+
+        if (status === undefined || ![1, 3].includes(status)) {
+            return next(new ApiError(400, "Trạng thái không hợp lệ! (1: Bình thường, 3: Khóa)"));
+        }
+
+        const document = await docGiaService.updateAccountStatus(id, status);
+        if (!document) {
+            return next(new ApiError(404, "Không tìm thấy độc giả để cập nhật"));
+        }
+        return res.send({ message: "Cập nhật trạng thái khóa thành công!", data: document });
+    } catch (error) {
+        return next(new ApiError(500, `Lỗi khi khóa/mở khóa độc giả id=${req.params.id}`));
     }
 };

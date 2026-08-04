@@ -40,15 +40,16 @@ class SachService {
     }
 
     async find(filter) {
-        console.log("[DEBUG SERVICE - SachService] Querying Sach with filter:", JSON.stringify(filter));
-        const cursor = await this.Sach.find(filter);
+        const query = { ...filter, deleted: { $ne: true } };
+        console.log("[DEBUG SERVICE - SachService] Querying Sach with filter:", JSON.stringify(query));
+        const cursor = await this.Sach.find(query);
         const documents = await cursor.toArray();
         console.log(`[DEBUG SERVICE - SachService] Found ${documents.length} items.`);
         return documents;
     }
 
     async findByMaSach(maSach) {
-        return await this.Sach.findOne({ maSach: maSach });
+        return await this.Sach.findOne({ maSach: maSach, deleted: { $ne: true } });
     }
 
     async findByName(name) {
@@ -68,13 +69,17 @@ class SachService {
     }
     
     async delete(maSach) {
-        const result = await this.Sach.findOneAndDelete({ maSach: maSach });
+        const result = await this.Sach.findOneAndUpdate(
+            { maSach: maSach }, 
+            { $set: { deleted: true } },
+            { returnDocument: "after" }
+        );
         return result;
     }
 
     async deleteAll() {
-        const result = await this.Sach.deleteMany({});
-        return result.deletedCount;
+        const result = await this.Sach.updateMany({}, { $set: { deleted: true } });
+        return result.modifiedCount;
     }
     async update(maSach, payload) {
         console.log("[DEBUG] Service update maSach:", maSach);

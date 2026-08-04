@@ -103,13 +103,14 @@
                 <th class="py-3">Mã Sách</th>
                 <th class="py-3">Ngày Mượn</th>
                 <th class="py-3">Ngày Trả Dự Kiến</th>
+                <th class="py-3">Ngày Trả Thực Tế</th>
                 <th class="py-3">Trạng Thái</th>
                 <th class="text-end pe-4 py-3">Thao Tác</th>
               </tr>
             </thead>
             <tbody>
               <tr v-if="activeBorrows.length === 0">
-                <td colspan="7" class="text-center text-muted py-5">
+                <td colspan="8" class="text-center text-muted py-5">
                   <i class="fas fa-box-open fa-3x mb-3 text-secondary opacity-50 d-block"></i>
                   Không có sách nào đang trong trạng thái mượn.
                 </td>
@@ -122,8 +123,35 @@
                 <td class="text-secondary small">{{ formatDate(item.ngayTraDuKien) }}</td>
                 
                 <td>
+                  <div v-if="item.ngayTraThucTe || item.NgayTraThucTe">
+                    <span class="text-success fw-bold d-block">
+                      {{ formatDate(item.ngayTraThucTe || item.NgayTraThucTe) }}
+                    </span>
+                    <span 
+                      v-if="tinhSoNgayTre(item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra, item.ngayTraThucTe || item.NgayTraThucTe) > 0" 
+                      :class="tinhSoNgayTre(item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra, item.ngayTraThucTe || item.NgayTraThucTe) > 30 ? 'bg-danger text-white' : 'bg-danger bg-opacity-10 text-danger border border-danger-subtle'"
+                      class="badge fs-xs mt-1 fw-bold"
+                    >
+                      <i class="fas fa-clock me-1"></i>
+                      Trả trễ {{ tinhSoNgayTre(item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra, item.ngayTraThucTe || item.NgayTraThucTe) }} ngày
+                    </span>
+                  </div>
+                  <span 
+                    v-else-if="checkTreHan(item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra, item.trangThai || item.TrangThai) > 0" 
+                    class="badge bg-danger text-white px-2.5 py-1.5 fw-bold shadow-sm"
+                  >
+                    <i class="fas fa-exclamation-circle me-1"></i> 
+                    Trễ hạn ({{ checkTreHan(item.ngayTraDuKien || item.NgayTraDuKien || item.ngayTra, item.trangThai || item.TrangThai) }} ngày)
+                  </span>
+                  <span v-else class="badge bg-light text-muted border fw-normal">Chưa trả</span>
+                </td>
+                
+                <td>
                   <span v-if="isWaitingReturn(item)" class="badge bg-warning bg-opacity-10 text-warning fw-semibold px-2.5 py-1.5 rounded-pill">
                     <i class="fas fa-exclamation-circle fs-xs me-1"></i>Yêu cầu trả sách
+                  </span>
+                  <span v-else-if="isReturned(item)" class="badge bg-success bg-opacity-10 text-success fw-semibold px-2.5 py-1.5 rounded-pill">
+                    <i class="fas fa-check-circle fs-xs me-1"></i>Đã trả
                   </span>
                   <span v-else class="badge bg-info bg-opacity-10 text-info fw-semibold px-2.5 py-1.5 rounded-pill">
                     <i class="fas fa-book-open fs-xs me-1"></i>Đang Mượn
@@ -138,7 +166,8 @@
                     @click="confirmReturn(item._id)"
                   >
                     <i class="fas fa-undo me-1"></i>
-                    <span>{{ canReturn(item) ? 'Xác nhận trả sách' : 'Chưa trả sách' }}</span>
+                    <span v-if="canReturn(item)">Xác nhận đã trả sách</span>
+                    <span v-else>Đã trả sách</span>
                   </button>
                 </td>
               </tr>
@@ -278,11 +307,11 @@ export default {
     },
     activeBorrows() {
       return this.borrows.filter(b => {
-        if (b.ngayTra || b.ngayTraThucTe) return false;
         const status = String(b.trangThai || '').toUpperCase().trim();
         return status === "DA_DUYET" || status === "ĐÃ_DUYỆT" || status === "ĐÃ DUYỆT" || 
                status === "DANG_MUON" || status === "ĐANG_MƯỢN" ||
-               status === "YEU_CAU_TRA" || status === "YÊU_CẦU_TRẢ" || status === "YÊU CẦU TRẢ";
+               status === "YEU_CAU_TRA" || status === "YÊU_CẦU_TRẢ" || status === "YÊU CẦU TRẢ" ||
+               status === "DA_TRA" || status === "ĐÃ TRẢ" || status === "ĐÃ_TRẢ";
       });
     },
     pendingFines() {
@@ -344,8 +373,18 @@ export default {
       return status === "YEU_CAU_TRA" || status === "YÊU_CẦU_TRẢ" || status === "YÊU CẦU TRẢ" || item.requestReturn === true;
     },
 
+    isReturned(item) {
+      if (!item || !item.trangThai) return false;
+      const status = String(item.trangThai).toUpperCase().trim();
+      return status === "DA_TRA" || status === "ĐÃ TRẢ" || status === "ĐÃ_TRẢ";
+    },
+
     canReturn(item) {
-      return this.isWaitingReturn(item);
+      if (this.isReturned(item)) return false;
+      const status = String(item.trangThai || '').toUpperCase().trim();
+      return status === "DA_DUYET" || status === "ĐÃ_DUYỆT" || status === "ĐÃ DUYỆT" || 
+             status === "DANG_MUON" || status === "ĐANG_MƯỢN" ||
+             status === "YEU_CAU_TRA" || status === "YÊU_CẦU_TRẢ" || status === "YÊU CẦU TRẢ";
     },
 
     showPopUp(title, message, type = "success") {
@@ -444,6 +483,37 @@ export default {
         console.error("[DEBUG DASHBOARD ERROR] Confirm return failed:", error.response?.data || error);
         this.showPopUp("Lỗi Cập Nhật", "Không thể xác nhận trả sách!", "error");
       }
+    },
+
+    tinhSoNgayTre(ngayDuKienStr, ngayTraThucTeStr) {
+      if (!ngayDuKienStr || !ngayTraThucTeStr) return 0;
+      
+      const ngayDuKien = new Date(ngayDuKienStr);
+      const ngayTraThucTe = new Date(ngayTraThucTeStr);
+      
+      ngayDuKien.setHours(0, 0, 0, 0);
+      ngayTraThucTe.setHours(0, 0, 0, 0);
+      
+      const diffTime = ngayTraThucTe - ngayDuKien;
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+      
+      return diffDays > 0 ? diffDays : 0;
+    },
+
+    checkTreHan(ngayTraDuKien, trangThai) {
+      if (!ngayTraDuKien) return 0;
+      const st = String(trangThai || "").toUpperCase();
+      if (st.includes("DA_TRA") || st.includes("ĐÃ TRẢ") || st.includes("ĐÃ_TRẢ")) return 0;
+
+      const ngayDuKien = new Date(ngayTraDuKien);
+      const ngayHienTai = new Date();
+      
+      ngayDuKien.setHours(0, 0, 0, 0);
+      ngayHienTai.setHours(0, 0, 0, 0);
+
+      const diffTime = ngayHienTai - ngayDuKien;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays > 0 ? diffDays : 0;
     },
 
     formatDate(d) {

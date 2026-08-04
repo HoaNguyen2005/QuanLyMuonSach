@@ -42,16 +42,14 @@
     </div>
 
     <div class="mb-3">
-      <label for="ngayTraDuKien" class="form-label">Ngày Trả Dự Kiến <span class="text-danger">*</span></label>
+      <label for="ngayTraDuKien" class="form-label">Ngày Trả Dự Kiến (Tự động +1 tuần) </label>
       <input
         id="ngayTraDuKien"
         type="date"
         class="form-control"
-        v-model="borrowLocal.ngayTraDuKien"
-        :min="borrowLocal.ngayMuon" 
-        required
+        :value="calculatedNgayTraDuKien"
+        readonly
       />
-      <div class="form-text">Ngày trả dự kiến phải lớn hơn hoặc bằng ngày mượn.</div>
     </div>
 
     <div class="mb-3">
@@ -78,25 +76,17 @@ export default {
       error: ""
     };
   },
+  computed: {
+    calculatedNgayTraDuKien() {
+      if (!this.borrowLocal.ngayMuon) return "";
+      const date = new Date(this.borrowLocal.ngayMuon);
+      date.setDate(date.getDate() + 7);
+      return date.toISOString().split("T")[0];
+    }
+  },
   methods: {
     submitForm() {
       this.error = "";
-
-      const ngayMuonDate = new Date(this.borrowLocal.ngayMuon);
-      const ngayTraDuKienDate = new Date(this.borrowLocal.ngayTraDuKien);
-
-      console.log("[DEBUG FRONTEND - MuonSachForm] Checking dates:", {
-        ngayMuon: this.borrowLocal.ngayMuon,
-        ngayTraDuKien: this.borrowLocal.ngayTraDuKien,
-        isValid: ngayTraDuKienDate >= ngayMuonDate
-      });
-
-      // Kiểm tra logic Ngày trả dự kiến < Ngày mượn
-      if (ngayTraDuKienDate < ngayMuonDate) {
-        this.error = "Lỗi: Ngày trả dự kiến không được trước ngày mượn!";
-        console.error("[DEBUG FRONTEND - MuonSachForm] Validation failed: ngayTraDuKien < ngayMuon");
-        return;
-      }
 
       console.log("[DEBUG FRONTEND - MuonSachForm] Validation passed. Emitting payload:", JSON.stringify(this.borrowLocal, null, 2));
       this.$emit("submit:borrow", this.borrowLocal);

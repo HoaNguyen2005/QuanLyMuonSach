@@ -13,6 +13,16 @@ exports.create = async (req, res, next) => {
     try {
         const sachService = new SachService(MongoDB.client);
         const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+        const DocGiaService = require("../services/docgia.service");
+        const docGiaService = new DocGiaService(MongoDB.client);
+
+        const docGia = await docGiaService.findByMaDocGia(maDocGia);
+        if (docGia && docGia.trangThaiTaiKhoan === 3) {
+            return next(new ApiError(403, "Tài khoản của bạn đã bị khóa. Không thể thực hiện mượn sách."));
+        }
+        if (docGia && docGia.trangThaiTaiKhoan === 2) {
+            return next(new ApiError(403, "Tài khoản của bạn đã ngừng hoạt động."));
+        }
 
         const sach = await sachService.findByMaSach(maSach);
         if (!sach) {
@@ -129,5 +139,22 @@ exports.updateTrangThai = async (req, res, next) => {
     } catch (error) {
         console.error("[DEBUG CONTROLLER ERROR - updateTrangThai]:", error);
         return next(new ApiError(500, `Lỗi server khi cập nhật trạng thái: ${error.message}`));
+    }
+};
+
+exports.giaHanSach = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const borrowService = new TheoDoiMuonSachService(MongoDB.client);
+        
+        const updatedRecord = await borrowService.giaHan(id);
+        
+        return res.send({
+            message: "Gia hạn sách thành công!",
+            data: updatedRecord
+        });
+    } catch (error) {
+        console.error("[DEBUG CONTROLLER ERROR - giaHanSach]:", error);
+        return next(new ApiError(400, error.message || "Đã xảy ra lỗi khi xử lý gia hạn sách!"));
     }
 };

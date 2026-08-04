@@ -38,6 +38,11 @@ class MuonSachService {
     async tuChoiMuon(id, extraData = {}) {
         return await this.updateStatus(id, "TU_CHOI", extraData);
     }
+
+    async giaHan(id) {
+        const res = await this.api.put(`/${id}/gia-han`);
+        return res.data;
+    }
 }
 
 export default new MuonSachService();

@@ -18,6 +18,7 @@
         :borrows="borrows"
         v-model:activeIndex="activeIndex"
         @return:borrow="handleReturnBook"
+        @extend:borrow="handleExtendBook"
       />
       <p v-else class="text-muted">Chưa có dữ liệu phiếu mượn nào.</p>
     </div>
@@ -67,6 +68,19 @@ export default {
       } catch (error) {
         console.error("[DEBUG FRONTEND - MuonSachBook] Error returning book:", error);
         alert(error.response?.data?.message || "Không thể xử lý trả sách!");
+      }
+    },
+    async handleExtendBook(id) {
+      if (!confirm("Xác nhận gia hạn cho phiếu mượn này thêm 1 tuần?")) return;
+
+      console.log(`[DEBUG FRONTEND - MuonSachBook] Processing extension for ID: ${id}`);
+      try {
+        const res = await MuonSachService.giaHan(id);
+        alert(res.message || "Gia hạn sách thành công!");
+        this.refreshList();
+      } catch (error) {
+        console.error("[DEBUG FRONTEND - MuonSachBook] Error extending book:", error);
+        alert(error.response?.data?.message || "Không thể xử lý gia hạn sách!");
       }
     }
   },

@@ -145,24 +145,49 @@
       </div>
     </div>
 
-    <!-- 2. MODAL POP-UP THÔNG BÁO THÀNH CÔNG -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" ref="successModal">
+    <!-- 2. MODAL POP-UP THÔNG BÁO TỔNG HỢP -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true" ref="statusModal">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content rounded-4 border-0 shadow text-center p-3 bg-white">
           <div class="modal-body">
-            <div class="text-success mb-3">
-              <i class="fas fa-check-circle fa-4x"></i>
+            <div :class="statusModalType === 'success' ? 'text-success' : 'text-danger'" class="mb-3">
+              <i :class="statusModalType === 'success' ? 'fas fa-check-circle fa-4x' : 'fas fa-times-circle fa-4x'"></i>
             </div>
-            <h5 class="fw-bold text-dark mb-2">Gửi Yêu Cầu Thành Công!</h5>
+            <h5 class="fw-bold text-dark mb-2">{{ statusModalTitle }}</h5>
             <p class="text-muted small mb-4">
-              Yêu cầu mượn sách của bạn đã được ghi nhận. Vui lòng chờ thủ thư phê duyệt.
+              {{ statusModalMessage }}
             </p>
             <button 
               type="button" 
-              class="btn btn-success rounded-pill w-100 fw-bold py-2 shadow-sm" 
-              @click="redirectToHistory"
+              :class="statusModalType === 'success' ? 'btn-success' : 'btn-danger'" 
+              class="btn rounded-pill w-100 fw-bold py-2 shadow-sm text-white" 
+              @click="handleStatusClose"
             >
-              Xem Lịch Sử Mượn
+              {{ statusModalType === 'success' ? 'Xem Lịch Sử Mượn' : 'Đóng' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MODAL CẢNH BÁO QUÁ 7 NGÀY -->
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-hidden="true" ref="warningModal">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow text-center p-3 bg-white">
+          <div class="modal-body">
+            <div class="text-warning mb-3">
+              <i class="fas fa-exclamation-triangle fa-4x"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">Quá Thời Gian!</h5>
+            <p class="text-muted small mb-4">
+              Thời gian mượn không được quá 7 ngày.
+            </p>
+            <button 
+              type="button" 
+              class="btn btn-warning rounded-pill w-100 fw-bold py-2 shadow-sm text-white" 
+              data-bs-dismiss="modal"
+            >
+              Đã hiểu
             </button>
           </div>
         </div>
@@ -191,7 +216,11 @@ export default {
       selectedBook: {},
       loading: false,
       borrowModalInstance: null,
-      successModalInstance: null,
+      statusModalInstance: null,
+      warningModalInstance: null,
+      statusModalTitle: "",
+      statusModalMessage: "",
+      statusModalType: "success",
       minDate: today.toISOString().split("T")[0],
       ngayTraDuKien: nextWeek.toISOString().split("T")[0]
     };
@@ -206,6 +235,26 @@ export default {
         return title.includes(q) || author.includes(q);
       });
     },
+  },
+  watch: {
+    ngayTraDuKien(newVal) {
+      if (!newVal) return;
+      const borrowDate = new Date(this.minDate);
+      const returnDate = new Date(newVal);
+      const diffTime = returnDate - borrowDate;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays > 7) {
+        if (!this.warningModalInstance) {
+          this.warningModalInstance = new Modal(this.$refs.warningModal);
+        }
+        this.warningModalInstance.show();
+
+        const maxReturnDate = new Date(borrowDate);
+        maxReturnDate.setDate(maxReturnDate.getDate() + 7);
+        this.ngayTraDuKien = maxReturnDate.toISOString().split('T')[0];
+      }
+    }
   },
   mounted() {
     this.fetchBooks();
@@ -253,6 +302,24 @@ export default {
     },
 
     async confirmBorrow() {
+      const borrowDate = new Date(this.minDate);
+      const returnDate = new Date(this.ngayTraDuKien);
+      const diffTime = returnDate - borrowDate;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 7) {
+        if (!this.warningModalInstance) {
+          this.warningModalInstance = new Modal(this.$refs.warningModal);
+        }
+        this.warningModalInstance.show();
+
+        const maxReturnDate = new Date(borrowDate);
+        maxReturnDate.setDate(maxReturnDate.getDate() + 7);
+        this.ngayTraDuKien = maxReturnDate.toISOString().split('T')[0];
+        
+        return; 
+      }
+
       const user = AuthService.getCurrentUser() || {};
       const targetMaDocGia = user.maDocGia || user.MaDocGia || user.MSNV || user._id;
       const targetMaSach = this.getBookCode(this.selectedBook);
@@ -280,24 +347,39 @@ export default {
           this.borrowModalInstance.hide();
         }
 
-        if (!this.successModalInstance) {
-          this.successModalInstance = new Modal(this.$refs.successModal);
-        }
-        this.successModalInstance.show();
+        this.showPopUp("Gửi Yêu Cầu Thành Công!", "Yêu cầu mượn sách của bạn đã được ghi nhận. Vui lòng chờ thủ thư phê duyệt.", "success");
 
         this.fetchBooks();
       } catch (error) {
         console.error("[DEBUG FRONTEND] Borrow Request Error:", error);
+        if (this.borrowModalInstance) {
+          this.borrowModalInstance.hide();
+        }
+        const errMsg = error.response?.data?.message || "Đã xảy ra lỗi khi yêu cầu mượn sách!";
+        this.showPopUp("Lỗi Yêu Cầu", errMsg, "error");
       } finally {
         this.loading = false;
       }
     },
 
-    redirectToHistory() {
-      if (this.successModalInstance) {
-        this.successModalInstance.hide();
+    handleStatusClose() {
+      if (this.statusModalInstance) {
+        this.statusModalInstance.hide();
       }
-      this.$router.push({ name: "reader.lichsu" });
+      if (this.statusModalType === 'success') {
+        this.$router.push({ name: "reader.lichsu" });
+      }
+    },
+
+    showPopUp(title, message, type = "success") {
+      this.statusModalTitle = title;
+      this.statusModalMessage = message;
+      this.statusModalType = type;
+
+      if (!this.statusModalInstance) {
+        this.statusModalInstance = new Modal(this.$refs.statusModal);
+      }
+      this.statusModalInstance.show();
     }
   }
 };
