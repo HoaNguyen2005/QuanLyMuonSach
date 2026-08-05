@@ -178,6 +178,15 @@
                     placeholder="VD: Nguyễn Nhật Ánh"
                   />
                 </div>
+                <div class="col-md-12">
+                  <label class="form-label small fw-bold text-secondary">Đường Dẫn Hình Ảnh</label>
+                  <input
+                    type="text"
+                    class="form-control rounded-3"
+                    v-model="currentSach.hinhAnh"
+                    placeholder="VD: https://example.com/image.jpg"
+                  />
+                </div>
               </div>
 
               <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
@@ -266,7 +275,8 @@ export default {
         soQuyen: 1,
         namXuatBan: new Date().getFullYear(),
         maNXB: "",
-        tacGia: ""
+        tacGia: "",
+        hinhAnh: ""
       }
     };
   },
@@ -314,7 +324,8 @@ export default {
         soQuyen: 1,
         namXuatBan: new Date().getFullYear(),
         maNXB: "",
-        tacGia: ""
+        tacGia: "",
+        hinhAnh: ""
       };
       this.getModal().show();
     },
@@ -329,7 +340,8 @@ export default {
         soQuyen: sach.soQuyen ?? 1,
         namXuatBan: sach.namXuatBan || new Date().getFullYear(),
         maNXB: sach.maNXB || "",
-        tacGia: sach.tacGia || ""
+        tacGia: sach.tacGia || "",
+        hinhAnh: sach.hinhAnh || ""
       };
       this.getModal().show();
     },
@@ -362,7 +374,8 @@ export default {
             soQuyen: Number(this.currentSach.soQuyen || 0),
             namXuatBan: Number(this.currentSach.namXuatBan || 2026),
             maNXB: this.currentSach.maNXB || "",
-            tacGia: this.currentSach.tacGia || ""
+            tacGia: this.currentSach.tacGia || "",
+            hinhAnh: this.currentSach.hinhAnh || ""
           };
           const targetId = this.currentSach.maSach || this.currentSach._id;
           console.log(`[DEBUG QUANLYSACH] Updating book ID: ${targetId} | Payload:`, updatePayload);
@@ -377,7 +390,8 @@ export default {
             soQuyen: Number(this.currentSach.soQuyen || 0),
             namXuatBan: Number(this.currentSach.namXuatBan || 2026),
             maNXB: this.currentSach.maNXB || "",
-            tacGia: this.currentSach.tacGia || ""
+            tacGia: this.currentSach.tacGia || "",
+            hinhAnh: this.currentSach.hinhAnh || ""
           };
           console.log("[DEBUG QUANLYSACH] Creating book Payload:", createPayload);
           const res = await SachService.create(createPayload);
