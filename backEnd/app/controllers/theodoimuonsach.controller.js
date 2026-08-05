@@ -24,6 +24,11 @@ exports.create = async (req, res, next) => {
             return next(new ApiError(403, "Tài khoản của bạn đã ngừng hoạt động."));
         }
 
+        const activeBorrowsCount = await borrowService.countActiveBorrows(maDocGia);
+        if (activeBorrowsCount >= 10) {
+            return next(new ApiError(400, "Bạn đã đạt giới hạn mượn tối đa 10 cuốn sách. Vui lòng trả sách trước khi mượn thêm!"));
+        }
+
         const sach = await sachService.findByMaSach(maSach);
         if (!sach) {
             return next(new ApiError(404, "Sách không tồn tại trong hệ thống!"));
@@ -118,6 +123,15 @@ exports.updateTrangThai = async (req, res, next) => {
         const record = await borrowService.findById(id);
         if (!record) {
             return next(new ApiError(404, "Không tìm thấy phiếu mượn!"));
+        }
+
+        // Kiểm tra giới hạn mượn 10 cuốn khi duyệt
+        const activeStatuses = ["DA_DUYET", "DANG_MUON", "ĐÃ_DUYỆT", "ĐÃ DUYỆT", "ĐANG_MƯỢN"];
+        if (activeStatuses.includes(trangThai) && !activeStatuses.includes(record.trangThai)) {
+            const approvedCount = await borrowService.countApprovedBorrows(record.maDocGia);
+            if (approvedCount >= 10) {
+                return next(new ApiError(400, "Độc giả này đã đạt giới hạn mượn tối đa 10 cuốn sách. Không thể duyệt mượn thêm!"));
+            }
         }
 
         // 2. Gọi hàm updateTrangThai truyền kèm MSNV của người duyệt

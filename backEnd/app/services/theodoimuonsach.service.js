@@ -26,7 +26,6 @@ class TheoDoiMuonSachService {
             ngayMuon: ngayMuon,
             ngayTraDuKien: ngayTraDuKien,
             ngayTraThucTe: null,
-            soLanGiaHan: 0,
             trangThai: payload.trangThai || "CHO_DUYET",
             created_at: new Date()
         };
@@ -114,6 +113,38 @@ class TheoDoiMuonSachService {
         return history;
     }
 
+    async countActiveBorrows(maDocGia) {
+        const matchConditions = [
+            { maDocGia: String(maDocGia) },
+            { MaDocGia: String(maDocGia) },
+            { maDocGia: maDocGia },
+            { MaDocGia: maDocGia }
+        ];
+
+        const filter = {
+            $or: matchConditions,
+            trangThai: { $nin: ["DA_TRA", "TU_CHOI", "ĐÃ TRẢ", "TỪ CHỐI"] }
+        };
+
+        return await this.MuonSach.countDocuments(filter);
+    }
+
+    async countApprovedBorrows(maDocGia) {
+        const matchConditions = [
+            { maDocGia: String(maDocGia) },
+            { MaDocGia: String(maDocGia) },
+            { maDocGia: maDocGia },
+            { MaDocGia: maDocGia }
+        ];
+
+        const filter = {
+            $or: matchConditions,
+            trangThai: { $in: ["DA_DUYET", "DANG_MUON", "ĐÃ_DUYỆT", "ĐÃ DUYỆT", "ĐANG_MƯỢN", "YEU_CAU_TRA"] }
+        };
+
+        return await this.MuonSach.countDocuments(filter);
+    }
+
     async findById(id) {
         console.log(`[DEBUG SERVICE - findById] Finding record with ID: ${id}`);
         const filter = {
@@ -172,7 +203,9 @@ class TheoDoiMuonSachService {
             throw new Error("Không thể gia hạn sách đã trả hoặc bị từ chối!");
         }
 
-        if (record.soLanGiaHan >= 1) {
+        const diffTime = new Date(record.ngayTraDuKien).getTime() - new Date(record.ngayMuon).getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 7) {
             throw new Error("Mỗi cuốn sách chỉ được gia hạn 1 lần!");
         }
 
@@ -182,8 +215,7 @@ class TheoDoiMuonSachService {
         const result = await this.MuonSach.findOneAndUpdate(
             filter,
             { 
-                $set: { ngayTraDuKien: newNgayTraDuKien },
-                $inc: { soLanGiaHan: 1 }
+                $set: { ngayTraDuKien: newNgayTraDuKien }
             },
             { returnDocument: "after" }
         );
